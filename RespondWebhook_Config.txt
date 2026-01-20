@@ -1,0 +1,44 @@
+// ========================================
+// Respond to Webhook 节点配置
+// ========================================
+
+// 在 n8n 的 "Respond to Webhook" 节点中配置：
+
+// 1. Respond With: JSON
+// 2. Response Body 使用表达式:
+
+// === 方式一：使用表达式 (推荐) ===
+// 点击 "Response Body" 右侧的 fx 按钮，输入：
+
+{{ $json.isChallenge ? { "challenge": $json.challenge } : { "code": 0, "msg": "success" } }}
+
+
+// === 方式二：使用 Code 节点返回 ===
+// 如果方式一不行，可以在 Code in JavaScript1 之后加一个 Code 节点：
+
+if ($input.first().json.isChallenge) {
+  // 飞书验证请求
+  return {
+    json: {
+      challenge: $input.first().json.challenge
+    }
+  };
+} else {
+  // 正常消息，返回成功
+  return {
+    json: {
+      code: 0,
+      msg: "success"
+    }
+  };
+}
+
+// ========================================
+// 重要配置说明
+// ========================================
+
+// Respond to Webhook 节点设置：
+// - Response Code: 200
+// - Response Headers: 
+//     Content-Type: application/json
+// - Response Body: 使用上面的表达式

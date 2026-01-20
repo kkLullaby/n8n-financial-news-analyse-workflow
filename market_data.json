@@ -1,0 +1,516 @@
+{
+  "timestamp": "2026-01-19 13:22:19",
+  "data_version": "2.0",
+  "market_sentiment": {
+    "index_value": 4121.73,
+    "change_pct": 0.48,
+    "volume": 857373572868.6,
+    "up_count": 3610,
+    "down_count": 1725,
+    "limit_up": 85,
+    "limit_down": 22,
+    "up_ratio": 62.2,
+    "market_temperature": "🌡️ 偏热",
+    "risk_level": "⚪ 中性",
+    "risk_score": 1.5,
+    "suggested_action": "👀 观望为主"
+  },
+  "hot_sectors": [
+    {
+      "name": "地热能",
+      "change_pct": 3.92,
+      "leading_stocks": [
+        {
+          "name": "开山股份",
+          "code": "300257",
+          "price": 18.96,
+          "change_pct": 16.39,
+          "turnover": 4.32,
+          "volume_ratio": 0
+        },
+        {
+          "name": "冰轮环境",
+          "code": "000811",
+          "price": 16.62,
+          "change_pct": 4.07,
+          "turnover": 4.59,
+          "volume_ratio": 0
+        },
+        {
+          "name": "中材节能",
+          "code": "603126",
+          "price": 7.09,
+          "change_pct": 3.05,
+          "turnover": 2.02,
+          "volume_ratio": 0
+        },
+        {
+          "name": "隆华科技",
+          "code": "300263",
+          "price": 9.85,
+          "change_pct": 2.6,
+          "turnover": 2.56,
+          "volume_ratio": 0
+        },
+        {
+          "name": "*ST建艺",
+          "code": "002789",
+          "price": 10.24,
+          "change_pct": 2.09,
+          "turnover": 1.46,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "特高压",
+      "change_pct": 3.77,
+      "leading_stocks": [
+        {
+          "name": "电科院",
+          "code": "300215",
+          "price": 9.3,
+          "change_pct": 13.97,
+          "turnover": 28.1,
+          "volume_ratio": 0
+        },
+        {
+          "name": "汉缆股份",
+          "code": "002498",
+          "price": 4.8,
+          "change_pct": 10.09,
+          "turnover": 0.87,
+          "volume_ratio": 0
+        },
+        {
+          "name": "森源电气",
+          "code": "002358",
+          "price": 7.1,
+          "change_pct": 10.08,
+          "turnover": 1.64,
+          "volume_ratio": 0
+        },
+        {
+          "name": "大连电瓷",
+          "code": "002606",
+          "price": 10.84,
+          "change_pct": 10.05,
+          "turnover": 8.75,
+          "volume_ratio": 0
+        },
+        {
+          "name": "中国西电",
+          "code": "601179",
+          "price": 14.36,
+          "change_pct": 10.04,
+          "turnover": 7.06,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "大飞机",
+      "change_pct": 3.66,
+      "leading_stocks": [
+        {
+          "name": "航亚科技",
+          "code": "688510",
+          "price": 36.82,
+          "change_pct": 18.32,
+          "turnover": 6.05,
+          "volume_ratio": 0
+        },
+        {
+          "name": "图南股份",
+          "code": "300855",
+          "price": 37.45,
+          "change_pct": 11.86,
+          "turnover": 3.87,
+          "volume_ratio": 0
+        },
+        {
+          "name": "航宇科技",
+          "code": "688239",
+          "price": 69.83,
+          "change_pct": 10.91,
+          "turnover": 4.91,
+          "volume_ratio": 0
+        },
+        {
+          "name": "中航机载",
+          "code": "600372",
+          "price": 15.81,
+          "change_pct": 10.02,
+          "turnover": 2.72,
+          "volume_ratio": 0
+        },
+        {
+          "name": "万泽股份",
+          "code": "000534",
+          "price": 25.14,
+          "change_pct": 10.02,
+          "turnover": 5.07,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "通用航空",
+      "change_pct": 3.45,
+      "leading_stocks": [
+        {
+          "name": "航亚科技",
+          "code": "688510",
+          "price": 36.82,
+          "change_pct": 18.32,
+          "turnover": 6.05,
+          "volume_ratio": 0
+        },
+        {
+          "name": "航发动力",
+          "code": "600893",
+          "price": 44.63,
+          "change_pct": 10.01,
+          "turnover": 2.21,
+          "volume_ratio": 0
+        },
+        {
+          "name": "洪都航空",
+          "code": "600316",
+          "price": 43.01,
+          "change_pct": 10.0,
+          "turnover": 3.98,
+          "volume_ratio": 0
+        },
+        {
+          "name": "航发控制",
+          "code": "000738",
+          "price": 23.54,
+          "change_pct": 10.0,
+          "turnover": 3.88,
+          "volume_ratio": 0
+        },
+        {
+          "name": "北摩高科",
+          "code": "002985",
+          "price": 36.98,
+          "change_pct": 9.99,
+          "turnover": 10.46,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "免税概念",
+      "change_pct": 3.39,
+      "leading_stocks": [
+        {
+          "name": "海南发展",
+          "code": "002163",
+          "price": 18.59,
+          "change_pct": 10.0,
+          "turnover": 12.98,
+          "volume_ratio": 0
+        },
+        {
+          "name": "广百股份",
+          "code": "002187",
+          "price": 9.06,
+          "change_pct": 9.95,
+          "turnover": 9.48,
+          "volume_ratio": 0
+        },
+        {
+          "name": "中国中免",
+          "code": "601888",
+          "price": 93.8,
+          "change_pct": 6.07,
+          "turnover": 2.91,
+          "volume_ratio": 0
+        },
+        {
+          "name": "海峡股份",
+          "code": "002320",
+          "price": 11.14,
+          "change_pct": 4.4,
+          "turnover": 2.0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "海南机场",
+          "code": "600515",
+          "price": 4.79,
+          "change_pct": 4.13,
+          "turnover": 2.11,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "航母概念",
+      "change_pct": 3.21,
+      "leading_stocks": [
+        {
+          "name": "中航机载",
+          "code": "600372",
+          "price": 15.81,
+          "change_pct": 10.02,
+          "turnover": 2.72,
+          "volume_ratio": 0
+        },
+        {
+          "name": "航发动力",
+          "code": "600893",
+          "price": 44.63,
+          "change_pct": 10.01,
+          "turnover": 2.21,
+          "volume_ratio": 0
+        },
+        {
+          "name": "航发科技",
+          "code": "600391",
+          "price": 42.02,
+          "change_pct": 10.0,
+          "turnover": 7.81,
+          "volume_ratio": 0
+        },
+        {
+          "name": "洪都航空",
+          "code": "600316",
+          "price": 43.01,
+          "change_pct": 10.0,
+          "turnover": 3.98,
+          "volume_ratio": 0
+        },
+        {
+          "name": "航发控制",
+          "code": "000738",
+          "price": 23.54,
+          "change_pct": 10.0,
+          "turnover": 3.88,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "同步磁阻电机",
+      "change_pct": 3.13,
+      "leading_stocks": [
+        {
+          "name": "伟创电气",
+          "code": "688698",
+          "price": 107.58,
+          "change_pct": 8.85,
+          "turnover": 2.81,
+          "volume_ratio": 0
+        },
+        {
+          "name": "科汇股份",
+          "code": "688681",
+          "price": 20.08,
+          "change_pct": 3.88,
+          "turnover": 2.31,
+          "volume_ratio": 0
+        },
+        {
+          "name": "佳电股份",
+          "code": "000922",
+          "price": 14.92,
+          "change_pct": 3.25,
+          "turnover": 1.88,
+          "volume_ratio": 0
+        },
+        {
+          "name": "卧龙电驱",
+          "code": "600580",
+          "price": 48.84,
+          "change_pct": 3.15,
+          "turnover": 5.43,
+          "volume_ratio": 0
+        },
+        {
+          "name": "英威腾",
+          "code": "002334",
+          "price": 9.57,
+          "change_pct": 2.35,
+          "turnover": 3.76,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "MLCC",
+      "change_pct": 3.01,
+      "leading_stocks": [
+        {
+          "name": "博迁新材",
+          "code": "605376",
+          "price": 69.3,
+          "change_pct": 10.0,
+          "turnover": 3.13,
+          "volume_ratio": 0
+        },
+        {
+          "name": "双星新材",
+          "code": "002585",
+          "price": 7.74,
+          "change_pct": 9.94,
+          "turnover": 9.07,
+          "volume_ratio": 0
+        },
+        {
+          "name": "风华高科",
+          "code": "000636",
+          "price": 20.06,
+          "change_pct": 6.48,
+          "turnover": 6.81,
+          "volume_ratio": 0
+        },
+        {
+          "name": "洁美科技",
+          "code": "002859",
+          "price": 34.33,
+          "change_pct": 6.12,
+          "turnover": 2.63,
+          "volume_ratio": 0
+        },
+        {
+          "name": "鸿远电子",
+          "code": "603267",
+          "price": 58.35,
+          "change_pct": 3.66,
+          "turnover": 3.87,
+          "volume_ratio": 0
+        }
+      ]
+    }
+  ],
+  "dragon_tiger": "盘中暂无龙虎榜数据",
+  "my_portfolio": {
+    "stocks": [
+      {
+        "code": "600143",
+        "name": "金发科技",
+        "price": 20.74,
+        "change_pct": 2.37,
+        "turnover": 3.88,
+        "status": "good",
+        "status_text": "📈 上涨中",
+        "alert_level": 0,
+        "role": "观察",
+        "fund_status": "缩量整理"
+      }
+    ],
+    "summary": {
+      "total": 1,
+      "up_count": 1,
+      "down_count": 0,
+      "flat_count": 0,
+      "avg_change": 2.37,
+      "strongest": "金发科技 (2.37%)",
+      "weakest": "金发科技 (2.37%)",
+      "danger_alerts": [],
+      "has_danger": false
+    }
+  },
+  "news_brief": {
+    "items": [
+      {
+        "time": "12:24:11",
+        "title": "【电报解读】2025年机器人减速器产量增长超63%，报告称减速器目前市场规模已超1400亿元，这家公司产品已进入量产阶段并与智元展开合作",
+        "relevance": "high",
+        "relevance_icon": "🔥"
+      },
+      {
+        "time": "12:38:35",
+        "title": "宇树科技2025年人形机器人出货量超过5500台",
+        "relevance": "high",
+        "relevance_icon": "🔥"
+      },
+      {
+        "time": "12:48:14",
+        "title": "涉及航天航空、人工智能等领域 北京市丰台区冲刺万亿产业规模",
+        "relevance": "high",
+        "relevance_icon": "🔥"
+      },
+      {
+        "time": "12:53:26",
+        "title": "马斯克：AI5将是一款“性能非常强大”的芯片",
+        "relevance": "high",
+        "relevance_icon": "🔥"
+      },
+      {
+        "time": "12:27:05",
+        "title": "中指研究院：房地产市场有望在“十五五”中后期逐步完成筑底",
+        "relevance": "medium",
+        "relevance_icon": "📌"
+      },
+      {
+        "time": "12:30:25",
+        "title": "中指研究院：预计2026年房地产政策将进入以稳定预期、缩短调整时间为目标的新阶段",
+        "relevance": "medium",
+        "relevance_icon": "📌"
+      },
+      {
+        "time": "13:01:46",
+        "title": "【风口研报·行业】制造业升级+可控核聚变驱动需求增长，叠加矿山皆面临严格管控，分析师认为这一战略金属供需矛盾短期难以破局，相关公司指标发放情况值得关注",
+        "relevance": "medium",
+        "relevance_icon": "📌"
+      },
+      {
+        "time": "12:24:27",
+        "title": "【机构调研】这家PCB制造商储能业务核心部件产品批量供货，大客户相关订单持续放量",
+        "relevance": "low",
+        "relevance_icon": "📰"
+      },
+      {
+        "time": "12:40:57",
+        "title": "国家统计局：2025年末我国每百户家庭家用汽车拥有量达52.9辆",
+        "relevance": "low",
+        "relevance_icon": "📰"
+      },
+      {
+        "time": "12:47:17",
+        "title": "2025年12月证券类APP月活达1.75亿 创当年单月新高",
+        "relevance": "low",
+        "relevance_icon": "📰"
+      },
+      {
+        "time": "12:56:57",
+        "title": "临近春节部分产品调价？三只松鼠回应：属实",
+        "relevance": "low",
+        "relevance_icon": "📰"
+      },
+      {
+        "time": "12:57:50",
+        "title": "圣贝拉：与云迹科技订立合作框架协议",
+        "relevance": "low",
+        "relevance_icon": "📰"
+      },
+      {
+        "time": "13:05:35",
+        "title": "今年以来白云机场口岸出入境客流已突破100万人次 较2025年提前3天",
+        "relevance": "low",
+        "relevance_icon": "📰"
+      },
+      {
+        "time": "13:05:44",
+        "title": "海南自贸概念震荡反弹 神农种业涨超10%",
+        "relevance": "low",
+        "relevance_icon": "📰"
+      },
+      {
+        "time": "13:13:43",
+        "title": "应急管理部派工作组指导包钢板材厂爆炸事故救援处置 国务院安委会决定对事故查处挂牌督办",
+        "relevance": "low",
+        "relevance_icon": "📰"
+      }
+    ],
+    "summary": {
+      "total": 15,
+      "high_relevance": 4,
+      "medium_relevance": 3,
+      "low_relevance": 8
+    }
+  }
+}

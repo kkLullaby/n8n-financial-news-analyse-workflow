@@ -1,0 +1,101 @@
+// ========================================
+// 飞书 Webhook 处理节点 (Code in JavaScript1)
+// 功能：处理飞书验证 + 解析@机器人消息
+// ========================================
+
+const body = $input.first().json.body || $input.first().json;
+
+// === 1. 处理飞书 URL 验证请求 ===
+if (body.challenge) {
+  // 飞书验证请求，必须原样返回 challenge
+  return {
+    json: {
+      isChallenge: true,
+      challenge: body.challenge
+    }
+  };
+}
+
+// === 2. 处理飞书加密验证 (如果开启了加密) ===
+if (body.encrypt) {
+  // 如果你开启了加密，需要先解密
+  // 这里假设没开启加密
+  return {
+    json: {
+      isChallenge: false,
+      error: "加密消息暂不支持",
+      action: "none"
+    }
+  };
+}
+
+// === 3. 解析实际的消息事件 ===
+const event = body.event || {};
+const message = event.message || {};
+const content = message.content ? JSON.parse(message.content) : {};
+const text = content.text || "";
+
+// 获取发送者信息
+const sender = event.sender || {};
+const userId = sender.sender_id?.user_id || "unknown";
+
+// === 4. 解析股票操作指令 ===
+// 支持格式：
+// - "添加 600519" 或 "add 600519"
+// - "删除 600519" 或 "remove 600519" 或 "del 600519"
+// - "查看持仓" 或 "list" 或 "持仓"
+// - "清空持仓" 或 "clear"
+
+let action = "none";
+let stockCode = "";
+let responseText = "";
+
+// 移除@机器人的部分，提取纯文本
+const cleanText = text.replace(/@[\u4e00-\u9fa5\w]+/g, "").trim();
+
+// 添加股票
+const addMatch = cleanText.match(/(?:添加|add|买入|加入)\s*(\d{6})/i);
+if (addMatch) {
+  action = "add";
+  stockCode = addMatch[1];
+  responseText = `✅ 已添加股票 ${stockCode} 到持仓监控`;
+}
+
+// 删除股票
+const delMatch = cleanText.match(/(?:删除|del|remove|卖出|移除)\s*(\d{6})/i);
+if (delMatch) {
+  action = "remove";
+  stockCode = delMatch[1];
+  responseText = `🗑️ 已从持仓监控中移除 ${stockCode}`;
+}
+
+// 查看持仓
+if (/(?:查看|list|持仓|列表|显示)/.test(cleanText)) {
+  action = "list";
+  responseText = "📋 正在获取持仓列表...";
+}
+
+// 清空持仓
+if (/(?:清空|clear|重置)/.test(cleanText)) {
+  action = "clear";
+  responseText = "⚠️ 已清空所有持仓监控";
+}
+
+// 无法识别的指令
+if (action === "none" && cleanText.length > 0) {
+  responseText = `❓ 无法识别指令: "${cleanText}"\n\n📖 支持的指令：\n- 添加 600519\n- 删除 600519\n- 查看持仓\n- 清空持仓`;
+}
+
+return {
+  json: {
+    isChallenge: false,
+    action: action,
+    stockCode: stockCode,
+    responseText: responseText,
+    rawText: text,
+    cleanText: cleanText,
+    userId: userId,
+    messageId: message.message_id || "",
+    chatId: message.chat_id || ""
+  }
+};

@@ -1,0 +1,122 @@
+// ========================================
+// 股票操作执行节点 (n8n Code 节点)
+// 功能：根据飞书指令修改 my_stocks.txt
+// ========================================
+
+const { execSync } = require('child_process');
+
+const STOCK_FILE = '/home/kk/n8n/my_stocks.txt';
+
+// 获取输入数据
+const inputData = $input.first().json;
+const action = inputData.action || 'none';
+const stockCode = inputData.stockCode || '';
+const chatId = inputData.chatId || '';
+const userId = inputData.userId || '';
+
+let result = {
+  success: false,
+  message: '',
+  currentStocks: [],
+  action: action,
+  stockCode: stockCode,
+  chatId: chatId
+};
+
+// 读取当前持仓列表
+function readStocks() {
+  try {
+    const content = execSync(`cat ${STOCK_FILE} 2>/dev/null || echo ""`).toString();
+    return content
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => /^\d{6}$/.test(line));
+  } catch (e) {
+    return [];
+  }
+}
+
+// 写入持仓列表
+function writeStocks(stocks) {
+  const content = stocks.join('\n') + '\n';
+  execSync(`echo "${stocks.join('\n')}" > ${STOCK_FILE}`);
+}
+
+// 获取股票名称 (可选增强)
+function getStockName(code) {
+  const stockNames = {
+    '600519': '贵州茅台',
+    '300750': '宁德时代',
+    '002594': '比亚迪',
+    '601988': '中国银行',
+    '688410': '岩山科技',
+    '603259': '药明康德',
+    '603993': '洛阳钼业'
+  };
+  return stockNames[code] || code;
+}
+
+// 执行操作
+let stocks = readStocks();
+
+switch (action) {
+  case 'add':
+    if (stockCode && !stocks.includes(stockCode)) {
+      stocks.push(stockCode);
+      writeStocks(stocks);
+      result.success = true;
+      result.message = `✅ 添加成功！\n\n📈 股票代码: ${stockCode}\n📊 当前监控: ${stocks.length} 只\n\n持仓列表:\n${stocks.map(s => `• ${s}`).join('\n')}`;
+    } else if (stocks.includes(stockCode)) {
+      result.success = false;
+      result.message = `⚠️ 股票 ${stockCode} 已在监控列表中`;
+    } else {
+      result.success = false;
+      result.message = `❌ 无效的股票代码`;
+    }
+    break;
+
+  case 'remove':
+    const index = stocks.indexOf(stockCode);
+    if (index > -1) {
+      stocks.splice(index, 1);
+      writeStocks(stocks);
+      result.success = true;
+      result.message = `🗑️ 移除成功！\n\n📉 已移除: ${stockCode}\n📊 剩余监控: ${stocks.length} 只`;
+      if (stocks.length > 0) {
+        result.message += `\n\n持仓列表:\n${stocks.map(s => `• ${s}`).join('\n')}`;
+      }
+    } else {
+      result.success = false;
+      result.message = `⚠️ 股票 ${stockCode} 不在监控列表中`;
+    }
+    break;
+
+  case 'list':
+    result.success = true;
+    if (stocks.length > 0) {
+      result.message = `📋 持仓监控列表 (${stocks.length} 只)\n${'─'.repeat(20)}\n${stocks.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n${'─'.repeat(20)}\n\n💡 提示: 发送"添加 代码"或"删除 代码"管理持仓`;
+    } else {
+      result.message = `📋 当前没有监控任何股票\n\n💡 发送"添加 600519"开始监控`;
+    }
+    break;
+
+  case 'clear':
+    writeStocks([]);
+    stocks = [];
+    result.success = true;
+    result.message = `⚠️ 已清空所有持仓监控\n\n💡 发送"添加 代码"重新开始`;
+    break;
+
+  case 'none':
+  default:
+    // 无操作或帮助
+    result.message = inputData.responseText || `📖 持仓管理助手\n${'─'.repeat(20)}\n\n支持的指令:\n• 添加 600519 - 添加股票\n• 删除 600519 - 移除股票\n• 查看持仓 - 显示列表\n• 清空持仓 - 清空全部\n\n当前监控: ${stocks.length} 只`;
+    break;
+}
+
+result.currentStocks = stocks;
+result.stockCount = stocks.length;
+
+return {
+  json: result
+};

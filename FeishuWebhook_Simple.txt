@@ -1,0 +1,66 @@
+// ========================================
+// 飞书 Webhook 统一处理节点
+// 适用于 n8n "Code in JavaScript1" 节点
+// 
+// 【重要】Webhook 节点配置：
+// - Response Mode: Immediately
+// - Response Code: 200
+// - Response Data: First Entry JSON
+// ========================================
+
+const body = $input.first().json.body || $input.first().json;
+
+// === 处理飞书 URL 验证请求 ===
+if (body.challenge) {
+  // 飞书验证：必须返回 challenge
+  return {
+    json: {
+      challenge: body.challenge
+    }
+  };
+}
+
+// === 处理实际消息 ===
+const event = body.event || {};
+const message = event.message || {};
+let content = {};
+
+try {
+  content = message.content ? JSON.parse(message.content) : {};
+} catch (e) {
+  content = {};
+}
+
+const text = content.text || "";
+const cleanText = text.replace(/@[\u4e00-\u9fa5\w]+/g, "").trim();
+
+// 解析指令
+let action = "none";
+let stockCode = "";
+
+const addMatch = cleanText.match(/(?:添加|add|买入|加入)\s*(\d{6})/i);
+const delMatch = cleanText.match(/(?:删除|del|remove|卖出|移除)\s*(\d{6})/i);
+
+if (addMatch) {
+  action = "add";
+  stockCode = addMatch[1];
+} else if (delMatch) {
+  action = "remove";
+  stockCode = delMatch[1];
+} else if (/(?:查看|list|持仓|列表)/.test(cleanText)) {
+  action = "list";
+} else if (/(?:清空|clear|重置)/.test(cleanText)) {
+  action = "clear";
+}
+
+return {
+  json: {
+    challenge: body.challenge || null,
+    isChallenge: !!body.challenge,
+    action: action,
+    stockCode: stockCode,
+    cleanText: cleanText,
+    chatId: message.chat_id || "",
+    userId: event.sender?.sender_id?.user_id || ""
+  }
+};

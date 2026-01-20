@@ -1,0 +1,6 @@
+正在尝试建立长连接...
+[Lark] [2026-01-18 23:19:21,847] [INFO] connected to wss://msg-frontier.feishu.cn/ws/v2?fpid=493&aid=552564&device_id=7596721512485817536&access_key=ee5a7de31136834e49ae43d645e1bb1d&service_id=33554678&ticket=cc1cc62c-a5f2-407f-b91b-33b9d0c11958 [conn_id=7596721512485817536]
+[Lark] [2026-01-18 23:19:21,848] [DEBUG] ping success [conn_id=7596721512485817536]
+[Lark] [2026-01-18 23:19:21,954] [DEBUG] receive pong [conn_id=7596721512485817536]
+[Lark] [2026-01-18 23:20:51,849] [DEBUG] ping success [conn_id=7596721512485817536]
+[Lark] [2026-01-18 23:20:51,915] [DEBUG] receive pong [conn_id=7596721512485817536]

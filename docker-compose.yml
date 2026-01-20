@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n_financial_bot
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_SECURE_COOKIE=false
+      - N8N_BLOCK_NODES=               # 核心：留空以开启 Execute Command 节点
+      - NODE_FUNCTION_ALLOW_EXTERNAL=fs,path  # 允许 Code 节点调用外部模块
+      - TZ=Asia/Shanghai               # 设置容器时区为北京时间
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+      - /home/kk/n8n:/home/node/data  # 核心：将宿主机的脚本目录映射到容器内部的 /home/node/data

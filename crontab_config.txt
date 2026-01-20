@@ -1,0 +1,10 @@
+# ====================================
+# 飞书机器人 - Crontab 配置
+# ====================================
+
+# 开机时启动服务
+@reboot /home/kk/n8n/start_services.sh
+
+# 每 5 分钟检查一次服务状态，如果挂了就重启
+*/5 * * * * pgrep -f "feishu_proxy.py" > /dev/null || (cd /home/kk/n8n && nohup python3 feishu_proxy.py > /tmp/feishu_proxy.log 2>&1 &)
+*/5 * * * * pgrep -f "cloudflared tunnel" > /dev/null || (nohup cloudflared tunnel --url http://localhost:8080 > /tmp/cloudflared.log 2>&1 &)

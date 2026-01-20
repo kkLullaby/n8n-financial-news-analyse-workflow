@@ -1,0 +1,89 @@
+// 1. 读取并清洗数据
+const binaryBuffer = await this.helpers.getBinaryDataBuffer(0, 'data');
+let jsonString = binaryBuffer.toString('utf8').replace(/:\s?NaN/g, ": null");
+let jsonData;
+try { jsonData = JSON.parse(jsonString); } catch (e) { jsonData = { error: "解析失败" }; }
+
+// 2. 判断早盘/尾盘 (UTC+8)
+const currentHour = new Date().getUTCHours() + 8;
+const isClosing = currentHour >= 14; 
+
+// 3. 准备数据片段
+// A. 板块数据
+const sectorsDetailed = (jsonData.hot_sectors || []).map((s, index) => {
+  const stocks = (s.leading_stocks || []).map(st => 
+    `   - [${st.code}] ${st.name}: 现价${st.price} (涨幅${st.change_pct}%), 量比${st.volume_ratio}`
+  ).join("\n");
+  return `【板块 ${index + 1}】：${s.name} (涨幅 ${s.change_pct}%)\n${stocks}`;
+}).join("\n\n");
+
+// B. 辅助数据
+const news = (jsonData.news_brief || []).slice(0, 6).map(n => `- ${n.title}`).join("\n");
+const indexInfo = `上证指数: ${jsonData.market_sentiment.index_value} (涨幅 ${jsonData.market_sentiment.change_pct}%)`;
+
+// C. 【新增】核心数据读取
+const lhbInfo = jsonData.dragon_tiger || "今日暂无龙虎榜机构数据";
+const myPortfolio = jsonData.my_portfolio || "暂无持仓监控数据";
+
+// 4. 根据时间生成智能 Prompt
+let strategyPrompt = "";
+
+if (isClosing) {
+  // === 下午 14:50 指令 (重风控) ===
+  strategyPrompt = `
+  【当前时间：A股收盘竞价阶段】
+  请基于全天走势，为我生成《🌞 收盘复盘·持仓诊断表》：
+  
+  ⚠️ **第一优先级：我的持仓诊断**
+  请仔细检查[我的持仓哨兵]数据：
+  - 如果有股票状态为“🔴”或“⚠️”，必须在报告最开头用粗体警示！
+  - 点评每一只持仓股：主力资金是出逃还是坚守？明日建议去留？
+
+  **第二优先级：市场复盘**
+  1. **验证早盘逻辑**：今日热点板块中，谁是机构真买(参考Smart Money)？谁是游资一日游？
+  2. **明日预演**：预判明日指数是分歧还是加速？
+  `;
+} else {
+  // === 早上 09:20 指令 (重机会) ===
+  strategyPrompt = `
+  【当前时间：A股开盘初段】
+  请进行“盘口狙击”推演，生成《🚀 A股核心题材·深度狙击内参》：
+
+  ⚠️ **第一优先级：持仓预警**
+  检查[我的持仓哨兵]，如有破位或暴跌迹象，直接给出“止损/减仓”指令！无异常则简略带过。
+
+  **第二优先级：机会挖掘**
+  1. **板块作战表**：列出前3大热点，标注龙头。
+  2. **机构共识**：如果龙头股出现在[Smart Money]机构买入名单，请给予⭐⭐⭐⭐⭐评级。
+  3. **避坑指南**：提示无机构参与的纯情绪炒作。
+  `;
+}
+
+// 5. 组合最终上下文
+const aiContext = `
+[💀 我的持仓哨兵 (请作为最高优先级分析)]
+${myPortfolio}
+
+[💰 Smart Money - 龙虎榜/机构资金]
+${lhbInfo}
+
+[📊 市场数据]
+${indexInfo}
+${sectorsDetailed}
+
+[📰 消息催化]
+${news}
+
+[你的任务]
+${strategyPrompt}
+`;
+
+// 6. 输出结果
+return {
+  json: {
+    ai_context: aiContext,
+    raw_data: jsonData,
+    report_title: isClosing ? "🌞 A股收盘·账户风控日报" : "🚀 A股早盘·主线狙击内参", 
+    header_color: isClosing ? "orange" : "red"
+  }
+};

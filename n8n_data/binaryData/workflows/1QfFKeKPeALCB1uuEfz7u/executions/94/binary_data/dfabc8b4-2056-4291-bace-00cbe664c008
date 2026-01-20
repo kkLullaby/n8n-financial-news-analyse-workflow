@@ -1,0 +1,302 @@
+{
+  "timestamp": "2026-01-16 23:01:30",
+  "market_sentiment": {
+    "index_value": 4101.91,
+    "change_pct": -0.26,
+    "volume": 1338017280024.0
+  },
+  "hot_sectors": [
+    {
+      "name": "Chiplet概念",
+      "change_pct": 5.22,
+      "leading_stocks": [
+        {
+          "name": "甬矽电子",
+          "code": "688362",
+          "price": 52.21,
+          "change_pct": 20.0,
+          "turnover": 9.25,
+          "volume_ratio": 0
+        },
+        {
+          "name": "佰维存储",
+          "code": "688525",
+          "price": 184.0,
+          "change_pct": 17.19,
+          "turnover": 12.18,
+          "volume_ratio": 0
+        },
+        {
+          "name": "科翔股份",
+          "code": "300903",
+          "price": 22.35,
+          "change_pct": 13.97,
+          "turnover": 21.5,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "高带宽内存",
+      "change_pct": 4.97,
+      "leading_stocks": [
+        {
+          "name": "精测电子",
+          "code": "300567",
+          "price": 135.9,
+          "change_pct": 14.2,
+          "turnover": 10.75,
+          "volume_ratio": 0
+        },
+        {
+          "name": "精智达",
+          "code": "688627",
+          "price": 248.0,
+          "change_pct": 13.35,
+          "turnover": 14.72,
+          "volume_ratio": 0
+        },
+        {
+          "name": "赛腾股份",
+          "code": "603283",
+          "price": 49.13,
+          "change_pct": 10.01,
+          "turnover": 12.64,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "存储芯片",
+      "change_pct": 4.7,
+      "leading_stocks": [
+        {
+          "name": "金太阳",
+          "code": "300606",
+          "price": 31.02,
+          "change_pct": 20.0,
+          "turnover": 20.17,
+          "volume_ratio": 0
+        },
+        {
+          "name": "佰维存储",
+          "code": "688525",
+          "price": 184.0,
+          "change_pct": 17.19,
+          "turnover": 12.18,
+          "volume_ratio": 0
+        },
+        {
+          "name": "汇成股份",
+          "code": "688403",
+          "price": 22.23,
+          "change_pct": 17.12,
+          "turnover": 14.98,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "碳化硅",
+      "change_pct": 4.36,
+      "leading_stocks": [
+        {
+          "name": "天岳先进",
+          "code": "688234",
+          "price": 111.19,
+          "change_pct": 20.0,
+          "turnover": 4.97,
+          "volume_ratio": 0
+        },
+        {
+          "name": "晶升股份",
+          "code": "688478",
+          "price": 46.25,
+          "change_pct": 13.44,
+          "turnover": 13.95,
+          "volume_ratio": 0
+        },
+        {
+          "name": "华润微",
+          "code": "688396",
+          "price": 68.2,
+          "change_pct": 13.04,
+          "turnover": 4.39,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "IGBT概念",
+      "change_pct": 3.63,
+      "leading_stocks": [
+        {
+          "name": "华润微",
+          "code": "688396",
+          "price": 68.2,
+          "change_pct": 13.04,
+          "turnover": 4.39,
+          "volume_ratio": 0
+        },
+        {
+          "name": "派瑞股份",
+          "code": "300831",
+          "price": 13.65,
+          "change_pct": 12.9,
+          "turnover": 19.99,
+          "volume_ratio": 0
+        },
+        {
+          "name": "广电电气",
+          "code": "601616",
+          "price": 4.58,
+          "change_pct": 10.1,
+          "turnover": 13.14,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "中芯概念",
+      "change_pct": 3.43,
+      "leading_stocks": [
+        {
+          "name": "凯德石英",
+          "code": "920179",
+          "price": 55.88,
+          "change_pct": 20.28,
+          "turnover": 17.61,
+          "volume_ratio": 0
+        },
+        {
+          "name": "精测电子",
+          "code": "300567",
+          "price": 135.9,
+          "change_pct": 14.2,
+          "turnover": 10.75,
+          "volume_ratio": 0
+        },
+        {
+          "name": "长电科技",
+          "code": "600584",
+          "price": 48.39,
+          "change_pct": 10.0,
+          "turnover": 11.01,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "机器人执行器",
+      "change_pct": 3.28,
+      "leading_stocks": [
+        {
+          "name": "五洲新春",
+          "code": "603667",
+          "price": 81.09,
+          "change_pct": 10.0,
+          "turnover": 16.15,
+          "volume_ratio": 0
+        },
+        {
+          "name": "绿的谐波",
+          "code": "688017",
+          "price": 220.5,
+          "change_pct": 9.77,
+          "turnover": 8.54,
+          "volume_ratio": 0
+        },
+        {
+          "name": "步科股份",
+          "code": "688160",
+          "price": 155.62,
+          "change_pct": 7.12,
+          "turnover": 5.99,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "汽车芯片",
+      "change_pct": 3.28,
+      "leading_stocks": [
+        {
+          "name": "佰维存储",
+          "code": "688525",
+          "price": 184.0,
+          "change_pct": 17.19,
+          "turnover": 12.18,
+          "volume_ratio": 0
+        },
+        {
+          "name": "华润微",
+          "code": "688396",
+          "price": 68.2,
+          "change_pct": 13.04,
+          "turnover": 4.39,
+          "volume_ratio": 0
+        },
+        {
+          "name": "三安光电",
+          "code": "600703",
+          "price": 15.79,
+          "change_pct": 10.03,
+          "turnover": 6.5,
+          "volume_ratio": 0
+        }
+      ]
+    }
+  ],
+  "dragon_tiger": "盘中暂无龙虎榜数据",
+  "my_portfolio": "- 【岩山科技】 现价:10.68 (-10.03%) | 状态: 🔴 暴跌止损警报\n- 【宁德时代】 现价:352.32 (-0.4%) | 状态: 🟢 持有\n- 【比亚迪】 现价:95.86 (0.2%) | 状态: 🟢 持有\n- 【中国银行】 现价:5.4 (-0.55%) | 状态: 🟢 持有",
+  "news_brief": [
+    {
+      "time": "22:30:31",
+      "title": "美股集体高开 航天军工和存储板块领涨"
+    },
+    {
+      "time": "22:33:10",
+      "title": ""
+    },
+    {
+      "time": "22:34:57",
+      "title": "美国卫星通信公司AST SpaceMobile涨超10% 创历史新高"
+    },
+    {
+      "time": "22:36:32",
+      "title": ""
+    },
+    {
+      "time": "22:36:56",
+      "title": ""
+    },
+    {
+      "time": "22:38:23",
+      "title": ""
+    },
+    {
+      "time": "22:39:04",
+      "title": ""
+    },
+    {
+      "time": "22:41:17",
+      "title": "美股存储股盘初飙升 美光科技涨8%闪迪涨超4%"
+    },
+    {
+      "time": "22:41:37",
+      "title": ""
+    },
+    {
+      "time": "22:46:37",
+      "title": ""
+    },
+    {
+      "time": "22:47:43",
+      "title": ""
+    },
+    {
+      "time": "22:48:09",
+      "title": "西贝贾国龙：预计半年亏损将达6亿元"
+    }
+  ]
+}

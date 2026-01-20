@@ -1,0 +1,80 @@
+// ========================================
+// 飞书 Webhook 处理 + Challenge 验证
+// 用于 Code in JavaScript1 节点
+// 
+// Webhook 配置：
+// - Respond: Using 'Respond to Webhook' Node
+// ========================================
+
+// 获取原始请求数据 - 尝试多种方式
+const inputJson = $input.first().json;
+const body = inputJson.body || inputJson;
+
+// 调试日志
+console.log("Input JSON:", JSON.stringify(inputJson));
+console.log("Body:", JSON.stringify(body));
+
+// 飞书 URL 验证请求 - 返回 challenge
+if (body.challenge) {
+  return [{
+    json: {
+      challenge: body.challenge
+    }
+  }];
+}
+
+// 如果 inputJson 直接包含 challenge
+if (inputJson.challenge) {
+  return [{
+    json: {
+      challenge: inputJson.challenge
+    }
+  }];
+}
+
+// 正常消息处理
+const event = body.event || {};
+const message = event.message || {};
+let content = {};
+
+try {
+  content = message.content ? JSON.parse(message.content) : {};
+} catch (e) {
+  content = {};
+}
+
+const text = content.text || "";
+const cleanText = text.replace(/@[\u4e00-\u9fa5\w]+/g, "").trim();
+
+let action = "none";
+let stockCode = "";
+
+const addMatch = cleanText.match(/(?:添加|add|买入|加入)\s*(\d{6})/i);
+const delMatch = cleanText.match(/(?:删除|del|remove|卖出|移除)\s*(\d{6})/i);
+
+if (addMatch) {
+  action = "add";
+  stockCode = addMatch[1];
+} else if (delMatch) {
+  action = "remove";
+  stockCode = delMatch[1];
+} else if (/(?:查看|list|持仓|列表)/.test(cleanText)) {
+  action = "list";
+} else if (/(?:清空|clear|重置)/.test(cleanText)) {
+  action = "clear";
+}
+
+return [{
+  json: {
+    // 正常消息也返回一个有效JSON给飞书
+    code: 0,
+    msg: "success",
+    // 传递给后续节点的数据
+    action: action,
+    stockCode: stockCode,
+    cleanText: cleanText,
+    chatId: message.chat_id || "",
+    userId: event.sender?.sender_id?.user_id || "",
+    isChallenge: false
+  }
+}];

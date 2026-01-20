@@ -1,0 +1,185 @@
+// 1. 读取并清洗数据
+const binaryBuffer = await this.helpers.getBinaryDataBuffer(0, 'data');
+let jsonString = binaryBuffer.toString('utf8').replace(/:\s?NaN/g, ": null");
+let jsonData;
+try { jsonData = JSON.parse(jsonString); } catch (e) { jsonData = { error: "解析失败" }; }
+
+// 2. 判断早盘/尾盘 (UTC+8)
+const currentHour = new Date().getUTCHours() + 8;
+const isClosing = currentHour >= 14; 
+
+// 3. 准备数据片段
+// A. 板块数据 (每板块5只股票)
+const sectorsDetailed = (jsonData.hot_sectors || []).map((s, index) => {
+  const stocks = (s.leading_stocks || []).map(st => {
+    // 判断角色
+    let role = "👀 观察";
+    if (st.turnover > 10 && st.change_pct > 5) role = "👑 龙头";
+    else if (st.turnover > 5 && st.change_pct > 2) role = "🏃 跟风";
+    
+    // 资金状态
+    let fundStatus = "缩量整理";
+    if (st.turnover > 8) fundStatus = st.change_pct > 2 ? "放量突破" : "放量加速";
+    else if (st.turnover > 4) fundStatus = "量能活跃";
+    
+    return `   | ${st.code} | ${st.name} | ${st.price} | ${st.change_pct > 0 ? '+' : ''}${st.change_pct}% | ${role} | ${fundStatus} |`;
+  }).join("\n");
+  
+  return `**【板块 ${index + 1}】${s.name}** (涨幅 ${s.change_pct}%)\n| 代码 | 名称 | 现价 | 涨幅 | 角色 | 资金状态 |\n|:---|:---|:---|:---|:---|:---|\n${stocks}`;
+}).join("\n\n");
+
+// B. 【新增】量化市场指标
+const sentiment = jsonData.market_sentiment || {};
+const marketIndicators = `
+📊 **市场温度计**
+| 指标 | 数值 | 状态 |
+|:---|:---|:---|
+| 上证指数 | ${sentiment.index_value} | ${sentiment.change_pct > 0 ? '📈' : '📉'} ${sentiment.change_pct}% |
+| 涨跌家数 | ${sentiment.up_count || 0} : ${sentiment.down_count || 0} | 上涨比例 ${sentiment.up_ratio || 50}% |
+| 涨停/跌停 | ${sentiment.limit_up || 0} / ${sentiment.limit_down || 0} | - |
+| 市场温度 | ${sentiment.market_temperature || '未知'} | - |
+| 风险等级 | ${sentiment.risk_level || '未知'} | - |
+| 操作建议 | ${sentiment.suggested_action || '观望'} | - |
+`;
+
+// C. 【优化】新闻过滤后数据
+const newsData = jsonData.news_brief || { items: [], summary: {} };
+const newsItems = newsData.items || (Array.isArray(jsonData.news_brief) ? jsonData.news_brief : []);
+const newsSummary = newsData.summary || {};
+
+const newsFormatted = newsItems.slice(0, 8).map(n => {
+  const icon = n.relevance_icon || "📰";
+  const tag = n.relevance === "high" ? " **[重要]**" : (n.relevance === "medium" ? " [关注]" : "");
+  return `- ${icon} ${n.title}${tag}`;
+}).join("\n");
+
+const newsStats = newsSummary.total 
+  ? `\n📊 新闻质量: ${newsSummary.total}条有效 (🔥高相关${newsSummary.high_relevance} | 📌中相关${newsSummary.medium_relevance})`
+  : "";
+
+// D. 【核心】读取结构化持仓数据
+const lhbInfo = jsonData.dragon_tiger || "今日暂无龙虎榜机构数据";
+const portfolioData = jsonData.my_portfolio || { stocks: [], summary: { total: 0, message: "暂无数据" } };
+
+// E. 生成结构化持仓文本
+function formatPortfolio(portfolio) {
+  if (typeof portfolio === 'string') {
+    return portfolio;
+  }
+  
+  if (!portfolio.stocks || portfolio.stocks.length === 0) {
+    return portfolio.summary?.message || "暂无持仓监控数据";
+  }
+  
+  let text = "";
+  const summary = portfolio.summary;
+  
+  if (summary.has_danger && summary.danger_alerts.length > 0) {
+    text += "🚨 **【紧急预警】** 🚨\n";
+    summary.danger_alerts.forEach(alert => {
+      text += `⛔ ${alert}\n`;
+    });
+    text += "\n";
+  }
+  
+  text += "| 代码 | 名称 | 现价 | 角色 | 资金状态 | 狙击评级 |\n";
+  text += "|:---|:---|:---|:---|:---|:---|\n";
+  
+  portfolio.stocks.forEach(stock => {
+    let rating = "⭐⭐⭐";
+    if (stock.alert_level >= 3) rating = "🔴危险";
+    else if (stock.alert_level >= 2) rating = "⚠️警告";
+    else if (stock.status === "strong") rating = "⭐⭐⭐⭐⭐";
+    else if (stock.status === "good") rating = "⭐⭐⭐⭐";
+    
+    const roleEmoji = stock.role === "龙头" ? "👑" : (stock.role === "跟风" ? "🏃" : "👀");
+    
+    text += `| ${stock.code} | ${stock.name} | ${stock.price} (${stock.change_pct > 0 ? '+' : ''}${stock.change_pct}%) | ${roleEmoji} ${stock.role} | ${stock.fund_status} | ${rating} |\n`;
+  });
+  
+  text += `\n📊 **持仓汇总**：共${summary.total}只 | 涨:${summary.up_count} 跌:${summary.down_count} 平:${summary.flat_count} | 平均涨幅:${summary.avg_change}%`;
+  text += `\n🏆 最强: ${summary.strongest} | 💀 最弱: ${summary.weakest}`;
+  
+  return text;
+}
+
+const myPortfolioText = formatPortfolio(portfolioData);
+const hasDanger = typeof portfolioData === 'object' && portfolioData.summary?.has_danger;
+
+// 4. 根据时间生成智能 Prompt
+let strategyPrompt = "";
+
+if (isClosing) {
+  strategyPrompt = `
+  【当前时间：A股收盘竞价阶段】
+  请基于全天走势，为我生成《🌞 收盘复盘·持仓诊断表》：
+  
+  ⚠️ **第一优先级：我的持仓诊断**
+  - 如果有股票状态为"🔴危险"或"⚠️警告"，必须在报告最开头用粗体警示！
+  - 点评每一只持仓股：主力资金是出逃还是坚守？明日建议去留？
+  - 结合[市场温度计]的"操作建议"给出综合判断
+
+  **第二优先级：市场复盘**
+  1. **验证早盘逻辑**：今日热点板块中，谁是机构真买(参考Smart Money)？谁是游资一日游？
+  2. **明日预演**：结合市场温度和风险等级，预判明日指数是分歧还是加速？
+  `;
+} else {
+  strategyPrompt = `
+  【当前时间：A股开盘初段】
+  请进行"盘口狙击"推演，生成《🚀 A股核心题材·深度狙击内参》：
+
+  ⚠️ **第一优先级：持仓预警**
+  - 检查[我的持仓哨兵]表格，如有"🔴危险"或"⚠️警告"状态，直接给出"止损/减仓"指令！
+  - 关注"资金状态"列：放量下杀需要警惕，缩量整理可以观望
+
+  **第二优先级：市场研判**
+  - 先解读[市场温度计]：当前市场温度、风险等级、操作建议
+  - 基于量化指标给出今日操作基调
+
+  **第三优先级：机会挖掘**
+  1. **板块作战表**：从热点板块中筛选，重点关注"👑龙头"和"放量突破"标签的股票
+  2. **机构共识**：如果龙头股出现在[Smart Money]机构买入名单，请给予⭐⭐⭐⭐⭐评级
+  3. **避坑指南**：结合新闻相关性标签，提示🔥高相关新闻的投资机会
+
+  **第四优先级：新闻解读**
+  - 优先解读标注为🔥(高相关)的新闻
+  - 分析对持仓和热点板块的影响
+  `;
+}
+
+// 5. 组合最终上下文
+const aiContext = `
+[💀 我的持仓哨兵 (最高优先级)]
+${hasDanger ? "🚨🚨🚨 存在高风险持仓，请优先处理！🚨🚨🚨\n" : ""}
+${myPortfolioText}
+
+[📈 市场温度计 (量化指标)]
+${marketIndicators}
+
+[💰 Smart Money - 龙虎榜/机构资金]
+${lhbInfo}
+
+[🔥 热点板块作战表 (每板块5只)]
+${sectorsDetailed}
+
+[📰 消息催化 (已过滤)]
+${newsFormatted}
+${newsStats}
+
+[你的任务]
+${strategyPrompt}
+`;
+
+// 6. 输出结果
+return {
+  json: {
+    ai_context: aiContext,
+    raw_data: jsonData,
+    portfolio_summary: typeof portfolioData === 'object' ? portfolioData.summary : null,
+    market_indicators: sentiment,
+    news_summary: newsSummary,
+    has_danger: hasDanger,
+    report_title: isClosing ? "🌞 A股收盘·账户风控日报" : "🚀 A股早盘·主线狙击内参", 
+    header_color: hasDanger ? "red" : (sentiment.risk_score >= 2.5 ? "orange" : "blue")
+  }
+};
