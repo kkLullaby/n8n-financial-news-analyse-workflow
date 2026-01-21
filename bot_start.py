@@ -28,6 +28,15 @@ def read_stocks():
 def write_stocks(stocks):
     with open(STOCK_FILE, 'w') as f:
         f.write('\n'.join(stocks) + '\n') if stocks else f.write('')
+    # 持仓修改后，自动更新market_data.json
+    try:
+        import subprocess
+        subprocess.Popen(['python3', '/home/kk/n8n/market_scanner.py'], 
+                        stdout=subprocess.DEVNULL, 
+                        stderr=subprocess.DEVNULL)
+        print('[后台任务] 已触发market_scanner.py更新数据')
+    except Exception as e:
+        print(f'[警告] 无法触发数据更新: {e}')
 
 def send_reply(text):
     requests.post(WEBHOOK_URL, json={"msg_type": "text", "content": {"text": text}}, timeout=10)

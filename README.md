@@ -1,129 +1,79 @@
-# 飞书股票机器人 - 服务管理指南
+# 开机重启后怎么用（长连接模式）
 
-## 🚀 快速启动
+> 机器人走 **lark-oapi 长连接**，正常收发消息不依赖公网/隧道。只要本机能连外网即可。仅当需要对外暴露 webhook（如 n8n 公网回调）才启动 Cloudflare 隧道。
 
+## 💻 开机后最小步骤
+1. 终端进入项目目录：`cd /home/kk/n8n`
+2. 启动飞书机器人（长连接）
+   ```bash
+   nohup python3 bot_start.py > bot.log 2>&1 &
+   tail -f bot.log   # 看到 connected / ping success 表示就绪，可 Ctrl+C 退出 tail
+   ```
+3. 确认 n8n 正常（容器已设置开机自启，如需手动检查）
+   ```bash
+   docker ps | grep n8n_financial_bot || docker restart n8n_financial_bot
+   ```
+4. 需要立即出报告：
+   ```bash
+   ./trigger_workflow.sh   # 先更新数据，再调用 n8n 工作流推送
+   ```
+
+## 🔌 何时需要 Cloudflare 隧道
+- 仅当需要让外部（飞书事件回调或公网 webhook）访问本机接口时才用隧道。
+- 长连接模式下，飞书机器人收/发消息 **不需要** 隧道。
+
+### 启动隧道（可选）
 ```bash
-cd /home/kk/n8n
-
-# 启动所有服务
-./start_services.sh
-
-# 查看状态
-./check_status.sh
-
-# 停止服务
-./stop_services.sh
+./start_fixed_tunnel.sh
+cat tunnel_url.txt   # 获取当前隧道 URL
 ```
+把新 URL 填到飞书后台的事件回调或任何公网 webhook 配置中。
 
----
+## 🤖 飞书机器人指令
+在群里 @机器人 发送：
 
-## ⚙️ 配置开机自启
-
-```bash
-# 一键配置（推荐）
-./setup_autostart.sh
-```
-
-配置后会自动：
-- ✅ 开机时自动启动服务
-- ✅ 每 5 分钟检查一次，挂了自动重启
-- ✅ 记录所有日志
-
----
-
-## 📊 服务架构
-
-```
-飞书 → Cloudflare Tunnel → Flask 代理 (8080) → 处理指令 → 修改 my_stocks.txt
-                                                ↓
-                                           n8n (定时读取)
-```
-
----
-
-## 📝 可用脚本
-
-| 脚本 | 功能 |
-|:---|:---|
-| `start_services.sh` | 启动飞书代理 + 隧道 |
-| `stop_services.sh` | 停止所有服务 |
-| `check_status.sh` | 查看服务状态 + 测试 |
-| `setup_autostart.sh` | 配置开机自启 |
-| `daemon.sh` | 守护进程（持续监控） |
-
----
-
-## 🔍 查看日志
-
-```bash
-# 飞书代理日志
-tail -f /tmp/feishu_proxy.log
-
-# 隧道日志
-tail -f /tmp/cloudflared.log
-
-# 查看当前 URL
-cat /home/kk/n8n/tunnel_url.txt
-```
-
----
-
-## 💬 飞书支持的指令
-
-在飞书群里 @机器人 发送：
-
-| 指令 | 功能 |
+| 指令示例 | 功能 |
 |:---|:---|
 | `添加 600519` | 添加股票到监控列表 |
-| `删除 600519` | 从列表中移除股票 |
-| `查看持仓` | 显示当前监控列表 |
+| `删除 600519` | 从列表中移除 |
+| `查看持仓` | 查看当前监控 |
 | `清空持仓` | 清空所有监控 |
 
----
+指令生效后，机器人后台会自动跑 `market_scanner.py` 更新 `market_data.json`，n8n 定时或手动触发时会用到最新数据。
 
-## 🛠️ 故障排查
+## 🧰 常用脚本
+| 脚本 | 用途 |
+|:---|:---|
+| `bot_start.py` | 飞书长连接机器人（核心） |
+| `trigger_workflow.sh` | 先更新行情数据，再调用 n8n 工作流立即出报告 |
+| `start_fixed_tunnel.sh` | 启动 Cloudflare 隧道（仅需公网回调时用） |
+| `market_scanner.py` | 行情/持仓扫描，生成 `market_data.json` |
 
-### 服务没启动
+## 📜 日志与排查
 ```bash
-./check_status.sh  # 查看状态
-./start_services.sh  # 重新启动
+# 机器人日志（长连接）
+tail -f /home/kk/n8n/bot.log
+
+# n8n 容器日志
+docker logs -f n8n_financial_bot
+
+# 隧道日志（如果启动过）
+tail -f /home/kk/n8n/tunnel.log
 ```
 
-### 隧道 URL 变了
-每次重启隧道，URL 会变化（免费版限制）。需要：
-1. 运行 `cat /home/kk/n8n/tunnel_url.txt` 查看新 URL
-2. 到飞书后台更新 Request URL
+常见问题：
+- 机器人不回复：重启 `bot_start.py`，确保网络通；检查 `bot.log` 是否连接成功。
+- 持仓没更新：看 `bot.log` 是否触发了 `market_scanner.py`；必要时手动运行 `python3 market_scanner.py`，或用 `./trigger_workflow.sh`。
+- n8n 不出报告：确认容器在跑；如需立即出报告，执行 `./trigger_workflow.sh`。
+- 需要公网回调：启动隧道，更新飞书后台回调 URL。
 
-### 配置长期 URL（可选）
-注册 Cloudflare 账号后创建命名隧道，可获得固定 URL。
+## 📌 访问入口
+- n8n 界面（本机）：http://localhost:5678
+- 隧道 URL：`cat /home/kk/n8n/tunnel_url.txt`（仅在启动隧道后才会有）
 
----
-
-## 📌 文件说明
-
-| 文件 | 说明 |
-|:---|:---|
-| `feishu_proxy.py` | 飞书代理服务（处理验证和指令） |
-| `my_stocks.txt` | 持仓股票列表 |
-| `tunnel_url.txt` | 当前隧道 URL |
-| `market_scanner.py` | n8n 定时运行的数据扫描脚本 |
-
----
-
-## ✅ 最佳实践
-
-1. **设置开机自启**：运行 `./setup_autostart.sh`
-2. **定期查看日志**：`tail -f /tmp/feishu_proxy.log`
-3. **保存当前 URL**：避免忘记 webhook 地址
-
----
-
-## 🔗 相关链接
-
-- 飞书 Webhook URL: `https://xxx.trycloudflare.com/feishu-webhook`
-- 健康检查: `http://localhost:8080/health`
-- n8n 界面: `http://localhost:5678`
-
----
-
-如有问题，查看日志或重启服务即可解决大部分问题。
+## ✅ 开机速查清单
+- [ ] `nohup python3 bot_start.py > bot.log 2>&1 &`（必做）
+- [ ] `tail -f bot.log` 确认 connected（可选）
+- [ ] `docker ps | grep n8n_financial_bot`（检查 n8n，异常时 `docker restart`）
+- [ ] 需要立刻推送：`./trigger_workflow.sh`
+- [ ] 需要公网回调才启动：`./start_fixed_tunnel.sh && cat tunnel_url.txt`
