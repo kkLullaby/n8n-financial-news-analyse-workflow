@@ -1,22 +1,267 @@
 {
-  "timestamp": "2026-01-22 19:20:42",
-  "data_version": "3.0",
+  "timestamp": "2026-01-22 23:06:47",
   "market_sentiment": {
-    "index_value": 0,
-    "change_pct": 0,
-    "volume": 0,
+    "index_value": 4122.576,
+    "change_pct": 0.14,
+    "volume": 1201764210237.0,
     "up_count": 0,
     "down_count": 0,
     "limit_up": 0,
     "limit_down": 0,
-    "up_ratio": 50,
-    "market_temperature": "❓ 未知",
-    "risk_level": "⚪ 未知",
-    "risk_score": 2,
+    "up_ratio": 55,
+    "market_temperature": "😊 温和",
+    "risk_level": "⚪ 中性",
+    "risk_score": 1.5,
     "suggested_action": "👀 观望为主"
   },
-  "hot_sectors": [],
-  "dragon_tiger": "盘中暂无龙虎榜数据",
+  "hot_sectors": [
+    {
+      "name": "阿尔茨海默概念",
+      "change_pct": 0,
+      "leading_stocks": []
+    },
+    {
+      "name": "AI PC",
+      "change_pct": 0,
+      "leading_stocks": [
+        {
+          "name": "科大讯飞",
+          "code": "002230",
+          "price": 58.44,
+          "change_pct": 0.6,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "兆易创新",
+          "code": "603986",
+          "price": 301.47,
+          "change_pct": -2.01,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "豪威集团",
+          "code": "603501",
+          "price": 128.84,
+          "change_pct": -1.21,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "寒武纪",
+          "code": "688256",
+          "price": 1353.0,
+          "change_pct": -0.06,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "紫光国微",
+          "code": "002049",
+          "price": 85.02,
+          "change_pct": -1.55,
+          "turnover": 0,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "AI手机",
+      "change_pct": 0,
+      "leading_stocks": [
+        {
+          "name": "科大讯飞",
+          "code": "002230",
+          "price": 58.44,
+          "change_pct": 0.6,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "兆易创新",
+          "code": "603986",
+          "price": 301.47,
+          "change_pct": -2.01,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "豪威集团",
+          "code": "603501",
+          "price": 128.84,
+          "change_pct": -1.21,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "寒武纪",
+          "code": "688256",
+          "price": 1353.0,
+          "change_pct": -0.06,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "紫光国微",
+          "code": "002049",
+          "price": 85.02,
+          "change_pct": -1.55,
+          "turnover": 0,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "AI语料",
+      "change_pct": 0,
+      "leading_stocks": [
+        {
+          "name": "科大讯飞",
+          "code": "002230",
+          "price": 58.44,
+          "change_pct": 0.6,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "兆易创新",
+          "code": "603986",
+          "price": 301.47,
+          "change_pct": -2.01,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "豪威集团",
+          "code": "603501",
+          "price": 128.84,
+          "change_pct": -1.21,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "寒武纪",
+          "code": "688256",
+          "price": 1353.0,
+          "change_pct": -0.06,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "紫光国微",
+          "code": "002049",
+          "price": 85.02,
+          "change_pct": -1.55,
+          "turnover": 0,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "阿里巴巴概念",
+      "change_pct": 0,
+      "leading_stocks": []
+    },
+    {
+      "name": "安防",
+      "change_pct": 0,
+      "leading_stocks": []
+    },
+    {
+      "name": "白酒概念",
+      "change_pct": 0,
+      "leading_stocks": [
+        {
+          "name": "贵州茅台",
+          "code": "600519",
+          "price": 1340.06,
+          "change_pct": -0.81,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "五 粮 液",
+          "code": "000858",
+          "price": 102.76,
+          "change_pct": -0.28,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "泸州老窖",
+          "code": "000568",
+          "price": 112.35,
+          "change_pct": -0.73,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "今世缘",
+          "code": "603369",
+          "price": 33.91,
+          "change_pct": -0.91,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "洋河股份",
+          "code": "002304",
+          "price": 63.52,
+          "change_pct": 0.54,
+          "turnover": 0,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "BC电池",
+      "change_pct": 0,
+      "leading_stocks": [
+        {
+          "name": "宁德时代",
+          "code": "300750",
+          "price": 345.8,
+          "change_pct": -1.15,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "比亚迪",
+          "code": "002594",
+          "price": 94.12,
+          "change_pct": 0.02,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "隆基绿能",
+          "code": "601012",
+          "price": 17.59,
+          "change_pct": 2.15,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "通威股份",
+          "code": "600438",
+          "price": 18.82,
+          "change_pct": 1.78,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "天齐锂业",
+          "code": "002466",
+          "price": 60.65,
+          "change_pct": -1.27,
+          "turnover": 0,
+          "volume_ratio": 0
+        }
+      ]
+    }
+  ],
+  "dragon_tiger": "- ST星源(000005): 连续三个交易日内，涨幅偏离值累计达到12%的ST证券、*ST证券和未完...\n- *ST深天(000023): 连续三个交易日内，涨幅偏离值累计达到12%的ST证券、*ST证券和未完...\n- 新纺退(002087): 连续三个交易日内，涨幅偏离值累计达到12%的ST证券、*ST证券和未完...\n- 步步高(002251): 连续三个交易日内，涨幅偏离值累计达到12%的ST证券、*ST证券和未完...\n- 中利集团(002309): 连续三个交易日内，涨幅偏离值累计达到12%的ST证券、*ST证券和未完...",
   "my_portfolio": {
     "stocks": [
       {
@@ -27,19 +272,13 @@
         "turnover": 32.28,
         "status": "strong",
         "status_text": "🚀 强势加速",
-        "alert_level": 1,
-        "role": "龙头",
-        "fund_status": "放量突破"
+        "alert_level": 1
       }
     ],
     "summary": {
       "total": 1,
       "up_count": 1,
       "down_count": 0,
-      "flat_count": 0,
-      "avg_change": 9.97,
-      "strongest": "湖南白银 (9.97%)",
-      "weakest": "湖南白银 (9.97%)",
       "danger_alerts": [],
       "has_danger": false
     }
@@ -47,151 +286,63 @@
   "news_brief": {
     "items": [
       {
-        "source": "东财快讯",
-        "time": "2026-01-22 19:09:39",
-        "title": "宇树科技：2025全年人形机器人实际出货量超5500台",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 19:02:16",
-        "title": "土耳其央行将基准回购利率下调至37.00% 预期36.50%",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 18:55:54",
-        "title": "王小川再谈AI医疗：行业存在“皇帝的新衣” 医院没必要造模型",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 18:46:39",
-        "title": "小米2026年以来回购近50亿港币 接近去年回购金额的80%",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 18:46:37",
-        "title": "奇安信安全机器人中标某电网公司巡检智能体项目",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 18:42:24",
-        "title": "全球首位机器人宇航工程师今日亮相",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 18:32:31",
-        "title": "马斯克积极推进！太空算力概念股梳理",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 18:28:54",
-        "title": "国产GPU四小龙之一燧原股份IPO获受理",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 18:19:48",
-        "title": "小米集团：启动最高25亿港元的自动股份回购计划",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 18:02:20",
-        "title": "苹果首款AI穿戴设备最早可能在2027年发布",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 17:38:44",
-        "title": "我国科学家成功研制“纤维芯片”",
-        "relevance": "high",
-        "relevance_icon": "🔥"
-      },
-      {
-        "source": "东财快讯",
-        "time": "2026-01-22 17:37:13",
-        "title": "算力市场供需失衡 “假内存”乱象滋生",
-        "relevance": "high",
-        "relevance_icon": "🔥"
+        "source": "财联社",
+        "time": "22:19:57",
+        "title": "古巴国家主席与委内瑞拉代总统通话 强调支持古委合作",
+        "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "19:09:11",
-        "title": "宇树发布销量数据澄清公告：2025全年人形机器人实际出货量超5500台",
-        "relevance": "high",
-        "relevance_icon": "🔥"
+        "time": "22:20:17",
+        "title": "【金牌纪要库】AI服务器高端CPU严重缺货，供需失衡驱动服务器CPU价格上涨，这个环节是导致CPU涨价的核心因素，国内产业链相关公司有望承接海外溢出订单",
+        "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "19:18:39",
-        "title": "蓝色起源：推出B2B卫星互联网业务 声称带宽最高可达6Tbps",
-        "relevance": "high",
-        "relevance_icon": "🔥"
+        "time": "22:24:06",
+        "title": "乘联分会：1月狭义乘用车零售预计180万辆 新能源预计80万辆",
+        "relevance": "low"
       },
       {
-        "source": "东财快讯",
-        "time": "2026-01-22 19:18:33",
-        "title": "拓荆科技：国家大基金1月13日至22日减持298万股",
-        "relevance": "medium",
-        "relevance_icon": "📌"
+        "source": "财联社",
+        "time": "22:28:59",
+        "title": "明阳智能：筹划购买德华芯片100%股权 股票明起复牌",
+        "relevance": "low"
       },
       {
-        "source": "东财快讯",
-        "time": "2026-01-22 19:18:08",
-        "title": "恒逸石化：拟以5亿元至10亿元回购股份",
-        "relevance": "medium",
-        "relevance_icon": "📌"
+        "source": "财联社",
+        "time": "22:30:24",
+        "title": "美股集体高开 半导体、存储和互联网科技板块领涨",
+        "relevance": "low"
       },
       {
-        "source": "东财快讯",
-        "time": "2026-01-22 19:17:33",
-        "title": "特发服务：股东银坤公司拟减持不超3%公司股份",
-        "relevance": "medium",
-        "relevance_icon": "📌"
+        "source": "财联社",
+        "time": "22:47:50",
+        "title": "【寻找年报预期差】商业航天+芯片，四季度净利同比增超3倍，续创历史新高，Ku及Ka频段低轨卫通相控阵终端产品取得关键进展，这家公司产品包括MEMS芯片、ASIC处理器芯片",
+        "relevance": "low"
       },
       {
-        "source": "东财快讯",
-        "time": "2026-01-22 19:05:24",
-        "title": "华图山鼎：股东车璐拟减持不超3%股份",
-        "relevance": "medium",
-        "relevance_icon": "📌"
+        "source": "财联社",
+        "time": "22:47:51",
+        "title": "法国称在地中海扣押一艘来自俄罗斯的油轮",
+        "relevance": "low"
       },
       {
-        "source": "东财快讯",
-        "time": "2026-01-22 19:03:59",
-        "title": "横店东磁：参与BCI A轮股权融资",
-        "relevance": "medium",
-        "relevance_icon": "📌"
+        "source": "财联社",
+        "time": "22:52:15",
+        "title": "泽连斯基：乌美俄将于23日在阿联酋举行三方会谈",
+        "relevance": "low"
       },
       {
-        "source": "东财快讯",
-        "time": "2026-01-22 18:56:29",
-        "title": "南京银行：2025年净利润218.07亿元 同比增长8.08%",
-        "relevance": "medium",
-        "relevance_icon": "📌"
+        "source": "财联社",
+        "time": "22:53:53",
+        "title": "贝莱德CEO称人工智能领域不存在泡沫",
+        "relevance": "low"
       }
     ],
     "summary": {
-      "total": 20,
-      "high_relevance": 14,
-      "medium_relevance": 6,
-      "low_relevance": 0
+      "total": 9,
+      "high_relevance": 0
     }
   }
 }
