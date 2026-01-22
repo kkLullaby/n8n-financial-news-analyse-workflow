@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-01-22 09:44:25",
-  "data_version": "2.0",
+  "timestamp": "2026-01-22 19:20:42",
+  "data_version": "3.0",
   "market_sentiment": {
     "index_value": 0,
     "change_pct": 0,
@@ -18,110 +18,180 @@
   "hot_sectors": [],
   "dragon_tiger": "盘中暂无龙虎榜数据",
   "my_portfolio": {
-    "stocks": [],
+    "stocks": [
+      {
+        "code": "002716",
+        "name": "湖南白银",
+        "price": 15.0,
+        "change_pct": 9.97,
+        "turnover": 32.28,
+        "status": "strong",
+        "status_text": "🚀 强势加速",
+        "alert_level": 1,
+        "role": "龙头",
+        "fund_status": "放量突破"
+      }
+    ],
     "summary": {
-      "total": 0,
-      "message": "持仓数据暂时无法获取: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+      "total": 1,
+      "up_count": 1,
+      "down_count": 0,
+      "flat_count": 0,
+      "avg_change": 9.97,
+      "strongest": "湖南白银 (9.97%)",
+      "weakest": "湖南白银 (9.97%)",
+      "danger_alerts": [],
+      "has_danger": false
     }
   },
   "news_brief": {
     "items": [
       {
-        "time": "09:21:10",
-        "title": "央行公开市场今日净投放309亿元",
+        "source": "东财快讯",
+        "time": "2026-01-22 19:09:39",
+        "title": "宇树科技：2025全年人形机器人实际出货量超5500台",
         "relevance": "high",
         "relevance_icon": "🔥"
       },
       {
-        "time": "09:23:29",
-        "title": "【盘中宝】苹果正研发一款AI新品，智能硬件或有望成为AI流量入口，字节、谷歌等巨头纷纷布局，这家企业已进入苹果供应链",
+        "source": "东财快讯",
+        "time": "2026-01-22 19:02:16",
+        "title": "土耳其央行将基准回购利率下调至37.00% 预期36.50%",
         "relevance": "high",
         "relevance_icon": "🔥"
       },
       {
-        "time": "09:25:24",
-        "title": "港股半导体股多数上涨 兆易创新涨超7%",
+        "source": "东财快讯",
+        "time": "2026-01-22 18:55:54",
+        "title": "王小川再谈AI医疗：行业存在“皇帝的新衣” 医院没必要造模型",
         "relevance": "high",
         "relevance_icon": "🔥"
       },
       {
-        "time": "09:27:15",
-        "title": "存储芯片概念延续强势 盈方微3连板",
+        "source": "东财快讯",
+        "time": "2026-01-22 18:46:39",
+        "title": "小米2026年以来回购近50亿港币 接近去年回购金额的80%",
         "relevance": "high",
         "relevance_icon": "🔥"
       },
       {
-        "time": "09:31:55",
-        "title": "算力芯片概念继续活跃 中国长城2连板",
+        "source": "东财快讯",
+        "time": "2026-01-22 18:46:37",
+        "title": "奇安信安全机器人中标某电网公司巡检智能体项目",
         "relevance": "high",
         "relevance_icon": "🔥"
       },
       {
-        "time": "09:33:16",
-        "title": "创业板指涨逾1% 芯片股领涨市场",
+        "source": "东财快讯",
+        "time": "2026-01-22 18:42:24",
+        "title": "全球首位机器人宇航工程师今日亮相",
         "relevance": "high",
         "relevance_icon": "🔥"
       },
       {
-        "time": "09:15:12",
-        "title": "十六连板锋龙股份：未来36个月内优必选不存在通过上市公司重组上市的计划或安排",
-        "relevance": "low",
-        "relevance_icon": "📰"
+        "source": "东财快讯",
+        "time": "2026-01-22 18:32:31",
+        "title": "马斯克积极推进！太空算力概念股梳理",
+        "relevance": "high",
+        "relevance_icon": "🔥"
       },
       {
-        "time": "09:17:57",
-        "title": "苹果手机等产品限时促销 苹果官网最高降价1000元",
-        "relevance": "low",
-        "relevance_icon": "📰"
+        "source": "东财快讯",
+        "time": "2026-01-22 18:28:54",
+        "title": "国产GPU四小龙之一燧原股份IPO获受理",
+        "relevance": "high",
+        "relevance_icon": "🔥"
       },
       {
-        "time": "09:21:44",
-        "title": "香港恒生指数开盘涨0.62% 龙旗科技港股IPO首日涨近13%",
-        "relevance": "low",
-        "relevance_icon": "📰"
+        "source": "东财快讯",
+        "time": "2026-01-22 18:19:48",
+        "title": "小米集团：启动最高25亿港元的自动股份回购计划",
+        "relevance": "high",
+        "relevance_icon": "🔥"
       },
       {
-        "time": "09:26:40",
-        "title": "三大指数集体高开",
-        "relevance": "low",
-        "relevance_icon": "📰"
+        "source": "东财快讯",
+        "time": "2026-01-22 18:02:20",
+        "title": "苹果首款AI穿戴设备最早可能在2027年发布",
+        "relevance": "high",
+        "relevance_icon": "🔥"
       },
       {
-        "time": "09:27:27",
-        "title": "我国首套海洋油气装备柔性智能喷涂系统投用",
-        "relevance": "low",
-        "relevance_icon": "📰"
+        "source": "东财快讯",
+        "time": "2026-01-22 17:38:44",
+        "title": "我国科学家成功研制“纤维芯片”",
+        "relevance": "high",
+        "relevance_icon": "🔥"
       },
       {
-        "time": "09:29:21",
-        "title": "竞价看龙头",
-        "relevance": "low",
-        "relevance_icon": "📰"
+        "source": "东财快讯",
+        "time": "2026-01-22 17:37:13",
+        "title": "算力市场供需失衡 “假内存”乱象滋生",
+        "relevance": "high",
+        "relevance_icon": "🔥"
       },
       {
-        "time": "09:33:38",
-        "title": "PCB概念反复活跃 金安国纪6天3板",
-        "relevance": "low",
-        "relevance_icon": "📰"
+        "source": "财联社",
+        "time": "19:09:11",
+        "title": "宇树发布销量数据澄清公告：2025全年人形机器人实际出货量超5500台",
+        "relevance": "high",
+        "relevance_icon": "🔥"
       },
       {
-        "time": "09:34:43",
-        "title": "商业航天概念持续回暖 巨力索具2连板",
-        "relevance": "low",
-        "relevance_icon": "📰"
+        "source": "财联社",
+        "time": "19:18:39",
+        "title": "蓝色起源：推出B2B卫星互联网业务 声称带宽最高可达6Tbps",
+        "relevance": "high",
+        "relevance_icon": "🔥"
       },
       {
-        "time": "09:37:54",
-        "title": "油气概念快速拉升 洲际油气2连板",
-        "relevance": "low",
-        "relevance_icon": "📰"
+        "source": "东财快讯",
+        "time": "2026-01-22 19:18:33",
+        "title": "拓荆科技：国家大基金1月13日至22日减持298万股",
+        "relevance": "medium",
+        "relevance_icon": "📌"
+      },
+      {
+        "source": "东财快讯",
+        "time": "2026-01-22 19:18:08",
+        "title": "恒逸石化：拟以5亿元至10亿元回购股份",
+        "relevance": "medium",
+        "relevance_icon": "📌"
+      },
+      {
+        "source": "东财快讯",
+        "time": "2026-01-22 19:17:33",
+        "title": "特发服务：股东银坤公司拟减持不超3%公司股份",
+        "relevance": "medium",
+        "relevance_icon": "📌"
+      },
+      {
+        "source": "东财快讯",
+        "time": "2026-01-22 19:05:24",
+        "title": "华图山鼎：股东车璐拟减持不超3%股份",
+        "relevance": "medium",
+        "relevance_icon": "📌"
+      },
+      {
+        "source": "东财快讯",
+        "time": "2026-01-22 19:03:59",
+        "title": "横店东磁：参与BCI A轮股权融资",
+        "relevance": "medium",
+        "relevance_icon": "📌"
+      },
+      {
+        "source": "东财快讯",
+        "time": "2026-01-22 18:56:29",
+        "title": "南京银行：2025年净利润218.07亿元 同比增长8.08%",
+        "relevance": "medium",
+        "relevance_icon": "📌"
       }
     ],
     "summary": {
-      "total": 15,
-      "high_relevance": 6,
-      "medium_relevance": 0,
-      "low_relevance": 9
+      "total": 20,
+      "high_relevance": 14,
+      "medium_relevance": 6,
+      "low_relevance": 0
     }
   }
 }

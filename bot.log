@@ -444,3 +444,112 @@
 [Lark] [2026-01-22 18:29:02,713] [DEBUG] receive pong [conn_id=7598130023799180475]
 [Lark] [2026-01-22 18:30:32,649] [DEBUG] ping success [conn_id=7598130023799180475]
 [Lark] [2026-01-22 18:30:32,744] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:32:02,668] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:32:02,784] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:33:29,771] [DEBUG] receive message, message_type: event, message_id: 63770d4d-a602-4567-8c31-455e66f828c3, trace_id: 3a452060ceebdc818b0b486fccd292ae, payload: {"schema":"2.0","header":{"event_id":"3a452060ceebdc818b0b486fccd292ae","token":"","create_time":"1769078009351","event_type":"im.message.receive_v1","tenant_key":"1a6f88ba565e175e","app_id":"cli_a9e0e7f0e8f81cc2"},"event":{"message":{"chat_id":"oc_d0a1ca6a898e9b440fc1dbef0eb05bf7","chat_type":"p2p","content":"{\"text\":\"查看持仓\"}","create_time":"1769078009030","message_id":"om_x100b582b81439c80b4a2cb9b3aa3968","message_type":"text","update_time":"1769078009030"},"sender":{"sender_id":{"open_id":"ou_9ed46238d48e14cd9240133d2736896c","union_id":"on_65d1c2f67434a07c25a1bc0d92933d3e","user_id":null},"sender_type":"user","tenant_key":"1a6f88ba565e175e"}}} [conn_id=7598130023799180475]
+
+==================================================
+[收到消息事件]
+[原始内容]: {"text":"查看持仓"}
+[提取文本]: 查看持仓
+[回复内容]: 📋 当前监控 (3 只)
+
+• 601179
+• 002606
+• 002044...
+[已发送回复]
+==================================================
+
+[Lark] [2026-01-22 18:33:32,671] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:33:32,735] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:33:39,368] [DEBUG] receive message, message_type: event, message_id: fd09947b-977d-4322-a777-dbb9e13e4af1, trace_id: 4cc03d7b65a435e2f4b4de1f884af6df, payload: {"schema":"2.0","header":{"event_id":"4cc03d7b65a435e2f4b4de1f884af6df","token":"","create_time":"1769078019168","event_type":"im.message.receive_v1","tenant_key":"1a6f88ba565e175e","app_id":"cli_a9e0e7f0e8f81cc2"},"event":{"message":{"chat_id":"oc_d0a1ca6a898e9b440fc1dbef0eb05bf7","chat_type":"p2p","content":"{\"text\":\"清空持仓\"}","create_time":"1769078018842","message_id":"om_x100b582b9ee6a480b398cbad66c11f9","message_type":"text","update_time":"1769078018842"},"sender":{"sender_id":{"open_id":"ou_9ed46238d48e14cd9240133d2736896c","union_id":"on_65d1c2f67434a07c25a1bc0d92933d3e","user_id":null},"sender_type":"user","tenant_key":"1a6f88ba565e175e"}}} [conn_id=7598130023799180475]
+
+==================================================
+[收到消息事件]
+[原始内容]: {"text":"清空持仓"}
+[提取文本]: 清空持仓
+[后台任务] 已触发market_scanner.py更新数据
+[回复内容]: ⚠️ 已清空所有持仓
+当前监控: 0 只...
+[已发送回复]
+==================================================
+
+[Lark] [2026-01-22 18:35:02,690] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:35:02,854] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:36:32,698] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:36:32,782] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:38:02,716] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:38:02,816] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:39:32,724] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:39:32,811] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:41:02,742] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:41:02,810] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:42:32,750] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:42:32,816] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:44:02,769] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:44:02,926] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:45:32,777] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:45:32,834] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:47:02,795] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:47:02,945] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:48:32,803] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:48:32,887] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:50:02,820] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:50:02,877] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:51:32,827] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:51:32,898] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:53:02,844] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:53:02,978] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:54:32,848] [DEBUG] ping success [conn_id=7598130023799180475]
+[Lark] [2026-01-22 18:54:32,998] [DEBUG] receive pong [conn_id=7598130023799180475]
+[Lark] [2026-01-22 19:10:11,351] [ERROR] receive message loop exit, err: sent 1011 (internal error) keepalive ping timeout; no close frame received [conn_id=7598130023799180475]
+[Lark] [2026-01-22 19:10:11,351] [INFO] disconnected to wss://msg-frontier.feishu.cn/ws/v2?fpid=493&aid=552564&device_id=7598130023799180475&access_key=3615ea0473d9b1ee8e80188719e424b1&service_id=33554678&ticket=a8c93936-a671-4d60-abbd-dc47d8f74e26 [conn_id=7598130023799180475]
+[Lark] [2026-01-22 19:10:19,189] [INFO] trying to reconnect for the 1st time
+[Lark] [2026-01-22 19:10:20,926] [INFO] connected to wss://msg-frontier.feishu.cn/ws/v2?fpid=493&aid=552564&device_id=7598141675026795451&access_key=46b88bf5394b58e16d56c604854984ca&service_id=33554678&ticket=6100ddd1-4f3b-4d92-aed0-d5be3d418a5b [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:10:57,539] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:10:57,655] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:11:46,934] [DEBUG] receive message, message_type: event, message_id: a579f1c7-43f7-4083-b0cd-caeb217d3077, trace_id: 5456ec462f4ed14204b87a78feebc5e8, payload: {"schema":"2.0","header":{"event_id":"5456ec462f4ed14204b87a78feebc5e8","token":"","create_time":"1769080307093","event_type":"im.message.receive_v1","tenant_key":"1a6f88ba565e175e","app_id":"cli_a9e0e7f0e8f81cc2"},"event":{"message":{"chat_id":"oc_d0a1ca6a898e9b440fc1dbef0eb05bf7","chat_type":"p2p","content":"{\"text\":\"添加 002716\"}","create_time":"1769080306719","message_id":"om_x100b581411e4dca8b2d83ab62129a5b","message_type":"text","update_time":"1769080306719"},"sender":{"sender_id":{"open_id":"ou_9ed46238d48e14cd9240133d2736896c","union_id":"on_65d1c2f67434a07c25a1bc0d92933d3e","user_id":null},"sender_type":"user","tenant_key":"1a6f88ba565e175e"}}} [conn_id=7598141675026795451]
+
+==================================================
+[收到消息事件]
+[原始内容]: {"text":"添加 002716"}
+[提取文本]: 添加 002716
+[后台任务] 已触发market_scanner.py更新数据
+[回复内容]: ✅ 已添加 002716
+📋 当前监控 (1 只):
+• 002716...
+[已发送回复]
+==================================================
+
+[Lark] [2026-01-22 19:12:27,547] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:12:27,615] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:13:57,565] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:13:57,691] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:15:27,574] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:15:27,692] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:16:57,591] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:16:57,658] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:18:27,599] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:18:27,681] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:19:57,616] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:19:57,996] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:21:27,623] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:21:27,696] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:22:57,641] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:22:57,856] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:24:27,649] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:24:27,850] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:25:57,668] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:25:57,783] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:27:28,171] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:27:28,246] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:28:58,189] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:28:58,306] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:30:28,196] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:30:28,263] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:31:58,213] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:31:58,280] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:33:28,220] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:33:28,277] [DEBUG] receive pong [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:34:58,237] [DEBUG] ping success [conn_id=7598141675026795451]
+[Lark] [2026-01-22 19:34:58,303] [DEBUG] receive pong [conn_id=7598141675026795451]
