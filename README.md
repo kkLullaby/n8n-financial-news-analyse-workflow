@@ -71,9 +71,33 @@ tail -f /home/kk/n8n/tunnel.log
 - n8n 界面（本机）：http://localhost:5678
 - 隧道 URL：`cat /home/kk/n8n/tunnel_url.txt`（仅在启动隧道后才会有）
 
+## ⏰ 自动化任务时间表
+系统已配置自动定时任务（crontab）：
+
+| 时间 | 任务 | 说明 |
+|:---|:---|:---|
+| 09:10 | 更新市场数据 | 运行 `market_scanner.py` |
+| 09:15 | n8n推送早盘报告 | 读取最新数据推送到飞书 |
+| 14:45 | 更新市场数据 | 运行 `market_scanner.py` |
+| 14:50 | n8n推送收盘报告 | 读取最新数据推送到飞书 |
+
+数据更新提前5分钟，确保n8n工作流读取到最新数据。
+
 ## ✅ 开机速查清单
 - [ ] `nohup python3 bot_start.py > bot.log 2>&1 &`（必做）
 - [ ] `tail -f bot.log` 确认 connected（可选）
 - [ ] `docker ps | grep n8n_financial_bot`（检查 n8n，异常时 `docker restart`）
 - [ ] 需要立刻推送：`./trigger_workflow.sh`
 - [ ] 需要公网回调才启动：`./start_fixed_tunnel.sh && cat tunnel_url.txt`
+
+## 🔧 定时任务管理
+```bash
+# 查看当前定时任务
+crontab -l
+
+# 编辑定时任务
+crontab -e
+
+# 查看定时任务日志
+tail -f /home/kk/n8n/cron.log
+```
