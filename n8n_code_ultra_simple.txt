@@ -1,0 +1,30 @@
+// ===== 调试版 - 找到正确的数据位置 =====
+
+// 打印所有可能包含数据的字段
+console.log("=== 调试信息 ===");
+console.log("items[0].binary 的所有字段:", Object.keys(items[0].binary));
+
+// 遍历 binary 中的每个字段
+for (const key of Object.keys(items[0].binary)) {
+    console.log(`\nbinary['${key}'] 的内容:`);
+    const binaryItem = items[0].binary[key];
+    console.log("  - 类型:", typeof binaryItem);
+    console.log("  - 所有属性:", Object.keys(binaryItem));
+    
+    // 如果有 data 属性
+    if (binaryItem.data) {
+        console.log("  - data 类型:", typeof binaryItem.data);
+        console.log("  - data 长度:", binaryItem.data.length || "无长度");
+        console.log("  - data 前100字符:", String(binaryItem.data).substring(0, 100));
+    }
+}
+
+console.log("\nitems[0].json:", items[0].json);
+console.log("=== 调试信息结束 ===");
+
+// 暂时返回调试信息
+return {
+    json: {
+        debug: "请查看控制台输出，找到包含 JSON 数据的字段"
+    }
+};

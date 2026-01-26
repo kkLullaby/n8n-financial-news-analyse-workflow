@@ -1,260 +1,691 @@
 {
-  "timestamp": "2026-01-22 23:06:47",
+  "timestamp": "2026-01-26 19:31:19",
   "market_sentiment": {
-    "index_value": 4122.576,
-    "change_pct": 0.14,
-    "volume": 1201764210237.0,
+    "index_value": 4132.6052,
+    "change_pct": -0.09,
+    "volume": 1451859840027.0,
     "up_count": 0,
     "down_count": 0,
     "limit_up": 0,
     "limit_down": 0,
-    "up_ratio": 55,
-    "market_temperature": "😊 温和",
+    "up_ratio": 45,
+    "market_temperature": "😐 冷静",
     "risk_level": "⚪ 中性",
     "risk_score": 1.5,
     "suggested_action": "👀 观望为主"
   },
   "hot_sectors": [
     {
-      "name": "阿尔茨海默概念",
-      "change_pct": 0,
-      "leading_stocks": []
-    },
-    {
-      "name": "AI PC",
-      "change_pct": 0,
+      "name": "贵金属",
+      "change_pct": 9.02,
+      "heat_score": 9.416,
       "leading_stocks": [
         {
-          "name": "科大讯飞",
-          "code": "002230",
-          "price": 58.44,
-          "change_pct": 0.6,
+          "name": "紫金矿业",
+          "code": "601899",
+          "price": 39.5,
+          "change_pct": 5.17,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 38.03,
+            "ma20": 36.72,
+            "rsi6": 78.27,
+            "trend_score": 6,
+            "signals": [
+              "均线多头",
+              "MA5/10金叉",
+              "放量上涨"
+            ],
+            "risks": [],
+            "volume_ratio": 1.64
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "山东黄金",
+          "code": "600547",
+          "price": 55.74,
+          "change_pct": 9.94,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 51.19,
+            "ma20": 44.85,
+            "rsi6": 91.67,
+            "trend_score": 3,
+            "signals": [
+              "均线多头",
+              "放量上涨"
+            ],
+            "risks": [
+              "RSI超买(80+)",
+              "乖离率高(8.9%)"
+            ],
+            "volume_ratio": 1.28
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "湖南白银",
+          "code": "002716",
+          "price": 18.08,
+          "change_pct": 9.98,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 15.11,
+            "ma20": 10.16,
+            "rsi6": 100.0,
+            "trend_score": 2,
+            "signals": [
+              "均线多头"
+            ],
+            "risks": [
+              "RSI超买(80+)",
+              "乖离率高(19.6%)"
+            ],
+            "volume_ratio": 0.76
+          },
+          "recommendation": "👀 观察"
+        },
+        {
+          "name": "中金黄金",
+          "code": "600489",
+          "price": 33.0,
+          "change_pct": 10.0,
           "turnover": 0,
           "volume_ratio": 0
         },
         {
-          "name": "兆易创新",
-          "code": "603986",
-          "price": 301.47,
-          "change_pct": -2.01,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "豪威集团",
-          "code": "603501",
-          "price": 128.84,
-          "change_pct": -1.21,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "寒武纪",
-          "code": "688256",
-          "price": 1353.0,
-          "change_pct": -0.06,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "紫光国微",
-          "code": "002049",
-          "price": 85.02,
-          "change_pct": -1.55,
+          "name": "湖南黄金",
+          "code": "002155",
+          "price": 25.27,
+          "change_pct": 10.01,
           "turnover": 0,
           "volume_ratio": 0
         }
       ]
     },
     {
-      "name": "AI手机",
-      "change_pct": 0,
+      "name": "油气开采",
+      "change_pct": 4.49,
+      "heat_score": 5.3568,
       "leading_stocks": [
         {
-          "name": "科大讯飞",
-          "code": "002230",
-          "price": 58.44,
-          "change_pct": 0.6,
+          "name": "中国石油",
+          "code": "601857",
+          "price": 10.39,
+          "change_pct": 5.7,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 10.06,
+            "ma20": 10.01,
+            "rsi6": 73.98,
+            "trend_score": 1,
+            "signals": [
+              "放量上涨"
+            ],
+            "risks": [],
+            "volume_ratio": 1.7
+          },
+          "recommendation": "👀 观察"
+        },
+        {
+          "name": "中国石化",
+          "code": "600028",
+          "price": 6.38,
+          "change_pct": 3.74,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 6.14,
+            "ma20": 6.05,
+            "rsi6": 85.53,
+            "trend_score": 0,
+            "signals": [
+              "放量上涨"
+            ],
+            "risks": [
+              "RSI超买(80+)"
+            ],
+            "volume_ratio": 1.37
+          },
+          "recommendation": "✋ 观望"
+        },
+        {
+          "name": "中国海油",
+          "code": "600938",
+          "price": 33.49,
+          "change_pct": 6.66,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 31.38,
+            "ma20": 29.77,
+            "rsi6": 91.6,
+            "trend_score": 3,
+            "signals": [
+              "均线多头",
+              "放量上涨"
+            ],
+            "risks": [
+              "RSI超买(80+)",
+              "乖离率高(6.7%)"
+            ],
+            "volume_ratio": 1.37
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "海油工程",
+          "code": "600583",
+          "price": 6.57,
+          "change_pct": 0.61,
           "turnover": 0,
           "volume_ratio": 0
         },
         {
-          "name": "兆易创新",
-          "code": "603986",
-          "price": 301.47,
-          "change_pct": -2.01,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "豪威集团",
-          "code": "603501",
-          "price": 128.84,
-          "change_pct": -1.21,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "寒武纪",
-          "code": "688256",
-          "price": 1353.0,
-          "change_pct": -0.06,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "紫光国微",
-          "code": "002049",
-          "price": 85.02,
-          "change_pct": -1.55,
+          "name": "广汇能源",
+          "code": "600256",
+          "price": 5.54,
+          "change_pct": 5.73,
           "turnover": 0,
           "volume_ratio": 0
         }
       ]
     },
     {
-      "name": "AI语料",
-      "change_pct": 0,
+      "name": "AI算力",
+      "change_pct": 0.34,
+      "heat_score": 0.7984,
       "leading_stocks": [
         {
-          "name": "科大讯飞",
-          "code": "002230",
-          "price": 58.44,
-          "change_pct": 0.6,
+          "name": "中际旭创",
+          "code": "300308",
+          "price": 589.8,
+          "change_pct": 0.82,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 592.54,
+            "ma20": 604.75,
+            "rsi6": 38.17,
+            "trend_score": 0,
+            "signals": [],
+            "risks": [],
+            "volume_ratio": 0.83
+          },
+          "recommendation": "✋ 观望"
+        },
+        {
+          "name": "剑桥科技",
+          "code": "603083",
+          "price": 110.95,
+          "change_pct": 1.44,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 110.68,
+            "ma20": 122.32,
+            "rsi6": 21.65,
+            "trend_score": 0,
+            "signals": [],
+            "risks": [],
+            "volume_ratio": 0.75
+          },
+          "recommendation": "✋ 观望"
+        },
+        {
+          "name": "浪潮信息",
+          "code": "000977",
+          "price": 65.84,
+          "change_pct": 1.48,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 65.23,
+            "ma20": 67.22,
+            "rsi6": 33.38,
+            "trend_score": 1,
+            "signals": [
+              "放量上涨"
+            ],
+            "risks": [],
+            "volume_ratio": 1.43
+          },
+          "recommendation": "👀 观察"
+        },
+        {
+          "name": "中国移动",
+          "code": "600941",
+          "price": 94.8,
+          "change_pct": -0.61,
           "turnover": 0,
           "volume_ratio": 0
         },
         {
-          "name": "兆易创新",
-          "code": "603986",
-          "price": 301.47,
-          "change_pct": -2.01,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "豪威集团",
-          "code": "603501",
-          "price": 128.84,
-          "change_pct": -1.21,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "寒武纪",
-          "code": "688256",
-          "price": 1353.0,
-          "change_pct": -0.06,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "紫光国微",
-          "code": "002049",
-          "price": 85.02,
-          "change_pct": -1.55,
+          "name": "工业富联",
+          "code": "601138",
+          "price": 59.26,
+          "change_pct": -1.41,
           "turnover": 0,
           "volume_ratio": 0
         }
       ]
     },
     {
-      "name": "阿里巴巴概念",
-      "change_pct": 0,
-      "leading_stocks": []
+      "name": "固态电池",
+      "change_pct": -0.64,
+      "heat_score": 0.7252000000000001,
+      "leading_stocks": [
+        {
+          "name": "宁德时代",
+          "code": "300750",
+          "price": 342.05,
+          "change_pct": -1.43,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 346.85,
+            "ma20": 360.25,
+            "rsi6": 14.56,
+            "trend_score": 2,
+            "signals": [
+              "RSI超卖反弹"
+            ],
+            "risks": [],
+            "volume_ratio": 0.88
+          },
+          "recommendation": "👀 观察"
+        },
+        {
+          "name": "赣锋锂业",
+          "code": "002460",
+          "price": 73.64,
+          "change_pct": -0.31,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 71.14,
+            "ma20": 68.08,
+            "rsi6": 75.87,
+            "trend_score": 3,
+            "signals": [
+              "均线多头"
+            ],
+            "risks": [],
+            "volume_ratio": 1.19
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "派能科技",
+          "code": "688063",
+          "price": 66.15,
+          "change_pct": 2.77,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 62.8,
+            "ma20": 61.09,
+            "rsi6": 72.96,
+            "trend_score": 4,
+            "signals": [
+              "均线多头",
+              "放量上涨"
+            ],
+            "risks": [
+              "乖离率高(5.3%)"
+            ],
+            "volume_ratio": 1.85
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "国轩高科",
+          "code": "002074",
+          "price": 40.36,
+          "change_pct": -2.77,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "亿纬锂能",
+          "code": "300014",
+          "price": 65.78,
+          "change_pct": -1.45,
+          "turnover": 0,
+          "volume_ratio": 0
+        }
+      ]
     },
     {
-      "name": "安防",
-      "change_pct": 0,
-      "leading_stocks": []
+      "name": "新能源车",
+      "change_pct": -0.92,
+      "heat_score": 0.5839999999999999,
+      "leading_stocks": [
+        {
+          "name": "比亚迪",
+          "code": "002594",
+          "price": 92.63,
+          "change_pct": -1.09,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 93.85,
+            "ma20": 96.75,
+            "rsi6": 8.91,
+            "trend_score": 2,
+            "signals": [
+              "RSI超卖反弹"
+            ],
+            "risks": [],
+            "volume_ratio": 1.07
+          },
+          "recommendation": "👀 观察"
+        },
+        {
+          "name": "广汽集团",
+          "code": "601238",
+          "price": 8.18,
+          "change_pct": -2.04,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 8.23,
+            "ma20": 8.3,
+            "rsi6": 41.67,
+            "trend_score": 0,
+            "signals": [],
+            "risks": [],
+            "volume_ratio": 1.22
+          },
+          "recommendation": "✋ 观望"
+        },
+        {
+          "name": "金溢科技",
+          "code": "002869",
+          "price": 26.07,
+          "change_pct": 2.84,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 25.12,
+            "ma20": 24.65,
+            "rsi6": 66.79,
+            "trend_score": 6,
+            "signals": [
+              "均线多头",
+              "MA5/10金叉",
+              "放量上涨"
+            ],
+            "risks": [],
+            "volume_ratio": 1.68
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "长亮科技",
+          "code": "300348",
+          "price": 14.71,
+          "change_pct": -3.35,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "上海机场",
+          "code": "600009",
+          "price": 31.05,
+          "change_pct": -0.96,
+          "turnover": 0,
+          "volume_ratio": 0
+        }
+      ]
     },
     {
-      "name": "白酒概念",
-      "change_pct": 0,
+      "name": "互联网金融",
+      "change_pct": -0.66,
+      "heat_score": 0.03480000000000011,
+      "leading_stocks": [
+        {
+          "name": "东方财富",
+          "code": "300059",
+          "price": 23.31,
+          "change_pct": 0.04,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 23.33,
+            "ma20": 23.87,
+            "rsi6": 1.67,
+            "trend_score": 3,
+            "signals": [
+              "放量上涨",
+              "RSI超卖反弹"
+            ],
+            "risks": [],
+            "volume_ratio": 1.53
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "工业富联",
+          "code": "601138",
+          "price": 59.26,
+          "change_pct": -1.41,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 60.67,
+            "ma20": 61.66,
+            "rsi6": 31.11,
+            "trend_score": 0,
+            "signals": [],
+            "risks": [],
+            "volume_ratio": 0.69
+          },
+          "recommendation": "✋ 观望"
+        },
+        {
+          "name": "同花顺",
+          "code": "300033",
+          "price": 355.03,
+          "change_pct": -2.78,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 359.55,
+            "ma20": 359.09,
+            "rsi6": 25.17,
+            "trend_score": 0,
+            "signals": [],
+            "risks": [],
+            "volume_ratio": 1.09
+          },
+          "recommendation": "✋ 观望"
+        },
+        {
+          "name": "中信证券",
+          "code": "600030",
+          "price": 28.07,
+          "change_pct": 1.08,
+          "turnover": 0,
+          "volume_ratio": 0
+        },
+        {
+          "name": "国盛证券",
+          "code": "002670",
+          "price": 16.47,
+          "change_pct": -0.24,
+          "turnover": 0,
+          "volume_ratio": 0
+        }
+      ]
+    },
+    {
+      "name": "白酒",
+      "change_pct": -0.23,
+      "heat_score": 0.011199999999999988,
       "leading_stocks": [
         {
           "name": "贵州茅台",
           "code": "600519",
-          "price": 1340.06,
-          "change_pct": -0.81,
+          "price": 1342.0,
+          "change_pct": 0.37,
           "turnover": 0,
-          "volume_ratio": 0
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 1348.73,
+            "ma20": 1390.73,
+            "rsi6": 10.0,
+            "trend_score": 3,
+            "signals": [
+              "放量上涨",
+              "RSI超卖反弹"
+            ],
+            "risks": [],
+            "volume_ratio": 1.33
+          },
+          "recommendation": "🌟 强烈关注"
         },
         {
           "name": "五 粮 液",
           "code": "000858",
-          "price": 102.76,
-          "change_pct": -0.28,
+          "price": 102.34,
+          "change_pct": -0.63,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 103.21,
+            "ma20": 106.21,
+            "rsi6": 14.75,
+            "trend_score": 2,
+            "signals": [
+              "RSI超卖反弹"
+            ],
+            "risks": [],
+            "volume_ratio": 1.36
+          },
+          "recommendation": "👀 观察"
+        },
+        {
+          "name": "中国中免",
+          "code": "601888",
+          "price": 92.66,
+          "change_pct": -0.71,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 94.15,
+            "ma20": 92.56,
+            "rsi6": 69.07,
+            "trend_score": 0,
+            "signals": [],
+            "risks": [],
+            "volume_ratio": 0.95
+          },
+          "recommendation": "✋ 观望"
+        },
+        {
+          "name": "伊利股份",
+          "code": "600887",
+          "price": 26.68,
+          "change_pct": -0.52,
           "turnover": 0,
           "volume_ratio": 0
         },
         {
           "name": "泸州老窖",
           "code": "000568",
-          "price": 112.35,
-          "change_pct": -0.73,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "今世缘",
-          "code": "603369",
-          "price": 33.91,
-          "change_pct": -0.91,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "洋河股份",
-          "code": "002304",
-          "price": 63.52,
-          "change_pct": 0.54,
+          "price": 112.43,
+          "change_pct": 0.35,
           "turnover": 0,
           "volume_ratio": 0
         }
       ]
     },
     {
-      "name": "BC电池",
-      "change_pct": 0,
+      "name": "人形机器人",
+      "change_pct": -2.96,
+      "heat_score": -0.5504,
       "leading_stocks": [
         {
-          "name": "宁德时代",
-          "code": "300750",
-          "price": 345.8,
-          "change_pct": -1.15,
+          "name": "机器人",
+          "code": "300024",
+          "price": 19.16,
+          "change_pct": 3.07,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 18.49,
+            "ma20": 18.42,
+            "rsi6": 70.97,
+            "trend_score": 6,
+            "signals": [
+              "均线多头",
+              "MA5/10金叉",
+              "放量上涨"
+            ],
+            "risks": [],
+            "volume_ratio": 2.21
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "新时达",
+          "code": "002527",
+          "price": 17.3,
+          "change_pct": -4.21,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 17.65,
+            "ma20": 16.9,
+            "rsi6": 57.37,
+            "trend_score": 3,
+            "signals": [
+              "均线多头"
+            ],
+            "risks": [],
+            "volume_ratio": 0.72
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "三角防务",
+          "code": "300775",
+          "price": 35.33,
+          "change_pct": -7.22,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 35.67,
+            "ma20": 32.81,
+            "rsi6": 64.69,
+            "trend_score": 3,
+            "signals": [
+              "均线多头"
+            ],
+            "risks": [],
+            "volume_ratio": 0.9
+          },
+          "recommendation": "🌟 强烈关注"
+        },
+        {
+          "name": "北方华创",
+          "code": "002371",
+          "price": 496.22,
+          "change_pct": -2.77,
           "turnover": 0,
           "volume_ratio": 0
         },
         {
-          "name": "比亚迪",
-          "code": "002594",
-          "price": 94.12,
-          "change_pct": 0.02,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "隆基绿能",
-          "code": "601012",
-          "price": 17.59,
-          "change_pct": 2.15,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "通威股份",
-          "code": "600438",
-          "price": 18.82,
-          "change_pct": 1.78,
-          "turnover": 0,
-          "volume_ratio": 0
-        },
-        {
-          "name": "天齐锂业",
-          "code": "002466",
-          "price": 60.65,
-          "change_pct": -1.27,
+          "name": "豪威集团",
+          "code": "603501",
+          "price": 124.62,
+          "change_pct": -3.69,
           "turnover": 0,
           "volume_ratio": 0
         }
@@ -265,14 +696,22 @@
   "my_portfolio": {
     "stocks": [
       {
-        "code": "002716",
-        "name": "湖南白银",
-        "price": 15.0,
-        "change_pct": 9.97,
-        "turnover": 32.28,
-        "status": "strong",
-        "status_text": "🚀 强势加速",
-        "alert_level": 1
+        "name": "特变电工",
+        "code": "600089",
+        "price": 29.07,
+        "change_pct": 1.82,
+        "technical": {
+          "ma5": 29.38,
+          "ma20": 26.16,
+          "rsi6": 61.55,
+          "trend_score": 3,
+          "signals": [
+            "均线多头"
+          ],
+          "risks": [],
+          "volume_ratio": 0.99
+        },
+        "advice": "持有"
       }
     ],
     "summary": {
@@ -280,69 +719,88 @@
       "up_count": 1,
       "down_count": 0,
       "danger_alerts": [],
-      "has_danger": false
+      "has_danger": false,
+      "strategy_suggestion": "持仓稳健"
     }
   },
   "news_brief": {
     "items": [
       {
         "source": "财联社",
-        "time": "22:19:57",
-        "title": "古巴国家主席与委内瑞拉代总统通话 强调支持古委合作",
+        "time": "19:00:54",
+        "title": "高盛：预计美联储本周将按兵不动 首次降息将在6月",
+        "relevance": "high"
+      },
+      {
+        "source": "财联社",
+        "time": "19:12:29",
+        "title": "2025年浙江省跨境人民币结算量突破2.65万亿元",
+        "relevance": "high"
+      },
+      {
+        "source": "财联社",
+        "time": "19:27:46",
+        "title": "深圳国际量子研究院贺煜课题组在硅基量子计算领域实现重要突破",
+        "relevance": "high"
+      },
+      {
+        "source": "财联社",
+        "time": "19:05:02",
+        "title": "海利得：投资2亿元设立全资子公司实施纺丝油剂及LCP树脂等产业化项目",
         "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "22:20:17",
-        "title": "【金牌纪要库】AI服务器高端CPU严重缺货，供需失衡驱动服务器CPU价格上涨，这个环节是导致CPU涨价的核心因素，国内产业链相关公司有望承接海外溢出订单",
+        "time": "19:06:17",
+        "title": "欧盟启动对X平台的正式调查",
         "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "22:24:06",
-        "title": "乘联分会：1月狭义乘用车零售预计180万辆 新能源预计80万辆",
+        "time": "19:11:13",
+        "title": "紫金黄金将以现金收购Allied Gold 交易估值55亿加元",
         "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "22:28:59",
-        "title": "明阳智能：筹划购买德华芯片100%股权 股票明起复牌",
+        "time": "19:11:14",
+        "title": "甘肃迭部发生5.5级地震 应急管理部派工作组赶赴震区指导抗震救灾工作",
         "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "22:30:24",
-        "title": "美股集体高开 半导体、存储和互联网科技板块领涨",
+        "time": "19:14:25",
+        "title": "印尼山体滑坡事故搜救持续 遇难者身份待确定",
         "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "22:47:50",
-        "title": "【寻找年报预期差】商业航天+芯片，四季度净利同比增超3倍，续创历史新高，Ku及Ka频段低轨卫通相控阵终端产品取得关键进展，这家公司产品包括MEMS芯片、ASIC处理器芯片",
+        "time": "19:15:50",
+        "title": "海科新源：与比亚迪锂电池签署电解液溶剂长期合作协议 每年供应至少10万吨产品",
         "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "22:47:51",
-        "title": "法国称在地中海扣押一艘来自俄罗斯的油轮",
+        "time": "19:24:20",
+        "title": "紫金矿业：拟以280亿元收购联合黄金100%股权 其拥有金资源量533吨",
         "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "22:52:15",
-        "title": "泽连斯基：乌美俄将于23日在阿联酋举行三方会谈",
+        "time": "19:28:44",
+        "title": "前高盛策略师：黄金站上5100美元 反映出投资者对庞大政府债务规模的担忧不断加剧",
         "relevance": "low"
       },
       {
         "source": "财联社",
-        "time": "22:53:53",
-        "title": "贝莱德CEO称人工智能领域不存在泡沫",
+        "time": "19:29:51",
+        "title": "菲律宾客船倾覆事故幸存者：没收到任何预警信号",
         "relevance": "low"
       }
     ],
     "summary": {
-      "total": 9,
-      "high_relevance": 0
+      "total": 12,
+      "high_relevance": 3
     }
   }
 }

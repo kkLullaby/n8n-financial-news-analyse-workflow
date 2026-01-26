@@ -1,0 +1,193 @@
+// ===== N8N Code 节点 - Binary 兼容版 v4.0 =====
+// 专门处理 Read File 节点的 Binary 输出格式
+
+// ========== 第一步：从 Binary 或 JSON 中提取数据 ==========
+let data = {};
+let parseMethod = "未解析";
+
+try {
+    // 检查是否有 binary 数据（Read File 节点默认输出格式）
+    if (items[0].binary && items[0].binary.data) {
+        console.log("检测到 Binary 数据");
+        const binaryData = items[0].binary.data;
+        
+        // N8N 的 binary data 包含 base64 编码的内容
+        if (binaryData.data) {
+            const decoded = Buffer.from(binaryData.data, 'base64').toString('utf-8');
+            data = JSON.parse(decoded);
+            parseMethod = "Binary (base64)";
+        }
+    }
+    // 如果没有 binary，尝试从 json 字段读取
+    else if (items[0].json) {
+        const input = items[0].json;
+        
+        // 情况1: 直接是解析好的对象
+        if (input.market_sentiment) {
+            data = input;
+            parseMethod = "JSON - 直接对象";
+        }
+        // 情况2: 数据在 data 字段中
+        else if (input.data) {
+            data = typeof input.data === 'string' ? JSON.parse(input.data) : input.data;
+            parseMethod = "JSON - data字段";
+        }
+        // 情况3: 数据在 content 字段中
+        else if (input.content) {
+            data = typeof input.content === 'string' ? JSON.parse(input.content) : input.content;
+            parseMethod = "JSON - content字段";
+        }
+        // 情况4: 整个 input 是字符串
+        else if (typeof input === 'string') {
+            data = JSON.parse(input);
+            parseMethod = "JSON - 字符串";
+        }
+        else {
+            data = input;
+            parseMethod = "JSON - Fallback";
+        }
+    }
+} catch (error) {
+    console.log("❌ 解析错误:", error.message);
+    parseMethod = "解析失败: " + error.message;
+}
+
+console.log("✅ 解析方式:", parseMethod);
+console.log("📊 数据时间:", data.timestamp || "未知");
+console.log("💼 持仓数量:", data.my_portfolio?.stocks?.length || 0);
+console.log("🔥 热点板块:", data.hot_sectors?.length || 0);
+
+// 2. 数据有效性检查与默认值填充 (防止出现 "undefined")
+const sentiment = data.market_sentiment || {};
+// 使用默认值 "未知" 代替 undefined
+const mood = `市场温度: ${sentiment.market_temperature || "未知"} | 风险偏好: ${sentiment.risk_level || "平稳"} | 建议: ${sentiment.suggested_action || "暂无"}`;
+
+// 3. 构建持仓部分文本
+let portfolioText = "";
+if (data.my_portfolio && data.my_portfolio.stocks && data.my_portfolio.stocks.length > 0) {
+    data.my_portfolio.stocks.forEach(stock => {
+        const tech = stock.technical || {};
+        const risks = tech.risks && tech.risks.length > 0 ? tech.risks.join(", ") : "无明显风险";
+        const signals = tech.signals && tech.signals.length > 0 ? tech.signals.join(", ") : "无明显信号";
+        const advice = stock.advice || "继续观察";
+        
+        portfolioText += `
+- 股票名称: ${stock.name} (${stock.code})
+  最新价格: ${stock.price} (涨幅: ${stock.change_pct}%)
+  【量化建议】: ${advice}
+  【RSI指标】: ${tech.rsi6 || "N/A"}
+  【预警信号】: ${risks}
+  【多头信号】: ${signals}
+`;
+    });
+} else {
+    // 只有在真的没有持仓数据时才显示这个
+    portfolioText = (data.market_sentiment) ? "当前无持仓数据。" : "⚠️ 警告：未能读取到有效的数据源文件。请检查 N8N 的 'Read File' 节点配置是否正确 (路径/JSON格式)。";
+}
+
+// 4. 构建热点板块文本
+let sectorText = "";
+if (data.hot_sectors && data.hot_sectors.length > 0) {
+    data.hot_sectors.slice(0, 5).forEach(sector => {
+        sectorText += `\n> **${sector.name}** (板块涨幅: ${sector.change_pct}%, 热度: ${parseFloat(sector.heat_score || 0).toFixed(1)})\n`;
+        if (sector.leading_stocks && sector.leading_stocks.length > 0) {
+            sector.leading_stocks.slice(0, 3).forEach(stock => {
+                const tech = stock.technical || {};
+                const rec = stock.recommendation || "观察";
+                sectorText += `  - ${stock.name}: ${stock.change_pct}% | 评级:${rec} | RSI:${tech.rsi6 || '-'} | 风险:${tech.risks ? tech.risks.join(',') : '无'}\n`;
+            });
+        }
+    });
+} else {
+    sectorText = "无显著热点数据或数据读取失败。";
+}
+
+// 5. 新闻
+let newsText = "";
+if (data.news_brief && data.news_brief.items) {
+    data.news_brief.items.slice(0, 5).forEach((item, index) => {
+        newsText += `${index + 1}. ${item.title}\n`;
+    });
+} else {
+    newsText = "暂无新闻数据。";
+}
+
+// 6. 构建 Prompt
+const prompt = `
+你是一个专业的A股量化交易助手。请根据以下最新的市场实时数据，为用户生成一份《收盘复盘·持仓诊断报告》。
+你的任务是根据提供的数据（特别是量化指标和风险预警）进行解读，不要编造数据。
+
+---数据开始---
+
+【基本面概览】
+${mood}
+
+【我的持仓诊断】 (这是最重要的部分，请详细解读)
+${portfolioText}
+
+【今日市场热点与机会扫描】 (重点关注核聚变、油气等新趋势)
+${sectorText}
+
+【关键财经新闻】
+${newsText}
+
+---数据结束---
+
+请按照以下 Markdown 格式输出报告（不要输出任何 JSON 代码块，只输出 Markdown 文本）：
+
+## 🌞 收盘复盘·持仓诊断 (${new Date().toLocaleDateString()})
+
+### 1. 核心持仓策略
+(根据【我的持仓诊断】中的【量化建议】和【RSI指标】给出一针见血的操作指引。如果建议是"高抛"或"止盈"，请用加粗字体强调。)
+
+### 2. 市场热点透视
+(根据【今日市场热点】数据，简述今日主力资金流向。指出哪些板块过热(RSI高)需要警惕，哪些是新启动的机会。)
+
+### 3. 明日交易计划
+(综合市场情绪和新闻，用简练的语言给出明天的操作预演。)
+`;
+
+// ===== 输出: 构建完整的 DashScope API 请求体 =====
+// 这样 HTTP Request 节点只需设置 URL 和 Header，Body 直接引用 {{ $json.body }}
+
+const dashscopeRequestBody = {
+    model: "qwen-plus",  // 或 "qwen-turbo", "qwen-max" 根据您的需要
+    input: {
+        messages: [
+            {
+                role: "system",
+                content: "你是一个专业的A股量化分析师，擅长解读技术指标和市场情绪。请严格基于提供的数据进行分析，不要编造任何数据。"
+            },
+            {
+                role: "user",
+                content: prompt
+            }
+        ]
+    },
+    parameters: {
+        result_format: "message",
+        temperature: 0.7
+    }
+};
+
+// 同时输出调试信息，方便排查问题
+return {
+    json: {
+        // DashScope API 需要的请求体 (用于 HTTP Request 节点的 Body)
+        body: dashscopeRequestBody,
+        
+        // 也单独输出 prompt，以防某些工作流需要
+        prompt: prompt,
+        
+        // 调试信息 (可在浏览器控制台或 N8N 输出中查看)
+        debug: {
+            parseMethod: parseMethod,
+            parseSuccess: !!data.market_sentiment,
+            timestamp: data.timestamp || "未知",
+            portfolioCount: data.my_portfolio?.stocks?.length || 0,
+            portfolioStocks: data.my_portfolio?.stocks?.map(s => `${s.name}(${s.code}): ${s.change_pct}%`) || [],
+            hotSectorsCount: data.hot_sectors?.length || 0,
+            hotSectorsTop3: data.hot_sectors?.slice(0,3).map(s => s.name) || []
+        }
+    }
+};

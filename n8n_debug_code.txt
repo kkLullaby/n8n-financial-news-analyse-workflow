@@ -1,0 +1,173 @@
+// ===== 调试版 N8N 代码 (粘贴到 Code 节点) =====
+// 此代码会输出详细的调试信息，帮助定位问题
+
+// 1. 打印原始输入数据结构
+console.log("===== 调试信息开始 =====");
+console.log("原始输入类型:", typeof items[0].json);
+console.log("原始输入内容 (前500字符):", JSON.stringify(items[0].json).substring(0, 500));
+
+// 2. 尝试解析数据
+let data = {};
+let parseStatus = "未知";
+
+try {
+    const input = items[0].json;
+    
+    // 情况A: 已经是对象且包含 market_sentiment
+    if (input && input.market_sentiment) {
+        data = input;
+        parseStatus = "直接读取成功 (情况A)";
+    }
+    // 情况B: 数据在 'data' 字段中
+    else if (input && input.data) {
+        if (typeof input.data === 'string') {
+            data = JSON.parse(input.data);
+            parseStatus = "从 input.data 字符串解析成功 (情况B)";
+        } else if (typeof input.data === 'object') {
+            data = input.data;
+            parseStatus = "从 input.data 对象读取成功 (情况B变体)";
+        }
+    }
+    // 情况C: 数据在 'content' 字段中
+    else if (input && input.content) {
+        if (typeof input.content === 'string') {
+            data = JSON.parse(input.content);
+            parseStatus = "从 input.content 解析成功 (情况C)";
+        } else {
+            data = input.content;
+            parseStatus = "从 input.content 对象读取 (情况C变体)";
+        }
+    }
+    // 情况D: 整个 input 是字符串
+    else if (typeof input === 'string') {
+        data = JSON.parse(input);
+        parseStatus = "从字符串解析成功 (情况D)";
+    }
+    // 情况E: 可能数据在 binary 转换后的 json 中
+    else if (input && input.json) {
+        data = input.json;
+        parseStatus = "从 input.json 读取 (情况E)";
+    }
+    else {
+        data = input;
+        parseStatus = "直接使用 input (最后的尝试)";
+    }
+} catch (error) {
+    console.log("❌ JSON 解析失败:", error.message);
+    parseStatus = "解析失败: " + error.message;
+}
+
+console.log("解析状态:", parseStatus);
+console.log("解析后数据是否包含 market_sentiment:", !!data.market_sentiment);
+console.log("解析后数据是否包含 my_portfolio:", !!data.my_portfolio);
+
+// 3. 检查持仓数据
+if (data.my_portfolio) {
+    console.log("持仓股票数量:", data.my_portfolio.stocks ? data.my_portfolio.stocks.length : 0);
+    if (data.my_portfolio.stocks && data.my_portfolio.stocks.length > 0) {
+        console.log("第一只股票:", JSON.stringify(data.my_portfolio.stocks[0]));
+    }
+} else {
+    console.log("⚠️ 警告: 没有找到 my_portfolio 数据！");
+}
+
+console.log("===== 调试信息结束 =====\n");
+
+// 4. 构建持仓文本
+const sentiment = data.market_sentiment || {};
+const mood = `市场温度: ${sentiment.market_temperature || "未知"} | 风险偏好: ${sentiment.risk_level || "平稳"} | 建议: ${sentiment.suggested_action || "暂无"}`;
+
+let portfolioText = "";
+if (data.my_portfolio && data.my_portfolio.stocks && data.my_portfolio.stocks.length > 0) {
+    data.my_portfolio.stocks.forEach(stock => {
+        const tech = stock.technical || {};
+        const risks = tech.risks && tech.risks.length > 0 ? tech.risks.join(", ") : "无明显风险";
+        const signals = tech.signals && tech.signals.length > 0 ? tech.signals.join(", ") : "无明显信号";
+        const advice = stock.advice || "继续观察";
+        
+        portfolioText += `
+- 股票名称: ${stock.name} (${stock.code})
+  最新价格: ${stock.price} (涨幅: ${stock.change_pct}%)
+  【量化建议】: ${advice}
+  【RSI指标】: ${tech.rsi6 || "N/A"}
+  【预警信号】: ${risks}
+  【多头信号】: ${signals}
+`;
+    });
+} else {
+    portfolioText = "⚠️ 警告：未能读取到持仓数据。可能原因：\n1. Read File 节点的文件路径不正确\n2. market_data.json 文件格式有问题\n3. Python 脚本未成功生成持仓数据\n\n请检查上方调试信息。";
+}
+
+// 5. 构建热点板块文本
+let sectorText = "";
+if (data.hot_sectors && data.hot_sectors.length > 0) {
+    data.hot_sectors.slice(0, 5).forEach(sector => {
+        sectorText += `\n> **${sector.name}** (板块涨幅: ${sector.change_pct}%, 热度: ${parseFloat(sector.heat_score || 0).toFixed(1)})\n`;
+        if (sector.leading_stocks && sector.leading_stocks.length > 0) {
+            sector.leading_stocks.slice(0, 3).forEach(stock => {
+                const tech = stock.technical || {};
+                const rec = stock.recommendation || "观察";
+                sectorText += `  - ${stock.name}: ${stock.change_pct}% | 评级:${rec} | RSI:${tech.rsi6 || '-'} | 风险:${tech.risks ? tech.risks.join(',') : '无'}\n`;
+            });
+        }
+    });
+} else {
+    sectorText = "无显著热点数据或数据读取失败。";
+}
+
+// 6. 新闻
+let newsText = "";
+if (data.news_brief && data.news_brief.items) {
+    data.news_brief.items.slice(0, 5).forEach((item, index) => {
+        newsText += `${index + 1}. ${item.title}\n`;
+    });
+} else {
+    newsText = "暂无新闻数据。";
+}
+
+// 7. 构建 Prompt
+const prompt = `
+你是一个专业的A股量化交易助手。请根据以下最新的市场实时数据，为用户生成一份《收盘复盘·持仓诊断报告》。
+你的任务是根据提供的数据（特别是量化指标和风险预警）进行解读，不要编造数据。
+
+---数据开始---
+
+【基本面概览】
+${mood}
+
+【我的持仓诊断】 (这是最重要的部分，请详细解读)
+${portfolioText}
+
+【今日市场热点与机会扫描】 (重点关注核聚变、油气等新趋势)
+${sectorText}
+
+【关键财经新闻】
+${newsText}
+
+---数据结束---
+
+请按照以下 Markdown 格式输出报告（不要输出任何 JSON 代码块，只输出 Markdown 文本）：
+
+## 🌞 收盘复盘·持仓诊断 (${new Date().toLocaleDateString()})
+
+### 1. 核心持仓策略
+(根据【我的持仓诊断】中的【量化建议】和【RSI指标】给出一针见血的操作指引。如果建议是"高抛"或"止盈"，请用加粗字体强调。)
+
+### 2. 市场热点透视
+(根据【今日市场热点】数据，简述今日主力资金流向。指出哪些板块过热(RSI高)需要警惕，哪些是新启动的机会。)
+
+### 3. 明日交易计划
+(综合市场情绪和新闻，用简练的语言给出明天的操作预演。)
+`;
+
+return {
+    json: {
+        prompt: prompt,
+        debug_info: {
+            parse_status: parseStatus,
+            has_market_sentiment: !!data.market_sentiment,
+            has_portfolio: !!data.my_portfolio,
+            portfolio_count: data.my_portfolio?.stocks?.length || 0
+        }
+    }
+};

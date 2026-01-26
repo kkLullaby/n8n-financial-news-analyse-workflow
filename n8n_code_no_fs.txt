@@ -1,0 +1,175 @@
+// ===== N8N Code 节点 - 无 fs 模块版本 =====
+// 此版本只处理从上一个节点传来的数据，不直接读取文件
+
+// 第一步：打印调试信息，看看我们收到了什么
+console.log("========== 开始调试 ==========");
+console.log("items 数量:", items.length);
+
+if (items[0].binary) {
+    console.log("✅ 检测到 Binary 数据");
+    console.log("Binary 字段:", Object.keys(items[0].binary));
+} else {
+    console.log("❌ 没有 Binary 数据");
+}
+
+if (items[0].json) {
+    console.log("✅ 检测到 JSON 数据");
+    console.log("JSON 字段:", Object.keys(items[0].json));
+}
+
+// 第二步：尝试提取数据
+let data = {};
+let parseSuccess = false;
+
+try {
+    // 方案1: 从 Binary 提取（Read File 节点的默认输出）
+    if (items[0].binary && items[0].binary.data) {
+        console.log("🔍 Binary 数据详情:");
+        const binaryData = items[0].binary.data;
+        console.log("  - mimeType:", binaryData.mimeType);
+        console.log("  - 是否有 data 字段:", !!binaryData.data);
+        console.log("  - data 类型:", typeof binaryData.data);
+        
+        // N8N 的 Binary 可能直接就是 Buffer 或字符串
+        let jsonString = "";
+        
+        if (typeof binaryData.data === 'string') {
+            // 如果是字符串，尝试 base64 解码
+            try {
+                jsonString = Buffer.from(binaryData.data, 'base64').toString('utf-8');
+                console.log("  ✓ Base64 解码成功");
+            } catch (e) {
+                // 如果 base64 解码失败，可能本身就是 UTF-8 字符串
+                jsonString = binaryData.data;
+                console.log("  ✓ 直接使用字符串");
+            }
+        } else if (Buffer.isBuffer(binaryData.data)) {
+            // 如果是 Buffer，直接转字符串
+            jsonString = binaryData.data.toString('utf-8');
+            console.log("  ✓ Buffer 转换成功");
+        }
+        
+        console.log("📄 提取到的字符串长度:", jsonString.length);
+        console.log("📄 前200字符:", jsonString.substring(0, 200));
+        
+        if (jsonString.length > 0) {
+            data = JSON.parse(jsonString);
+            parseSuccess = true;
+            console.log("✅ Binary 解析成功");
+        }
+    }
+    
+    // 方案2: 从 JSON 字段提取
+    if (!parseSuccess && items[0].json) {
+        console.log("🔍 尝试从 JSON 字段提取");
+        const input = items[0].json;
+        
+        // 如果直接就是数据
+        if (input.market_sentiment) {
+            data = input;
+            parseSuccess = true;
+            console.log("✅ JSON 直接解析成功");
+        }
+        // 如果数据在某个字段中
+        else if (input.data) {
+            console.log("  - input.data 类型:", typeof input.data);
+            if (typeof input.data === 'string') {
+                data = JSON.parse(input.data);
+            } else {
+                data = input.data;
+            }
+            parseSuccess = true;
+            console.log("✅ JSON.data 字段解析成功");
+        }
+    }
+    
+} catch (error) {
+    console.log("❌ 解析失败:", error.message);
+    console.log("错误详情:", error.stack);
+}
+
+console.log("解析结果:", parseSuccess ? "成功" : "失败");
+console.log("持仓数量:", data.my_portfolio?.stocks?.length || 0);
+console.log("热点板块数量:", data.hot_sectors?.length || 0);
+console.log("========== 调试结束 ==========");
+
+// 如果解析失败，返回错误信息
+if (!parseSuccess || !data.market_sentiment) {
+    return {
+        json: {
+            error: "数据解析失败，请查看浏览器控制台的调试信息",
+            hint: "按 F12 打开控制台查看详细日志"
+        }
+    };
+}
+
+// ========== 以下是正常的数据处理逻辑 ==========
+const sentiment = data.market_sentiment || {};
+const mood = `市场温度: ${sentiment.market_temperature || "未知"} | 风险偏好: ${sentiment.risk_level || "平稳"}`;
+
+let portfolioText = "";
+if (data.my_portfolio?.stocks?.length > 0) {
+    data.my_portfolio.stocks.forEach(stock => {
+        const tech = stock.technical || {};
+        portfolioText += `
+- ${stock.name} (${stock.code}): ${stock.change_pct}%
+  建议: ${stock.advice} | RSI: ${tech.rsi6}
+  风险: ${tech.risks?.join(',') || '无'}
+  信号: ${tech.signals?.join(',') || '无'}
+`;
+    });
+}
+
+let sectorText = "";
+if (data.hot_sectors?.length > 0) {
+    data.hot_sectors.slice(0, 5).forEach(s => {
+        sectorText += `\n> **${s.name}** (+${s.change_pct}%)\n`;
+        s.leading_stocks?.slice(0, 2).forEach(stock => {
+            sectorText += `  - ${stock.name}: ${stock.change_pct}%\n`;
+        });
+    });
+}
+
+let newsText = "";
+if (data.news_brief?.items) {
+    data.news_brief.items.slice(0, 5).forEach((item, idx) => {
+        newsText += `${idx + 1}. ${item.title}\n`;
+    });
+}
+
+const prompt = `
+你是A股量化分析师。根据以下数据生成《收盘复盘报告》：
+
+【市场情绪】${mood}
+【持仓诊断】${portfolioText}
+【热点板块】${sectorText}
+【财经新闻】${newsText}
+
+请输出 Markdown 格式报告，包含：
+1. 核心持仓策略
+2. 市场热点透视
+3. 明日交易计划
+`;
+
+return {
+    json: {
+        body: {
+            model: "qwen-plus",
+            input: {
+                messages: [
+                    { role: "system", content: "你是专业A股分析师，基于数据分析，不编造数据。" },
+                    { role: "user", content: prompt }
+                ]
+            },
+            parameters: { result_format: "message", temperature: 0.7 }
+        },
+        prompt: prompt,
+        debug: {
+            success: parseSuccess,
+            timestamp: data.timestamp,
+            portfolioCount: data.my_portfolio?.stocks?.length || 0,
+            portfolioStocks: data.my_portfolio?.stocks?.map(s => `${s.name}: ${s.change_pct}%`) || [],
+            hotSectorsTop3: data.hot_sectors?.slice(0,3).map(s => s.name) || []
+        }
+    }
+};

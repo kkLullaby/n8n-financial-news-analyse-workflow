@@ -1,0 +1,222 @@
+// ===== N8N Code 节点 - 终极调试版 v3.0 =====
+// 此版本会详细打印 Read File 节点的输出结构，帮助定位数据
+
+// ========== 第一部分：调试输出 ==========
+console.log("========== 调试开始 ==========");
+
+// 打印 items 数组结构
+console.log("items 长度:", items.length);
+console.log("items[0] 类型:", typeof items[0]);
+console.log("items[0] 所有字段:", Object.keys(items[0] || {}));
+
+// 打印 items[0].json 结构
+const rawJson = items[0].json;
+console.log("items[0].json 类型:", typeof rawJson);
+console.log("items[0].json 所有字段:", Object.keys(rawJson || {}));
+
+// 如果有 binary 数据，也打印出来
+if (items[0].binary) {
+    console.log("items[0].binary 字段:", Object.keys(items[0].binary));
+    for (const key of Object.keys(items[0].binary)) {
+        const bin = items[0].binary[key];
+        console.log(`  binary[${key}] mimeType:`, bin.mimeType);
+        console.log(`  binary[${key}] data 长度:`, bin.data ? bin.data.length : 0);
+    }
+}
+
+// 打印 json 中每个字段的类型和前100字符
+for (const key of Object.keys(rawJson || {})) {
+    const val = rawJson[key];
+    const valType = typeof val;
+    let preview = "";
+    if (valType === "string") {
+        preview = val.substring(0, 100);
+    } else if (valType === "object") {
+        preview = JSON.stringify(val).substring(0, 100);
+    } else {
+        preview = String(val);
+    }
+    console.log(`  json[${key}] (${valType}):`, preview);
+}
+
+console.log("========== 调试结束 ==========");
+
+// ========== 第二部分：尝试所有可能的解析方式 ==========
+let data = {};
+let parseMethod = "未找到";
+
+try {
+    const input = items[0].json;
+    
+    // 方式1: 直接包含 market_sentiment
+    if (input && input.market_sentiment) {
+        data = input;
+        parseMethod = "方式1: 直接对象";
+    }
+    // 方式2: data 字段 (字符串)
+    else if (input && input.data && typeof input.data === 'string') {
+        data = JSON.parse(input.data);
+        parseMethod = "方式2: data字段(字符串)";
+    }
+    // 方式3: data 字段 (对象)
+    else if (input && input.data && typeof input.data === 'object') {
+        data = input.data;
+        parseMethod = "方式3: data字段(对象)";
+    }
+    // 方式4: content 字段
+    else if (input && input.content) {
+        data = typeof input.content === 'string' ? JSON.parse(input.content) : input.content;
+        parseMethod = "方式4: content字段";
+    }
+    // 方式5: body 字段
+    else if (input && input.body) {
+        data = typeof input.body === 'string' ? JSON.parse(input.body) : input.body;
+        parseMethod = "方式5: body字段";
+    }
+    // 方式6: 整个 input 是字符串
+    else if (typeof input === 'string') {
+        data = JSON.parse(input);
+        parseMethod = "方式6: input是字符串";
+    }
+    // 方式7: 从 binary 中读取
+    else if (items[0].binary) {
+        const binaryKeys = Object.keys(items[0].binary);
+        if (binaryKeys.length > 0) {
+            const binaryData = items[0].binary[binaryKeys[0]];
+            if (binaryData && binaryData.data) {
+                // N8N binary data 是 base64 编码的
+                const decoded = Buffer.from(binaryData.data, 'base64').toString('utf-8');
+                data = JSON.parse(decoded);
+                parseMethod = "方式7: binary数据(base64)";
+            }
+        }
+    }
+    // 方式8: 遍历所有字段寻找 JSON 字符串
+    else {
+        for (const key of Object.keys(input || {})) {
+            const val = input[key];
+            if (typeof val === 'string' && val.startsWith('{')) {
+                try {
+                    const parsed = JSON.parse(val);
+                    if (parsed.market_sentiment || parsed.hot_sectors) {
+                        data = parsed;
+                        parseMethod = `方式8: 从字段[${key}]解析`;
+                        break;
+                    }
+                } catch (e) {}
+            }
+        }
+    }
+} catch (error) {
+    console.log("解析错误:", error.message);
+    parseMethod = "解析失败: " + error.message;
+}
+
+console.log("最终解析方式:", parseMethod);
+console.log("解析后 market_sentiment 存在:", !!data.market_sentiment);
+console.log("解析后 my_portfolio 存在:", !!data.my_portfolio);
+
+// ========== 第三部分：构建输出 ==========
+const sentiment = data.market_sentiment || {};
+const mood = `市场温度: ${sentiment.market_temperature || "未知"} | 风险偏好: ${sentiment.risk_level || "平稳"} | 建议: ${sentiment.suggested_action || "暂无"}`;
+
+let portfolioText = "";
+if (data.my_portfolio && data.my_portfolio.stocks && data.my_portfolio.stocks.length > 0) {
+    data.my_portfolio.stocks.forEach(stock => {
+        const tech = stock.technical || {};
+        const risks = tech.risks && tech.risks.length > 0 ? tech.risks.join(", ") : "无明显风险";
+        const signals = tech.signals && tech.signals.length > 0 ? tech.signals.join(", ") : "无明显信号";
+        const advice = stock.advice || "继续观察";
+        
+        portfolioText += `
+- 股票名称: ${stock.name} (${stock.code})
+  最新价格: ${stock.price} (涨幅: ${stock.change_pct}%)
+  【量化建议】: ${advice}
+  【RSI指标】: ${tech.rsi6 || "N/A"}
+  【预警信号】: ${risks}
+  【多头信号】: ${signals}
+`;
+    });
+} else {
+    portfolioText = "⚠️ 未能读取到持仓数据。请查看上方控制台的调试输出。";
+}
+
+let sectorText = "";
+if (data.hot_sectors && data.hot_sectors.length > 0) {
+    data.hot_sectors.slice(0, 5).forEach(sector => {
+        sectorText += `\n> **${sector.name}** (板块涨幅: ${sector.change_pct}%, 热度: ${parseFloat(sector.heat_score || 0).toFixed(1)})\n`;
+        if (sector.leading_stocks && sector.leading_stocks.length > 0) {
+            sector.leading_stocks.slice(0, 3).forEach(stock => {
+                const tech = stock.technical || {};
+                const rec = stock.recommendation || "观察";
+                sectorText += `  - ${stock.name}: ${stock.change_pct}% | 评级:${rec} | RSI:${tech.rsi6 || '-'}\n`;
+            });
+        }
+    });
+} else {
+    sectorText = "无热点数据";
+}
+
+let newsText = "";
+if (data.news_brief && data.news_brief.items) {
+    data.news_brief.items.slice(0, 5).forEach((item, index) => {
+        newsText += `${index + 1}. ${item.title}\n`;
+    });
+} else {
+    newsText = "暂无新闻";
+}
+
+const prompt = `
+你是一个专业的A股量化交易助手。请根据以下最新的市场实时数据，为用户生成一份《收盘复盘·持仓诊断报告》。
+
+---数据开始---
+
+【基本面概览】
+${mood}
+
+【我的持仓诊断】
+${portfolioText}
+
+【今日市场热点】
+${sectorText}
+
+【关键新闻】
+${newsText}
+
+---数据结束---
+
+请按照 Markdown 格式输出报告：
+## 🌞 收盘复盘·持仓诊断
+
+### 1. 核心持仓策略
+### 2. 市场热点透视
+### 3. 明日交易计划
+`;
+
+const dashscopeRequestBody = {
+    model: "qwen-plus",
+    input: {
+        messages: [
+            { role: "system", content: "你是专业的A股量化分析师，严格基于数据分析，不编造数据。" },
+            { role: "user", content: prompt }
+        ]
+    },
+    parameters: { result_format: "message", temperature: 0.7 }
+};
+
+return {
+    json: {
+        body: dashscopeRequestBody,
+        prompt: prompt,
+        debug: {
+            parseMethod: parseMethod,
+            parseSuccess: !!data.market_sentiment,
+            timestamp: data.timestamp || "未知",
+            portfolioCount: data.my_portfolio?.stocks?.length || 0,
+            portfolioStocks: data.my_portfolio?.stocks?.map(s => `${s.name}(${s.code}): ${s.change_pct}%`) || [],
+            hotSectorsCount: data.hot_sectors?.length || 0,
+            rawInputKeys: Object.keys(items[0].json || {}),
+            hasBinary: !!items[0].binary
+        }
+    }
+};

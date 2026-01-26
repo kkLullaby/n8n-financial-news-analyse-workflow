@@ -1,0 +1,154 @@
+// ===== N8N Code 节点 - 直接读取文件版 =====
+// 不依赖 Read File 节点，直接在 Code 中读取 JSON 文件
+
+const fs = require('fs');
+const path = require('path');
+
+// 文件路径
+const filePath = '/home/kk/n8n/market_data.json';
+
+let data = {};
+let success = false;
+
+try {
+    // 直接读取文件
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    data = JSON.parse(fileContent);
+    success = true;
+    
+    console.log("✅ 文件读取成功");
+    console.log("📊 时间戳:", data.timestamp);
+    console.log("💼 持仓数量:", data.my_portfolio?.stocks?.length || 0);
+    console.log("🔥 热点板块:", data.hot_sectors?.length || 0);
+} catch (error) {
+    console.log("❌ 文件读取失败:", error.message);
+    return {
+        json: {
+            error: "无法读取文件",
+            message: error.message,
+            filePath: filePath
+        }
+    };
+}
+
+// ========== 构建数据 ==========
+const sentiment = data.market_sentiment || {};
+const mood = `市场温度: ${sentiment.market_temperature || "未知"} | 风险偏好: ${sentiment.risk_level || "平稳"} | 建议: ${sentiment.suggested_action || "暂无"}`;
+
+// 持仓文本
+let portfolioText = "";
+if (data.my_portfolio?.stocks?.length > 0) {
+    data.my_portfolio.stocks.forEach(stock => {
+        const tech = stock.technical || {};
+        const risks = tech.risks?.length > 0 ? tech.risks.join(", ") : "无明显风险";
+        const signals = tech.signals?.length > 0 ? tech.signals.join(", ") : "无明显信号";
+        
+        portfolioText += `
+- 股票名称: ${stock.name} (${stock.code})
+  最新价格: ${stock.price} (涨幅: ${stock.change_pct}%)
+  【量化建议】: ${stock.advice}
+  【RSI指标】: ${tech.rsi6}
+  【预警信号】: ${risks}
+  【多头信号】: ${signals}
+`;
+    });
+} else {
+    portfolioText = "当前无持仓数据。";
+}
+
+// 热点板块
+let sectorText = "";
+if (data.hot_sectors?.length > 0) {
+    data.hot_sectors.slice(0, 5).forEach(sector => {
+        sectorText += `\n> **${sector.name}** (板块涨幅: ${sector.change_pct}%, 热度: ${parseFloat(sector.heat_score || 0).toFixed(1)})\n`;
+        if (sector.leading_stocks?.length > 0) {
+            sector.leading_stocks.slice(0, 3).forEach(stock => {
+                const tech = stock.technical || {};
+                const rec = stock.recommendation || "观察";
+                sectorText += `  - ${stock.name}: ${stock.change_pct}% | 评级:${rec} | RSI:${tech.rsi6 || '-'}\n`;
+            });
+        }
+    });
+} else {
+    sectorText = "无热点数据";
+}
+
+// 新闻
+let newsText = "";
+if (data.news_brief?.items) {
+    data.news_brief.items.slice(0, 5).forEach((item, index) => {
+        newsText += `${index + 1}. ${item.title}\n`;
+    });
+} else {
+    newsText = "暂无新闻";
+}
+
+// ========== 构建 Prompt ==========
+const prompt = `
+你是一个专业的A股量化交易助手。请根据以下最新的市场实时数据，为用户生成一份《收盘复盘·持仓诊断报告》。
+
+---数据开始---
+
+【基本面概览】
+${mood}
+
+【我的持仓诊断】 (这是最重要的部分，请详细解读)
+${portfolioText}
+
+【今日市场热点与机会扫描】 (重点关注核聚变、油气等新趋势)
+${sectorText}
+
+【关键财经新闻】
+${newsText}
+
+---数据结束---
+
+请按照以下 Markdown 格式输出报告（不要输出任何 JSON 代码块，只输出 Markdown 文本）：
+
+## 🌞 收盘复盘·持仓诊断 (${new Date().toLocaleDateString()})
+
+### 1. 核心持仓策略
+(根据【我的持仓诊断】中的【量化建议】和【RSI指标】给出一针见血的操作指引。如果建议是"高抛"或"止盈"，请用加粗字体强调。)
+
+### 2. 市场热点透视
+(根据【今日市场热点】数据，简述今日主力资金流向。指出哪些板块过热(RSI高)需要警惕，哪些是新启动的机会。)
+
+### 3. 明日交易计划
+(综合市场情绪和新闻，用简练的语言给出明天的操作预演。)
+`;
+
+// ========== 输出 ==========
+const dashscopeRequestBody = {
+    model: "qwen-plus",
+    input: {
+        messages: [
+            {
+                role: "system",
+                content: "你是一个专业的A股量化分析师，擅长解读技术指标和市场情绪。请严格基于提供的数据进行分析，不要编造任何数据。"
+            },
+            {
+                role: "user",
+                content: prompt
+            }
+        ]
+    },
+    parameters: {
+        result_format: "message",
+        temperature: 0.7
+    }
+};
+
+return {
+    json: {
+        body: dashscopeRequestBody,
+        prompt: prompt,
+        debug: {
+            success: success,
+            timestamp: data.timestamp,
+            portfolioCount: data.my_portfolio?.stocks?.length || 0,
+            portfolioStocks: data.my_portfolio?.stocks?.map(s => `${s.name}(${s.code}): ${s.change_pct}%`) || [],
+            hotSectorsCount: data.hot_sectors?.length || 0,
+            hotSectorsTop3: data.hot_sectors?.slice(0,3).map(s => s.name) || []
+        }
+    }
+};

@@ -58,23 +58,95 @@ STOCK_FILE = "/home/kk/n8n/my_stocks.txt"
 MAX_RETRIES = 3
 RETRY_DELAY = 2  # 秒
 
-# 3. 备选热门股票池（当API不可用时使用，关键词匹配）
+# 3. 热门概念与龙头股池 (手动维护的高质量概念库)
+# 涵盖: 发电/核能, 油气/资源, AI/算力, 机器人/制造, 金融/地产, 消费
 FALLBACK_HOT_STOCKS = {
-    "机器人/人形机器人/具身智能": ["300024", "002527", "300775", "002747", "300124"],
-    "AI芯片/AI/算力/芯片": ["002230", "603986", "603501", "688256", "002049"],
-    "新能源/锂电/电池/储能": ["300750", "002594", "601012", "600438", "002466"],
-    "航天军工/军工/国防/航空": ["600118", "000547", "600893", "002025", "600855"],
-    "医药/生物/创新药/医疗": ["300760", "603259", "688180", "300529", "002821"],
-    "白酒/消费/食品饮料": ["600519", "000858", "000568", "603369", "002304"],
-    "光伏/太阳能/风电": ["601012", "688599", "002459", "300274", "300763"],
-    "汽车/新能源车/特斯拉": ["002594", "601238", "000625", "600104", "002920"],
-    "半导体/存储/封测": ["002371", "688396", "688008", "603290", "002049"],
-    "互联网/电商/数字经济": ["300059", "002624", "002241", "603881", "300033"],
+    "可控核聚变/核电": ["601985", "000969", "002438", "002355", "688120"],
+    "油气开采/石油天然气": ["601857", "600028", "600938", "600583", "600256"],
+    "固态电池/锂电池": ["300750", "002460", "688063", "002074", "300014"],
+    "人形机器人/具身智能": ["300024", "002527", "300775", "002371", "603501"],
+    "低空经济/飞行汽车": ["002085", "688220", "002985", "002409", "300059"],
+    "AI算力/CPO/光模块": ["300308", "603083", "000977", "600941", "601138"],
+    "半导体/自主可控": ["688981", "002371", "603986", "688012", "688041"],
+    "互联网金融/证券": ["300059", "601138", "300033", "600030", "002670"],
+    "白酒/消费/免税": ["600519", "000858", "601888", "600887", "000568"],
+    "贵金属/黄金": ["601899", "600547", "002716", "600489", "002155"],
+    "量子科技/6G": ["002224", "600050", "600118", "000547", "600893"],
+    "新能源车/自动驾驶": ["002594", "601238", "002869", "300348", "600009"]
 }
 
 # ==========================================
 # 🔧 工具函数
 # ==========================================
+
+def calculate_technical_indicators(df):
+    """【新增】计算技术指标 (MA, RSI, KDJ, VOL)"""
+    if df is None or len(df) < 30:
+        return None
+        
+    try:
+        # 1. 均线 MA
+        df['MA5'] = df['收盘'].rolling(window=5).mean()
+        df['MA10'] = df['收盘'].rolling(window=10).mean()
+        df['MA20'] = df['收盘'].rolling(window=20).mean()
+        df['MA60'] = df['收盘'].rolling(window=60).mean()
+        
+        # 2. RSI (相对强弱指标)
+        delta = df['收盘'].diff()
+        gain = (delta.where(delta > 0, 0)).rolling(window=6).mean()
+        loss = (-delta.where(delta < 0, 0)).rolling(window=6).mean()
+        rs = gain / loss
+        df['RSI6'] = 100 - (100 / (1 + rs))
+        
+        # 3. 趋势判定
+        latest = df.iloc[-1]
+        prev = df.iloc[-2]
+        
+        trend_score = 0
+        signals = []
+        risk_warnings = []
+        
+        # MA多头排列
+        if latest['MA5'] > latest['MA10'] > latest['MA20']:
+            trend_score += 3
+            signals.append("均线多头")
+        
+        # 金叉
+        if prev['MA5'] < prev['MA10'] and latest['MA5'] > latest['MA10']:
+            trend_score += 2
+            signals.append("MA5/10金叉")
+            
+        # 量价配合 (今日上涨且放量)
+        vol_ratio = latest['成交量'] / df['成交量'].tail(5).mean()
+        if latest['收盘'] > prev['收盘'] and vol_ratio > 1.2:
+            trend_score += 1
+            signals.append("放量上涨")
+            
+        # RSI分析
+        rsi = latest['RSI6']
+        if rsi > 80:
+            risk_warnings.append("RSI超买(80+)")
+            trend_score -= 1
+        elif rsi < 20:
+            signals.append("RSI超卖反弹")
+            trend_score += 2
+            
+        # 乖离率 (当前价格远离MA5)
+        bias = (latest['收盘'] - latest['MA5']) / latest['MA5'] * 100
+        if bias > 5:
+            risk_warnings.append(f"乖离率高({bias:.1f}%)")
+            
+        return {
+            "ma5": round(latest['MA5'], 2),
+            "ma20": round(latest['MA20'], 2),
+            "rsi6": round(rsi, 2),
+            "trend_score": trend_score,
+            "signals": signals,
+            "risks": risk_warnings,
+            "volume_ratio": round(vol_ratio, 2)
+        }
+    except:
+        return None
 
 def safe_float(value, default=0.0):
     """【新增】安全转换浮点数，防止 '-' 或 None 报错"""
@@ -309,121 +381,78 @@ def get_market_sentiment():
     }
 
 def get_hot_sectors_and_stocks(top_n=8, stocks_per_sector=5):
-    """2. 获取热点板块及龙头 (多源策略: 同花顺概念+新浪热门+备用池)"""
-    print(f"正在扫描全市场热点板块 (每板块{stocks_per_sector}只)...")
+    """2. 获取热点板块及龙头 (基于精选概念池 + 实时资金流向排序)"""
+    print(f"正在扫描主流热点赛道...")
     
-    hot_sectors = []
+    sector_performance = []
     
-    # === 方案1: 使用同花顺板块概览 + 计算实时涨跌 ===
-    for attempt in range(MAX_RETRIES):
-        try:
-            # 获取板块列表
-            boards = ak.stock_board_concept_name_ths()
+    # === 使用精选概念池进行全扫描 ===
+    # 注意：不再依赖同花顺排榜，而是扫描所有我们关注的"高质量"板块
+    for sector_key, codes in FALLBACK_HOT_STOCKS.items():
+        # 获取该板块代表股的实时行情
+        leading_stocks = get_stocks_realtime_sina(codes)
+        
+        if not leading_stocks:
+            continue
             
-            # 计算每个板块的涨跌幅 (通过info接口)
-            board_data = []
-            for idx, row in boards.head(top_n * 2).iterrows():  # 取多一些备用
-                board_name = row.get('name', '')
-                if not board_name or any(kw in board_name for kw in ['昨日', '连板', '首板']):
-                    continue
-                    
+        # 计算板块热度：代表股平均涨幅 + 领涨股涨幅
+        avg_pct = sum(s['change_pct'] for s in leading_stocks) / len(leading_stocks)
+        max_pct = max(s['change_pct'] for s in leading_stocks)
+        
+        # 简单热度分：平均涨幅*0.6 + 龙头涨幅*0.4
+        heat_score = avg_pct * 0.6 + max_pct * 0.4
+        
+        # 只展示正收益或热度高的板块
+        if heat_score > 0 or max_pct > 3:
+            # 为每只股票增加技术指标分析（仅对前3只做，避免请求过多）
+            for i, stock in enumerate(leading_stocks[:3]):
                 try:
-                    # 获取板块实时数据
-                    info = ak.stock_board_concept_info_ths(symbol=board_name)
-                    # info格式: [['今开', value], ['昨收', value], ...]
-                    prev_close = 0
-                    current = 0
-                    for _, item in info.iterrows():
-                        item_name = str(item.get('项目', ''))
-                        item_value = safe_float(item.get('值', 0))
-                        if '昨收' in item_name:
-                            prev_close = item_value
-                        elif item_name in ['最新', '现价', '收盘价']:
-                            current = item_value
-                    
-                    if prev_close > 0 and current > 0:
-                        pct = round((current - prev_close) / prev_close * 100, 2)
-                    else:
-                        pct = 0
-                    
-                    board_data.append({
-                        'name': board_name,
-                        'change_pct': pct
-                    })
+                    hist = ak.stock_zh_a_hist(symbol=stock['code'], period="daily", adjust="qfq")
+                    tech = calculate_technical_indicators(hist)
+                    if tech:
+                        stock['technical'] = tech
+                        # 如果没有趋势分，初始化
+                        if stock.get('technical', {}).get('trend_score', 0) >= 3:
+                             stock['recommendation'] = "🌟 强烈关注"
+                        elif stock.get('technical', {}).get('trend_score', 0) >= 1:
+                             stock['recommendation'] = "👀 观察"
+                        else:
+                             stock['recommendation'] = "✋ 观望"
                 except:
-                    # info获取失败，使用0涨跌
-                    board_data.append({'name': board_name, 'change_pct': 0})
-                
-                if len(board_data) >= top_n:
-                    break
+                    pass
             
-            # 按涨跌幅排序
-            board_data.sort(key=lambda x: x['change_pct'], reverse=True)
-            
-            for bd in board_data[:top_n]:
-                board_name = bd['name']
-                board_pct = bd['change_pct']
-                
-                # 使用预定义龙头或新浪获取代表股
-                leading_stocks = []
-                
-                # 尝试从备用池匹配相关板块
-                matched_codes = []
-                for sector_key, codes in FALLBACK_HOT_STOCKS.items():
-                    if any(kw in board_name for kw in sector_key.split('/')):
-                        matched_codes = codes[:stocks_per_sector]
-                        break
-                
-                # 使用新浪获取股票实时数据
-                if matched_codes:
-                    leading_stocks = get_stocks_realtime_sina(matched_codes)
-                
-                hot_sectors.append({
-                    "name": board_name,
-                    "change_pct": board_pct,
-                    "leading_stocks": leading_stocks
-                })
-                
-                if leading_stocks:
-                    print(f"  -> 捕获: {board_name} ({board_pct:+.2f}%) [{len(leading_stocks)}只成分股]")
-                else:
-                    print(f"  -> 捕获: {board_name} ({board_pct:+.2f}%)")
-            
-            break
-        except Exception as e:
-            if attempt < MAX_RETRIES - 1:
-                print(f"    同花顺板块获取失败，重试 {attempt + 1}/{MAX_RETRIES}...")
-                time.sleep(RETRY_DELAY)
-            else:
-                print(f"  -> 同花顺板块获取失败: {e}")
+            sector_name = sector_key.split('/')[0]
+            sector_performance.append({
+                "name": sector_name,
+                "change_pct": round(avg_pct, 2),
+                "heat_score": heat_score,
+                "leading_stocks": leading_stocks
+            })
+            print(f"  -> 扫描: {sector_name} (均涨{avg_pct:.2f}%, 龙头{max_pct:.2f}%)")
     
-    # === 方案2: 使用备用股票池（如果同花顺完全失败）===
-    if not hot_sectors:
-        print("  -> 尝试备用方案（预定义热门股票池 + 新浪实时）...")
-        for sector_key, codes in FALLBACK_HOT_STOCKS.items():
-            # 使用新浪批量获取实时数据（更快）
-            leading_stocks = get_stocks_realtime_sina(codes[:3])
-            
-            if leading_stocks:
-                # 使用板块关键词的第一个作为名称
-                sector_name = sector_key.split('/')[0]
-                avg_pct = round(sum(s['change_pct'] for s in leading_stocks) / len(leading_stocks), 2)
-                hot_sectors.append({
-                    "name": sector_name,
-                    "change_pct": avg_pct,
-                    "leading_stocks": leading_stocks
-                })
-                print(f"  -> 捕获: {sector_name} ({avg_pct:+.2f}%) [{len(leading_stocks)}只]")
-
-    if not hot_sectors:
-        hot_sectors = [{
-            "name": "⚠️ 数据暂不可用",
+    # 按照热度排序
+    sector_performance.sort(key=lambda x: x['heat_score'], reverse=True)
+    
+    # 去除重复或无效
+    unique_sectors = []
+    seen = set()
+    for s in sector_performance:
+        if s['name'] not in seen:
+            unique_sectors.append(s)
+            seen.add(s['name'])
+    
+    top_sectors = unique_sectors[:top_n]
+    
+    # 如果没有找到任何正向板块（极端行情），返回空
+    if not top_sectors:
+         top_sectors = [{
+            "name": "全市场回调",
             "change_pct": 0,
             "leading_stocks": [],
-            "data_status": "unavailable"
+            "data_status": "bear_market"
         }]
     
-    return hot_sectors
+    return top_sectors
 
 def load_my_stocks():
     if not os.path.exists(STOCK_FILE):
@@ -519,100 +548,80 @@ def get_dragon_tiger_list():
     return "最近暂无龙虎榜数据"
 
 def check_my_portfolio():
-    """4. 持仓哨兵 (增强容错)"""
+    """4. 持仓哨兵 (增强技术面分析)"""
     my_stocks = load_my_stocks() 
     print(f"正在巡查持仓 ({len(my_stocks)} 只)...")
     
     if not my_stocks:
         return {"stocks": [], "summary": {"message": "暂无持仓监控"}}
 
-    all_stocks = None
-    for attempt in range(2):
-        try:
-            all_stocks = ak.stock_zh_a_spot_em()
-            break
-        except:
-            if attempt < 1: time.sleep(1)
+    # 改为使用新浪批量接口，速度更快且稳定
+    realtime_data = get_stocks_realtime_sina(my_stocks)
+    stock_map = {s['code']: s for s in realtime_data}
     
     portfolio_list = []
     up_count, down_count, flat_count = 0, 0, 0
     danger_alerts = []
-    change_sum = 0.0
     
     for code in my_stocks:
         try:
-            name, price, pct, turnover = "未知", 0, 0, 0
+            # 基础数据
+            stock_rt = stock_map.get(code, {})
+            name = stock_rt.get('name', '未知')
+            price = stock_rt.get('price', 0)
+            pct = stock_rt.get('change_pct', 0)
             
-            if all_stocks is not None:
-                stock = all_stocks[all_stocks['代码'] == code]
-                if not stock.empty:
-                    stock = stock.iloc[0]
-                    name = stock['名称']
-                    price = safe_float(stock.get('最新价', stock.get('最新', 0)))
-                    pct = safe_float(stock['涨跌幅'])
-                    turnover = safe_float(stock['换手率'])
+            # 详细技术分析
+            tech_analysis = {}
+            advice = "持有"
             
-            # 如果全市场数据里没找到，或者获取失败，尝试单只查询
-            if name == "未知":
-                print(f"  -> {code} 切换到单只查询模式")
-                stock_info = ak.stock_individual_info_em(symbol=code)
-                name = str(stock_info[stock_info['item'] == '股票简称']['value'].values[0])
-                price = safe_float(stock_info[stock_info['item'] == '最新']['value'].values[0])
-                
-                # 尝试获取历史数据计算涨跌（可能失败）
-                try:
-                    hist = ak.stock_zh_a_hist(symbol=code, period="daily", adjust="qfq")
-                    if len(hist) >= 2:
-                        # 优先使用涨跌幅列，否则手动计算
-                        if '涨跌幅' in hist.columns:
-                            pct = safe_float(hist.iloc[-1]['涨跌幅'])
-                        else:
-                            latest_close = safe_float(hist.iloc[-1]['收盘'])
-                            prev_close = safe_float(hist.iloc[-2]['收盘'])
-                            if prev_close > 0:
-                                pct = round((latest_close - prev_close) / prev_close * 100, 2)
-                        
-                        if '换手率' in hist.columns:
-                            turnover = safe_float(hist.iloc[-1]['换手率'])
-                except Exception as hist_e:
-                    print(f"    -> 历史数据暂不可用，仅显示价格")
-                    # pct和turnover保持默认值0
-                
-                print(f"  -> {code} {name}: {price}元 {pct:+.2f}%")
+            try:
+                hist = ak.stock_zh_a_hist(symbol=code, period="daily", adjust="qfq")
+                tech = calculate_technical_indicators(hist)
+                if tech:
+                    tech_analysis = tech
+                    # 生成建议
+                    score = tech['trend_score']
+                    rsi = tech['rsi6']
+                    
+                    if score >= 4: advice = "坚定持有"
+                    elif score <= -1: advice = "考虑减仓"
+                    elif rsi > 85: advice = "高抛止盈"
+                    elif rsi < 15: advice = "低吸补仓"
+                    elif "放量上涨" in tech['signals']: advice = "加仓做T"
+            except:
+                pass
 
-            change_sum += pct
-            if pct > 0.1: up_count += 1
-            elif pct < -0.1: down_count += 1
+            item = {
+                "name": name,
+                "code": code,
+                "price": price,
+                "change_pct": pct,
+                "technical": tech_analysis,
+                "advice": advice
+            }
+            portfolio_list.append(item)
+            
+            if pct > 0: up_count += 1
+            elif pct < 0: down_count += 1
             else: flat_count += 1
-
-            # 状态判定
-            status, status_text, alert_level = "hold", "🟢 持有", 0
-            if pct < -4.0:
-                status, status_text, alert_level = "danger", "🔴 暴跌止损", 3
-                danger_alerts.append(f"{name}暴跌{pct}%")
-            elif pct < -1.5 and turnover > 5:
-                status, status_text, alert_level = "warning", "⚠️ 放量下杀", 2
-                danger_alerts.append(f"{name}放量下跌")
-            elif pct > 5.0:
-                status, status_text, alert_level = "strong", "🚀 强势加速", 1
-            elif pct > 2.0:
-                status, status_text, alert_level = "good", "📈 上涨中", 0
-
-            portfolio_list.append({
-                "code": code, "name": name, "price": price,
-                "change_pct": pct, "turnover": turnover,
-                "status": status, "status_text": status_text,
-                "alert_level": alert_level
-            })
-        
-        except Exception:
-            portfolio_list.append({"code": code, "name": "获取失败", "status": "error"})
-
+            
+            if pct < -5 or (tech_analysis and tech_analysis.get('rsi6', 50) < 20):
+                danger_alerts.append(f"{name} 处于弱势 ({pct}%)")
+                
+            print(f"  -> {code} {name}: {pct}% [{advice}]")
+            
+        except Exception as e:
+            print(f"  -> {code} 分析失败: {e}")
+            continue
+            
     summary = {
         "total": len(my_stocks),
-        "up_count": up_count, "down_count": down_count,
+        "up_count": up_count, 
+        "down_count": down_count,
         "danger_alerts": danger_alerts,
-        "has_danger": len(danger_alerts) > 0
+        "has_danger": len(danger_alerts) > 0,
+        "strategy_suggestion": "持仓稳健" if up_count > down_count else "注意风险控制"
     }
 
     return {"stocks": portfolio_list, "summary": summary}
