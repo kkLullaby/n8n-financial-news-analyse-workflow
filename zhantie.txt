@@ -1,53 +1,86 @@
-{{
-{
-  "model": "qwen-max",
-  "messages": [
-    {
-      "role": "system",
-      "content": "你是一名追求【稳定复利】的 A 股资深量化研究员。你的风格是：**不见兔子不撒鹰**。你只推荐有资金合力、有逻辑支撑的标的。请根据输入的数据，输出一份结构严谨的作战计划。"
-    },
-    {
-      "role": "user",
-      "content": `请根据以下实时行情数据，撰写《A股核心题材·深度狙击作战表》。
+// ============================================================
+// 🚀 A股复盘核心数据转运节点 (适配 Python v4.0)
+// ============================================================
 
-数据源：
-` + $node["Code in JavaScript"].json.ai_context + `
+// 1. 📥 智能解包数据 (兼容 N8N 各种复杂的输入格式)
+const root = $input.item.json;
+let marketData = {};
 
-### 任务要求（必须严格执行）：
-
-1.  **板块深度拆解（选取前 3 个最强板块）**：
-    对于每个板块，你必须生成一个 Markdown 表格，包含以下列：
-    -   **角色**：标注谁是“龙头”（涨幅最大/量比最强），谁是“中军/跟风”。
-    -   **股票代码**：必须准确列出（如 300123）。
-    -   **股票名称**：准确名称。
-    -   **资金状态**：根据量比和换手率评价（如：缩量加速、放量分歧、底部堆量）。
-    -   **狙击评级**：打分（⭐⭐⭐ ~ ⭐⭐⭐⭐⭐）。
-        -   *评级逻辑*：量比 > 2 且涨幅 < 5% (低位启动) = 5星；涨幅 > 15% (风险高) = 3星。
-
-2.  **核心逻辑推演**：
-    用一句话概括该板块为什么涨？（结合新闻找原因，如“受华为新机发布刺激...”）。
-
-3.  **避坑指南**：
-    指出一个虽然在涨但风险极高（如换手率 > 30% 或 纯情绪炒作）的标的，提示“观望”。
-
-### 输出格式模板（请直接套用）：
-
-## 🚀 板块一：[板块名称]
-**上涨逻辑**：[一句话核心逻辑]
-
-| 代码 | 名称 | 现价 | 角色 | 资金状态 | 狙击评级 |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| 00xxxx | xx股份 | 10.5 | 🐲 龙头 | 放量突破 | ⭐⭐⭐⭐⭐ |
-| 30xxxx | xx科技 | 22.1 | ⚔️ 跟风 | 缩量调整 | ⭐⭐⭐ |
-
----
-（按此格式分析前 3 个板块）
-...
-
-## 💡 交易师总结
-[针对今日盘面的整体仓位建议，如：指数震荡，建议轻仓试错，止损位设置在...]
-`
-    }
-  ]
+// 场景A: 这里的 root 就是完整数据 (来自 Python Execute Command --std-json)
+if (root.hot_sectors && root.market_sentiment) {
+    marketData = root;
+} 
+// 场景B: 数据被包裹在 'data' 字段下 (来自 Read Binary File -> JSON Parse)
+else if (root.data && root.data.hot_sectors) {
+    marketData = root.data;
+} 
+// 场景C: 数据是字符串 (来自 Execute Command 文本输出)
+else if (typeof root === 'string') {
+    try { marketData = JSON.parse(root); } catch (e) {}
 }
-}}
+// 场景D: 尝试在 message/content 等常见位置查找
+else {
+    const potentialKey = Object.keys(root).find(k => root[k] && root[k].hot_sectors);
+    if (potentialKey) marketData = root[potentialKey];
+}
+
+// 2. 🛡️ 数据完整性校验
+if (!marketData || !marketData.market_sentiment) {
+    // 如果没找到数据，返回错误提示以便调试
+    const debugInfo = JSON.stringify(root).substring(0, 200);
+    return {
+        json: {
+            error: true,
+            message: "⚠️ 未识别到有效的市场数据，请检查 Python 脚本是否成功运行并输出了 JSON。",
+            debug_input: debugInfo
+        }
+    };
+}
+
+// 3. 📝 构建核心 Context (优先使用 Python 生成的精细报告)
+// v4.0 版本的 Python 脚本会直接生成字段 'ai_report_text'，格式最完美
+let reportContext = marketData.ai_report_text;
+
+// 如果是旧版本脚本或字段缺失，则执行 JS 兜底拼接 (保留移动端友好的列表格式)
+if (!reportContext) {
+    const s = marketData.market_sentiment || {};
+    reportContext = `# A股瞬时行情摘要\n`;
+    reportContext += `## 🌡️ 市场定调: ${s.market_temperature} (Risk: ${s.risk_level})\n`;
+    reportContext += `指数: ${s.index_value} (${s.change_pct}%) | 建议: ${s.suggested_action}\n\n`;
+    
+    const sectors = marketData.hot_sectors || [];
+    sectors.slice(0, 8).forEach((sec, idx) => {
+        reportContext += `### 🔥 [板块${idx+1}] ${sec.name} (涨${sec.change_pct}%)\n`;
+        const stocks = sec.leading_stocks || [];
+        stocks.slice(0, 5).forEach(stk => {
+             // 兼容 Python v4.0 的字段名
+            const stars = stk.recommendation || stk.technical?.rating_label || "⚪";
+            const cmt = stk.comment || stk.technical?.rating_comment || "-";
+            reportContext += `- ${stk.name}: ${stk.change_pct}% | ${stars} | ${cmt}\n`;
+        });
+        reportContext += "\n";
+    });
+}
+
+// 4. 🧠 组装 Prompt (确保 AI 听话)
+const systemPrompt = `你是一名顶级游资操盘手。附件是一份**程序自动生成的精确复盘报告**。
+你的任务是：基于这份数据，写一份简短犀利的**《主力内参》**推送。
+
+【原则】
+1. **数据神圣不可侵犯**：严禁修改任何数字、评级（如“妖股”）或技术点评（如“主升浪”）。
+2. **结构清晰**：
+   - 第一部分：【市场定调】（根据大盘情绪用一句话概括，如“情绪冰点”或“多头狂欢”）
+   - 第二部分：【题材掘金】（保留原报告中的核心表格或列表，保留所有“⭐⭐⭐⭐”以上个股）
+   - 第三部分：【操作建议】（基于数据中的 suggestion）
+3. **风格**：干练、专业、甚至带点冷酷，不要废话。`;
+
+// 5. 📤 输出给 LLM 节点 (直接组装 messages 数组)
+// 这样 HTTP 节点可以直接引用 {{ $json.messages }}，避免手动拼接 JSON 时的转义错误
+return {
+    json: {
+        messages: [
+            { "role": "system", "content": systemPrompt },
+            { "role": "user", "content": reportContext }
+        ]
+    }
+};
