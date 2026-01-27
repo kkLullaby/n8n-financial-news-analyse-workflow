@@ -1,61 +1,89 @@
-// ========================================
-// N8N Code 节点 - A股作战计划生成器 v4.0
-// 直接复制此代码到 N8N 的 Code 节点
-// ========================================
+// ============================================================
+// 🎯 A股内参 - 智能拆包 & 双重保险版 (V9.0)
+// ============================================================
 
-// 1. 获取上一个节点的JSON数据
-const inputData = $input.first().json;
+// 1. 🔍 核心修复：智能定位数据层级
+let root = $input.item.json;
 
-// 2. 【核心修复】直接使用预格式化的报告文本
-// 这样AI就不会瞎编数据了，因为数据已经是表格形式
-const ai_report = inputData.ai_report_text || "";
+// 如果数据被包在 'data' 字段里（根据你的截图修复）
+if (root.data && (root.data.hot_sectors || root.data.market_sentiment)) {
+    root = root.data;
+}
 
-// 3. 构建系统提示词
-const systemPrompt = `你是一名追求【稳定复利】的A股资深量化研究员。你的风格是：**不见兔子不撒鹰**。
+// 2. 获取数据源
+let reportText = root.ai_report_text;
+const sectors = root.hot_sectors || [];
+const sentiment = root.market_sentiment || {};
+const portfolio = root.my_portfolio || { stocks: [], summary: {} }; // 🟢 新增持仓数据源
 
-【铁律 - 违反将被视为失败】：
-1. 你只能使用用户提供的数据表格中的信息
-2. 股票代码必须完整准确复制（如bj920729、sz300308），绝对不能写成600XXX或300XXX
-3. 股票名称、价格、涨跌幅必须与数据表格完全一致
-4. 如果某板块只有1只股票，就只分析1只，不要编造其他股票
-5. 不要添加任何数据表格中没有的股票`;
+// 3. 🔥 救急逻辑：如果 Python 没生成文本，但有原始数据，现场拼一个！
+if (!reportText && sectors.length > 0) {
+    const time = root.timestamp || '刚刚';
+    const temp = sentiment.market_temperature || '未知';
+    const upRatio = sentiment.up_ratio || '-';
+    
+    let manualReport = `# A股实时内参 (JS应急版)\n`;
+    manualReport += `🕒 ${time} | 🌡️ ${temp} | 📈 上涨率: ${upRatio}\n\n`;
 
-// 4. 构建用户提示词（直接使用预格式化数据）
-const userPrompt = `请根据以下【真实行情数据表格】，撰写今日《A股核心题材·深度狙击作战表》。
+    // A. 👮 持仓哨兵 (新增板块)
+    if (portfolio.stocks && portfolio.stocks.length > 0) {
+        manualReport += `## 👮 持仓哨兵\n`;
+        manualReport += `策略建议: ${portfolio.summary.strategy_suggestion || '观察'}\n`;
+        manualReport += `| 名称 | 涨幅 | 建议 |\n|---|---|---|\n`;
+        portfolio.stocks.forEach(s => {
+            manualReport += `| ${s.name} | ${s.change_pct}% | ${s.advice || '持有'} |\n`;
+        });
+        manualReport += `\n`;
+    }
+    
+    // B. 🔥 核心板块 (增强角色与评级)
+    manualReport += `## 🔥 核心题材掘金\n`;
+    manualReport += `| 角色 | 代码 | 名称 | 涨幅 | 评级 | 核心点评 |\n|---|---|---|---|---|---|\n`;
+    
+    sectors.slice(0, 8).forEach((s) => { // 增加扫描板块数量
+        const stocks = s.leading_stocks || [];
+        // 手动分配角色：第一个是龙一，第二个是龙二...
+        stocks.slice(0, 6).forEach((st, idx) => {
+            let role = '⚡跟风';
+            if (idx === 0) role = '👑龙一';
+            if (idx === 1) role = '⚔️龙二';
+            if (idx === 2) role = '🛡️中军';
 
-⚠️ 重要：下面的Markdown表格是真实数据，你必须直接复制使用，不能修改任何数值！
+            // 智能读取 Python 算好的评级，如果没有则 JS 估算
+            let rec = st.recommendation || st.rating_label || '⚪';
+            let comment = st.comment || st.rating_comment || '-';
+            
+            if (rec === '⚪' && st.change_pct > 9.5) rec = '🔥封板';
+            
+            manualReport += `| ${role} | ${st.code} | ${st.name} | ${st.change_pct}% | ${rec} | ${comment} |\n`;
+        });
+    });
+    reportText = manualReport;
+}
 
-${ai_report}
+// 4. 最后的防线
+if (!reportText) {
+    reportText = `⚠️ 严重错误：N8N 未读取到有效数据！\n当前读取到的 JSON Keys: ${Object.keys(root).join(", ")}`;
+}
 
----
+// 5. 定义 AI 人设
+const systemPrompt = `你是一名 A 股顶级游资操盘手。
+你的任务是将一份【Python量化报告】改写为简短犀利的《主力内参》。
 
-### 输出要求：
-1. 从上述板块中选取最值得关注的3个进行深度分析
-2. 【必须】直接复制上面表格中的代码、名称、价格，不能修改
-3. 如果某板块只有1只股票，就只分析这1只
-4. 根据涨跌幅和技术信号给出狙击评级（⭐⭐⭐ ~ ⭐⭐⭐⭐⭐）
-5. 给出风险提示和仓位建议
+【严格执行原则】
+1. **数据保真**：严禁修改任何数字、评级（如“妖股”）或角色（如“👑龙一”）。
+2. **持仓监控**：如果报告包含【👮持仓哨兵】板块，请将其放在开头或显眼位置，明确给出操作建议。
+3. **题材对比**：在【题材掘金】板块，必须保留表格形式，**强制包含“角色”、“评级”和“核心点评”三列**，以便用户直观对比龙头与跟风股。
+4. **风格**：干练、专业、冷酷，拒绝废话。`;
 
-### 输出格式：
-## 🚀 板块一：[板块名称]
-**上涨逻辑**：[一句话核心逻辑]
+const userContent = `这是最新的盘面扫描数据，请立即生成内参：\n\n${reportText}`;
 
-| 代码 | 名称 | 现价 | 涨跌幅 | 狙击评级 |
-|------|------|------|--------|----------|
-(直接复制上面数据表格的内容)
-
----
-(分析2-3个板块)
-
-## 💡 交易师总结
-[仓位建议和风险提示]`;
-
-// 5. 返回格式化的消息体
+// 6. 输出给 HTTP 节点
 return {
-  json: {
-    messages_payload: [
-      { "role": "system", "content": systemPrompt },
-      { "role": "user", "content": userPrompt }
-    ]
-  }
+    json: {
+        messages: [
+            { "role": "system", "content": systemPrompt },
+            { "role": "user", "content": userContent }
+        ]
+    }
 };

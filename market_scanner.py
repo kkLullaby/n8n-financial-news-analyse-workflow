@@ -1161,21 +1161,49 @@ def generate_ai_report_text(data):
     lines.append(f"生成时间: {data['timestamp']}")
     lines.append("")
     
-    # 大盘情绪
+    # === 1. 大盘情绪 ===
     sentiment = data.get('market_sentiment', {})
-    lines.append(f"## 大盘概况")
+    lines.append(f"## 📊 大盘概况")
     lines.append(f"- 上证指数: {sentiment.get('index_value', 0)}")
     lines.append(f"- 涨跌幅: {sentiment.get('change_pct', 0)}%")
     lines.append(f"- 市场温度: {sentiment.get('market_temperature', '未知')}")
     lines.append(f"- 风险等级: {sentiment.get('risk_level', '未知')}")
     lines.append(f"- 操作建议: {sentiment.get('suggested_action', '未知')}")
     lines.append("")
+
+    # === 2. 持仓监控 (新增) ===
+    my_portfolio = data.get('my_portfolio', {})
+    my_stocks = my_portfolio.get('stocks', [])
+    summary = my_portfolio.get('summary', {})
     
-    # 热点板块 - 重新排序：优先科技 > 题材(多股) > 题材(单股) > 传统行业
+    lines.append(f"## 👮 持仓监控哨兵")
+    if my_stocks:
+        lines.append(f"总体建议: {summary.get('strategy_suggestion', '暂无')}")
+        if summary.get('has_danger'):
+            lines.append(f"⚠️ 预警: {', '.join(summary.get('danger_alerts', []))}")
+        
+        lines.append("")
+        lines.append("| 代码 | 名称 | 现价 | 涨跌幅 | 评级 | 建议 |")
+        lines.append("|---|---|---|---|---|---|")
+        
+        for stock in my_stocks:
+            tech = stock.get('technical', {})
+            rec = tech.get('rating_label', '⚪')
+            # 这里的 advice 是 check_my_portfolio 里生成的（如“高抛止盈”）
+            advice = stock.get('advice', '持有')
+            
+            lines.append(f"| {stock['code']} | {stock['name']} | {stock['price']} | {stock['change_pct']}% | {rec} | {advice} |")
+    else:
+        lines.append("（暂无持仓数据，请在 my_stocks.txt 中添加代码）")
+    lines.append("")
+    
+    # === 3. 热点板块 ===
+    # 重新排序：优先科技 > 题材(多股) > 题材(单股) > 传统行业
     sectors = data.get('hot_sectors', [])
     
     # 分类
     tech_sectors = [s for s in sectors if '科技' in s.get('name', '')]
+    # 稍微放宽题材判定，只要名字带题材或者不在传统池子里都算
     concept_multi = [s for s in sectors if '题材' in s.get('name', '') and len(s.get('leading_stocks', [])) > 1]
     concept_single = [s for s in sectors if '题材' in s.get('name', '') and len(s.get('leading_stocks', [])) == 1]
     traditional = [s for s in sectors if '科技' not in s.get('name', '') and '题材' not in s.get('name', '')]
@@ -1186,53 +1214,53 @@ def generate_ai_report_text(data):
     concept_single.sort(key=lambda x: x.get('change_pct', 0), reverse=True)
     traditional.sort(key=lambda x: x.get('change_pct', 0), reverse=True)
     
-    # 合并：科技(2) + 题材多股(1) + 题材单股(2) + 传统(1)
-    sorted_sectors = tech_sectors[:2] + concept_multi[:1] + concept_single[:2] + traditional[:1]
+    # 合并展示顺序
+    sorted_sectors = tech_sectors[:3] + concept_multi[:2] + concept_single[:1] + traditional[:1]
     
-    lines.append(f"## 热点板块详情")
+    lines.append(f"## 🔥 热点板块掘金")
     
-    for i, sector in enumerate(sorted_sectors[:6], 1):
+    for i, sector in enumerate(sorted_sectors[:8], 1): # 展示前8个
         sector_name = sector.get('name', '未知')
         sector_pct = sector.get('change_pct', 0)
-        lines.append(f"### 板块{i}: {sector_name} (涨幅 {sector_pct}%)")
-        lines.append("")
-        lines.append("| 代码 | 名称 | 现价 | 涨跌幅 | 技术信号 | 建议 |")
-        lines.append("|------|------|------|--------|----------|------|")
+        lines.append(f"### [板块{i}] {sector_name} (涨幅 {sector_pct}%)")
+        lines.append("| 角色 | 代码 | 名称 | 涨幅 | 评级 | 核心点评 |")
+        lines.append("|---|---|---|---|---|---|")
         
         stocks = sector.get('leading_stocks', [])
-        for stock in stocks[:5]:
+        # 增加显示数量到 6
+        for idx, stock in enumerate(stocks[:6]):
             code = stock.get('code', '?')
             name = stock.get('name', '?')
-            price = stock.get('price', 0)
             pct = stock.get('change_pct', 0)
             
-            # 提取技术信号
+            # 角色分配
+            if idx == 0: role = "👑龙一"
+            elif idx == 1: role = "⚔️龙二"
+            elif idx == 2: role = "🛡️中军"
+            else: role = "⚡跟风"
+            
+            # 评级与点评
             tech = stock.get('technical', {})
-            signals = tech.get('signals', [])
-            
-            # 建议 (使用 星级 + 短评 的组合)
             rec = stock.get('recommendation', '⚪')
-            comment = stock.get('comment', tech.get('rating_comment', ''))
+            # 优先用 technical 里的 comment，其次用 stock 外层的 comment
+            comment = tech.get('rating_comment') or stock.get('comment') or "暂无点评"
             
-            # 组合展示
-            rec_display = f"{rec} {comment}"
-            signal_str = ','.join(signals[:2]) if signals else '无'
-            
-            lines.append(f"| {code} | {name} | {price} | {pct}% | {signal_str} | {rec_display} |")
+            # 格式化输出
+            lines.append(f"| {role} | {code} | {name} | {pct}% | {rec} | {comment} |")
         
         lines.append("")
     
-    # 龙虎榜
-    lines.append("## 龙虎榜摘要")
+    # === 4. 龙虎榜 ===
+    lines.append("## 🐯 龙虎榜摘要")
     lines.append(data.get('dragon_tiger', '暂无数据'))
     lines.append("")
     
-    # 新闻
-    lines.append("## 重要新闻")
+    # === 5. 新闻 ===
+    lines.append("## 📰 重要消息")
     news = data.get('news_brief', {})
-    for item in news.get('items', [])[:5]:
-        rel = "🔥" if item.get('relevance') == 'high' else ""
-        lines.append(f"- {rel}{item.get('title', '')}")
+    for item in news.get('items', [])[:8]: # 增加到8条
+        rel = "🔥" if item.get('relevance') == 'high' else "•"
+        lines.append(f"{rel} {item.get('title', '')}")
     
     return "\n".join(lines)
 
