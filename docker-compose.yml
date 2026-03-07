@@ -9,9 +9,19 @@ services:
       - "5678:5678"
     environment:
       - N8N_SECURE_COOKIE=false
-      - N8N_BLOCK_NODES=               # 核心：留空以开启 Execute Command 节点
-      - NODE_FUNCTION_ALLOW_EXTERNAL=fs,path  # 允许 Code 节点调用外部模块
-      - TZ=Asia/Shanghai               # 设置容器时区为北京时间
+      - N8N_BLOCK_NODES= # 核心：留空以开启 Execute Command 节点
+      - NODE_FUNCTION_ALLOW_EXTERNAL=fs,path # 允许 Code 节点调用外部模块
+      - TZ=Asia/Shanghai # 设置容器时区为北京时间
+
+      # ==========================================
+      # 🛡️ 核心找回：终极防阻断网络配置 (千万不能漏掉！)
+      # ==========================================
+      # 172.17.0.1 是 Docker 访问宿主机的默认 IP，7897 是 Clash Verge 默认混淆端口
+      - HTTP_PROXY=http://172.17.0.1:7897
+      - HTTPS_PROXY=http://172.17.0.1:7897
+      # 🔥 告诉 N8N：访问国内 API 和飞书，绝对不要走代理！
+      - NO_PROXY=localhost,127.0.0.1,172.17.0.1,open.feishu.cn,api.feishu.cn,feishu.cn,dashscope.aliyuncs.com,eastmoney.com,sina.com.cn,sinajs.cn
+
     volumes:
       - ./n8n_data:/home/node/.n8n
-      - /home/kk/n8n:/home/node/data  # 核心：将宿主机的脚本目录映射到容器内部的 /home/node/data
+      - ./:/home/node/data

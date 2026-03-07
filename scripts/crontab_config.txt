@@ -1,0 +1,14 @@
+# ====================================
+# 飞书机器人 - Crontab 配置
+# ====================================
+
+# 使用前先替换为你的实际项目绝对路径
+# 例如：/home/kk/文档/Obsidian Vault/skills_download/transmit/stocks_analyse_n8n
+PROJECT_ROOT=/path/to/stocks_analyse_n8n
+
+# 开机时启动服务
+@reboot ${PROJECT_ROOT}/scripts/start_services.sh
+
+# 每 5 分钟检查一次服务状态，如果挂了就重启
+*/5 * * * * pgrep -f "feishu_proxy.py" > /dev/null || (cd ${PROJECT_ROOT} && nohup python3 feishu_proxy.py > /tmp/feishu_proxy.log 2>&1 &)
+*/5 * * * * pgrep -f "cloudflared tunnel" > /dev/null || (nohup cloudflared tunnel --url http://localhost:8080 > /tmp/cloudflared.log 2>&1 &)

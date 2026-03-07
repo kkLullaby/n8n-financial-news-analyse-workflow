@@ -1,6 +1,7 @@
 import lark_oapi as lark
 from lark_oapi.adapter.flask import *
 from lark_oapi.api.im.v1 import *
+import os
 
 # 1. 填入你的 App ID 和 App Secret
 # (在飞书后台 -> "凭证与基础信息" 里找)
@@ -9,12 +10,13 @@ APP_SECRET = "E4d1iB147qmPyAusrFALkegRtiBb571D"
 
 # 群机器人 Webhook
 WEBHOOK_URL = "https://open.feishu.cn/open-apis/bot/v2/hook/e7cfa254-769f-4995-bda9-2bae05dc710a"
-STOCK_FILE = "/home/kk/n8n/my_stocks.txt"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+STOCK_FILE = os.path.join(DATA_DIR, "my_stocks.txt")
 
 import requests
 import json
 import re
-import os
 
 def read_stocks():
     try:
@@ -26,12 +28,13 @@ def read_stocks():
         return []
 
 def write_stocks(stocks):
+    os.makedirs(DATA_DIR, exist_ok=True)
     with open(STOCK_FILE, 'w') as f:
         f.write('\n'.join(stocks) + '\n') if stocks else f.write('')
     # 持仓修改后，自动更新market_data.json
     try:
         import subprocess
-        subprocess.Popen(['python3', '/home/kk/n8n/market_scanner.py'], 
+        subprocess.Popen(['python3', os.path.join(BASE_DIR, 'market_scanner.py')], 
                         stdout=subprocess.DEVNULL, 
                         stderr=subprocess.DEVNULL)
         print('[后台任务] 已触发market_scanner.py更新数据')

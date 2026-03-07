@@ -105,10 +105,12 @@ print("✅ 网络配置优化完成 (Keep-Alive + 智能退避重试)")
 
 # ... 后面的代码完全不用动 ...
 
-# 1. 文件保存路径
-OUTPUT_FILE = "/home/kk/n8n/market_data.json"
-HISTORY_FILE = "/home/kk/n8n/history_data.csv"
-STOCK_FILE = "/home/kk/n8n/my_stocks.txt"
+# 1. 文件保存路径（项目内相对目录）
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+OUTPUT_FILE = os.path.join(DATA_DIR, "market_data.json")
+HISTORY_FILE = os.path.join(DATA_DIR, "history_data.csv")
+STOCK_FILE = os.path.join(DATA_DIR, "my_stocks.txt")
 
 # 2. 重试配置
 MAX_RETRIES = 3
@@ -197,81 +199,11 @@ def calculate_stock_rating(pct, vol_ratio, trend_score, rsi):
     
     return round(score, 1), rating, comment
 
-# def calculate_technical_indicators(df):
-#     """【升级】计算技术指标 (MA, RSI, VOL) 并生成严格评级"""
-#     if df is None or len(df) < 30:
-#         return None
-        
-#     try:
-#         # 1. 均线 MA
-#         df['MA5'] = df['收盘'].rolling(window=5).mean()
-#         df['MA10'] = df['收盘'].rolling(window=10).mean()
-#         df['MA20'] = df['收盘'].rolling(window=20).mean()
-        
-#         # 2. RSI (相对强弱指标)
-#         delta = df['收盘'].diff()
-#         gain = (delta.where(delta > 0, 0)).rolling(window=6).mean()
-#         loss = (-delta.where(delta < 0, 0)).rolling(window=6).mean()
-#         rs = gain / loss
-#         df['RSI6'] = 100 - (100 / (1 + rs))
-        
-#         # 3. 趋势判定
-#         latest = df.iloc[-1]
-#         prev = df.iloc[-2]
-        
-#         trend_score = 0
-#         signals = []
-#         risk_warnings = []
-        
-#         # MA多头排列
-#         if latest['MA5'] > latest['MA10'] > latest['MA20']:
-#             trend_score += 3
-#             signals.append("多头")
-        
-#         # 金叉
-#         if prev['MA5'] < prev['MA10'] and latest['MA5'] > latest['MA10']:
-#             trend_score += 2
-#             signals.append("金叉")
-            
-#         # 量价配合
-#         vol_mean = df['成交量'].tail(5).mean()
-#         vol_ratio = latest['成交量'] / vol_mean if vol_mean > 0 else 0
-        
-#         if latest['收盘'] > prev['收盘'] and vol_ratio > 1.2:
-#             trend_score += 1
-#             signals.append("放量")
-            
-#         # RSI分析
-#         rsi = latest['RSI6'] if not pd.isna(latest['RSI6']) else 50
-#         if rsi > 80:
-#             risk_warnings.append("超买")
-#         elif rsi < 20:
-#             signals.append("超卖")
-#             trend_score += 1 # 超卖反弹算正向
-            
-#         # 计算综合评级
-#         pct = (latest['收盘'] - prev['收盘']) / prev['收盘'] * 100
-#         score, rating_label, rating_comment = calculate_stock_rating(pct, vol_ratio, trend_score, rsi)
-
-#         return {
-#             "ma5": round(latest['MA5'], 2),
-#             "ma20": round(latest['MA20'], 2),
-#             "rsi6": round(rsi, 2),
-#             "trend_score": trend_score,
-#             "signals": signals,
-#             "risks": risk_warnings,
-#             "volume_ratio": round(vol_ratio, 2),
-#             "rating_score": score,      # 0-100 分数
-#             "rating_label": rating_label, # 星级文本
-#             "rating_comment": rating_comment # 短评
-#         }
-#     except:
-#         return None
 
 import pandas as pd
 import datetime
 import numpy as np
-
+import pytz
 # ==========================================
 # 🔧 核心工具函数 (已修正)
 # ==========================================
@@ -281,7 +213,8 @@ def get_market_progress():
     【新增】计算当前交易日的时间进度 (0.0 ~ 1.0)
     用于在盘中估算全天成交量，修复量比失真问题。
     """
-    now = datetime.datetime.now()
+    tz = pytz.timezone('Asia/Shanghai')
+    now = datetime.datetime.now(tz)
     
     # 1. 如果是周末或非交易时段（晚上），直接视为已收盘 (进度 1.0)
     if now.weekday() >= 5 or now.hour >= 15:
@@ -372,6 +305,17 @@ def calculate_technical_indicators(df):
             projected_vol = current_vol / market_progress
         else:
             projected_vol = current_vol
+
+        if market_progress < 0.04: # 9:40之前
+            vol_ratio = 1.0 # 或者使用昨量比，或者暂置为 0
+        elif vol_ma5 > 0:
+            if market_progress < 1.0:
+                projected_vol = current_vol / market_progress
+            else:
+                projected_vol = current_vol
+            vol_ratio = projected_vol / vol_ma5
+        else:
+            vol_ratio = 0
             
         # 计算真实量比
         if vol_ma5 > 0:
@@ -755,22 +699,33 @@ def get_tech_policy_sectors():
         valid_stocks_with_rating = []
         
         for stock in leading_stocks:
-            # 【剪枝策略】只对涨幅 > 0 的股票计算技术指标，或者如果是龙头(Code在列表前2位)也计算
-            is_key_stock = stock['code'] in codes[:2] # 是否是预设的龙头
-            if stock['change_pct'] <= 0 and not is_key_stock:
+            # ============================================================
+            # 🚀 核心修复：激进剪枝策略 (Pruning Strategy)
+            # 目的：大幅减少 ak.stock_zh_a_hist 的调用次数，防止 IP 被封
+            # ============================================================
+            
+            # 1. 判定身份：是否为“必须要看”的预设龙头 (配置单里的前2名)
+            is_key_stock = stock['code'] in codes[:2] 
+            
+            # 2. 剪枝逻辑：
+            # 条件：(不是预设龙头) AND (处于下跌状态 OR 涨幅小于 1.0%)
+            # 解释：既然是做题材挖掘，跟风杂毛如果涨幅不到1%，根本没必要浪费宝贵的API额度去算指标
+            if not is_key_stock and stock['change_pct'] < 1.0:
                 stock['recommendation'] = "⚪"
+                stock['comment'] = "弱势/杂毛 | 跳过分析" # 填充默认数据，防止报告报错
                 valid_stocks_with_rating.append(stock)
-                continue
+                continue # <--- 关键！直接进入下一次循环，不发送网络请求
                 
             try:
                 # 提取纯数字代码: sh600519 -> 600519
                 # akshare需要纯数字
                 c6 = re.sub(r"\D", "", stock['code'])
                 
-                # 🔥 关键：每次请求历史K线前，休息 0.3 秒，防止被封 🔥
-                time.sleep(2)
+                # 🔥 关键修改：将延时从 2秒 增加到 3.5秒 🔥
+                # 刚刚被封过，必须加大冷却时间，且模拟真人操作
+                time.sleep(3.5)
                 
-                # 获取历史数据
+                # 获取历史数据 (这是最容易触发封禁的接口)
                 hist = ak.stock_zh_a_hist(symbol=c6, period="daily", adjust="qfq")
                 
                 # 计算指标 (使用 Part 2 的函数)
@@ -778,10 +733,21 @@ def get_tech_policy_sectors():
                 
                 if tech:
                     stock['technical'] = tech
-                    stock['recommendation'] = tech['rating_label']
+                    stock['recommendation'] = tech.get('rating_label', '⚪')
+                    stock['comment'] = tech.get('rating_comment', '')
                 else:
                     stock['recommendation'] = "⚪"
+                    stock['comment'] = "数据不足"
                 
+                valid_stocks_with_rating.append(stock)
+                
+            except Exception as e:
+                # 捕获单个股票的错误，防止整个脚本崩溃
+                # 打印简短错误信息，方便调试
+                print(f"    ⚠️ 分析跳过 {stock.get('name', c6)}: {e}")
+                
+                stock['recommendation'] = "❓"
+                stock['comment'] = "API请求失败"
                 valid_stocks_with_rating.append(stock)
                 
             except Exception as e:
@@ -1637,65 +1603,6 @@ def generate_ai_report_text(data):
     
     return "\n".join(lines)
 
-# ==========================================
-# 🏁 主程序入口
-# ==========================================
-# def main():
-#     print("="*50)
-#     print("🚀 开始执行全维扫描 (稳定版 v4.0 - 科技政策增强)")
-#     print("  数据源: 新浪财经 + 同花顺 + 财联社")
-#     print("="*50)
-    
-#     sentiment = get_market_sentiment()
-#     print(f"大盘: {sentiment.get('index_value')} ({sentiment.get('change_pct')}%) | {sentiment.get('market_temperature')}")
-    
-#     sectors = get_hot_sectors_and_stocks(top_n=8)
-#     dt_list = get_dragon_tiger_list()
-#     my_stocks = check_my_portfolio()
-#     news = get_latest_news()
-
-#     data = {
-#         "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-#         "market_sentiment": sentiment,
-#         "hot_sectors": sectors,
-#         "dragon_tiger": dt_list,
-#         "my_portfolio": my_stocks,
-#         "news_brief": news
-#     }
-    
-#     # 【新增】生成预格式化的AI报告文本
-#     ai_report = generate_ai_report_text(data)
-#     data["ai_report_text"] = ai_report
-    
-#     # 【修改点】确保输出目录存在
-#     os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
-    
-#     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-#         json.dump(data, f, ensure_ascii=False, indent=2, default=str)
-#     print(f"\n✅ JSON已保存: {OUTPUT_FILE}")
-    
-#     # 4. 保存 CSV (给复盘)
-#     save_to_history_csv(data)
-    
-#     print("\n" + "="*50)
-#     print("🎉 扫描完成！数据摘要:")
-#     print(f"   📊 市场温度: {sentiment['market_temperature']}")
-#     print(f"   📈 涨跌比: {sentiment['up_count']}:{sentiment['down_count']}")
-#     print(f"   🔥 热点板块: {len(sectors)}个")
-#     print(f"   📰 有效新闻: {news['summary']['total']}条 (高相关{news['summary']['high_relevance']}条)")
-#     print("="*50)
-    
-#     # 【新增】N8N 标准输出支持
-#     # 只有在使用 --std-json 参数时，才会通过 stdout 输出纯净的 JSON 数据
-#     if _N8N_MODE:
-#         _original_print(json.dumps(data, ensure_ascii=False, default=str))
-
-# if __name__ == "__main__":
-#     main()
-
-# ==========================================
-# 🏁 主程序入口 (生产级优化版)
-# ==========================================
 
 def main():
     # 1. 参数解析 (优雅处理 N8N 模式)

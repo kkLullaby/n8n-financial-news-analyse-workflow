@@ -1,0 +1,1095 @@
+{
+  "status": "success",
+  "timestamp": "2026-02-06 10:10:05",
+  "market_sentiment": {
+    "index_value": 4049.4595,
+    "change_pct": -0.65,
+    "volume": 321049089125.0,
+    "up_count": 0,
+    "down_count": 0,
+    "up_ratio": 30,
+    "market_temperature": "❄️ 极度恐慌",
+    "risk_level": "⚪ 中性",
+    "risk_score": 1.5,
+    "suggested_action": "👀 观望/轻仓试错"
+  },
+  "hot_sectors": [
+    {
+      "name": "生物制药",
+      "change_pct": 1.57,
+      "heat_score": 6.28,
+      "leading_stocks": [
+        {
+          "name": "振东制药",
+          "code": "300158",
+          "price": 6.73,
+          "change_pct": 17.247,
+          "turnover": 0,
+          "technical": {
+            "ma5": 5.93,
+            "ma20": 6.05,
+            "rsi6": 80.61,
+            "trend_score": 3,
+            "signals": [
+              "金叉",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 36.86,
+            "rating_score": 100,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        },
+        {
+          "name": "广生堂",
+          "code": "300436",
+          "price": 146.03,
+          "change_pct": 11.456,
+          "turnover": 0,
+          "technical": {
+            "ma5": 120.57,
+            "ma20": 98.91,
+            "rsi6": 87.85,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [
+              "超买"
+            ],
+            "volume_ratio": 5.19,
+            "rating_score": 87.0,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐 | 放量 | 超买"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "特一药业",
+          "code": "002728",
+          "price": 13.15,
+          "change_pct": 10.042,
+          "turnover": 0,
+          "technical": {
+            "ma5": 12.12,
+            "ma20": 12.07,
+            "rsi6": 69.46,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 7.87,
+            "rating_score": 85.1,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "汉森制药",
+          "code": "002412",
+          "price": 7.59,
+          "change_pct": 10.0,
+          "turnover": 0,
+          "technical": {
+            "ma5": 6.95,
+            "ma20": 6.86,
+            "rsi6": 86.81,
+            "trend_score": 6,
+            "signals": [
+              "多头",
+              "金叉",
+              "放量"
+            ],
+            "risks": [
+              "超买"
+            ],
+            "volume_ratio": 49.96,
+            "rating_score": 85.0,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐 | 放量 | 超买"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "新 和 成",
+          "code": "002001",
+          "price": 30.38,
+          "change_pct": 8.539,
+          "turnover": 0,
+          "technical": {
+            "ma5": 27.95,
+            "ma20": 27.18,
+            "rsi6": 79.38,
+            "trend_score": 6,
+            "signals": [
+              "多头",
+              "金叉",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 6.35,
+            "rating_score": 92.9,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        }
+      ]
+    },
+    {
+      "name": "化纤行业",
+      "change_pct": 0.81,
+      "heat_score": 4.03,
+      "leading_stocks": [
+        {
+          "name": "工智退",
+          "code": "000584",
+          "price": 0.29,
+          "change_pct": 11.538,
+          "turnover": 0,
+          "technical": {
+            "ma5": 0.26,
+            "ma20": 0.59,
+            "rsi6": 31.42,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 11.59,
+            "rating_score": 87.3,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "皖维高新",
+          "code": "600063",
+          "price": 7.03,
+          "change_pct": 5.873,
+          "turnover": 0,
+          "technical": {
+            "ma5": 6.73,
+            "ma20": 6.84,
+            "rsi6": 58.48,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 4.68,
+            "rating_score": 78.8,
+            "rating_label": "⭐⭐⭐(买入)",
+            "rating_comment": "趋势向上 | 温和 | 放量"
+          },
+          "recommendation": "⭐⭐⭐(买入)"
+        },
+        {
+          "name": "新乡化纤",
+          "code": "000949",
+          "price": 6.75,
+          "change_pct": 4.651,
+          "turnover": 0,
+          "technical": {
+            "ma5": 6.66,
+            "ma20": 6.85,
+            "rsi6": 46.13,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 2.29,
+            "rating_score": 81.6,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "华峰化学",
+          "code": "002064",
+          "price": 11.95,
+          "change_pct": 4.458,
+          "turnover": 0,
+          "technical": {
+            "ma5": 11.63,
+            "ma20": 12.44,
+            "rsi6": 44.9,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 1.45,
+            "rating_score": 73.1,
+            "rating_label": "⭐⭐⭐(买入)",
+            "rating_comment": "趋势向上 | 温和"
+          },
+          "recommendation": "⭐⭐⭐(买入)"
+        },
+        {
+          "name": "海 利 得",
+          "code": "002206",
+          "price": 7.2,
+          "change_pct": 3.448,
+          "turnover": 0,
+          "technical": {
+            "ma5": 7.04,
+            "ma20": 6.96,
+            "rsi6": 58.78,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 2.5,
+            "rating_score": 80.2,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        }
+      ]
+    },
+    {
+      "name": "农药化肥",
+      "change_pct": 1.88,
+      "heat_score": 3.82,
+      "leading_stocks": [
+        {
+          "name": "华信退",
+          "code": "002018",
+          "price": 0.26,
+          "change_pct": 8.333,
+          "turnover": 0,
+          "technical": {
+            "ma5": 0.24,
+            "ma20": 0.22,
+            "rsi6": 71.35,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 12.51,
+            "rating_score": 92.5,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        },
+        {
+          "name": "沧州大化",
+          "code": "600230",
+          "price": 21.09,
+          "change_pct": 7.274,
+          "turnover": 0,
+          "technical": {
+            "ma5": 20.23,
+            "ma20": 18.46,
+            "rsi6": 63.72,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 3.2,
+            "rating_score": 85.9,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "云图控股",
+          "code": "002539",
+          "price": 15.03,
+          "change_pct": 5.548,
+          "turnover": 0,
+          "technical": {
+            "ma5": 14.26,
+            "ma20": 13.62,
+            "rsi6": 65.99,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 2.5,
+            "rating_score": 83.7,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "鲁西化工",
+          "code": "000830",
+          "price": 17.79,
+          "change_pct": 4.096,
+          "turnover": 0,
+          "technical": {
+            "ma5": 17.48,
+            "ma20": 18.52,
+            "rsi6": 42.87,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 2.25,
+            "rating_score": 80.7,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "潞化科技",
+          "code": "600691",
+          "price": 3.18,
+          "change_pct": 3.922,
+          "turnover": 0,
+          "technical": {
+            "ma5": 3.08,
+            "ma20": 3.13,
+            "rsi6": 56.25,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 4.13,
+            "rating_score": 75.4,
+            "rating_label": "⭐⭐⭐(买入)",
+            "rating_comment": "趋势向上 | 温和 | 放量"
+          },
+          "recommendation": "⭐⭐⭐(买入)"
+        }
+      ]
+    },
+    {
+      "name": "发电设备",
+      "change_pct": 0.58,
+      "heat_score": 3.42,
+      "leading_stocks": [
+        {
+          "name": "杭电股份",
+          "code": "603618",
+          "price": 13.71,
+          "change_pct": 10.032,
+          "turnover": 0,
+          "technical": {
+            "ma5": 11.81,
+            "ma20": 9.45,
+            "rsi6": 92.51,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [
+              "超买"
+            ],
+            "volume_ratio": 6.41,
+            "rating_score": 85.0,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐 | 放量 | 超买"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "三变科技",
+          "code": "002112",
+          "price": 25.41,
+          "change_pct": 10.0,
+          "turnover": 0,
+          "technical": {
+            "ma5": 23.77,
+            "ma20": 21.64,
+            "rsi6": 66.24,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 4.46,
+            "rating_score": 95.0,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        },
+        {
+          "name": "双杰电气",
+          "code": "300444",
+          "price": 15.87,
+          "change_pct": 7.157,
+          "turnover": 0,
+          "technical": {
+            "ma5": 15.48,
+            "ma20": 14.09,
+            "rsi6": 64.44,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 3.95,
+            "rating_score": 95.5,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        },
+        {
+          "name": "保变电气",
+          "code": "600550",
+          "price": 15.82,
+          "change_pct": 5.326,
+          "turnover": 0,
+          "technical": {
+            "ma5": 15.81,
+            "ma20": 14.76,
+            "rsi6": 58.98,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 3.22,
+            "rating_score": 92.9,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        },
+        {
+          "name": "汉缆股份",
+          "code": "002498",
+          "price": 5.94,
+          "change_pct": 4.762,
+          "turnover": 0,
+          "technical": {
+            "ma5": 5.81,
+            "ma20": 5.28,
+            "rsi6": 61.04,
+            "trend_score": 6,
+            "signals": [
+              "多头",
+              "金叉",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 3.14,
+            "rating_score": 91.9,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        }
+      ]
+    },
+    {
+      "name": "化工行业",
+      "change_pct": 0.56,
+      "heat_score": 3.39,
+      "leading_stocks": [
+        {
+          "name": "闰土股份",
+          "code": "002440",
+          "price": 13.21,
+          "change_pct": 9.992,
+          "turnover": 0,
+          "technical": {
+            "ma5": 12.46,
+            "ma20": 9.99,
+            "rsi6": 78.56,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 3.11,
+            "rating_score": 100.0,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        },
+        {
+          "name": "百川股份",
+          "code": "002455",
+          "price": 11.14,
+          "change_pct": 9.97,
+          "turnover": 0,
+          "technical": {
+            "ma5": 10.35,
+            "ma20": 8.2,
+            "rsi6": 79.56,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 3.94,
+            "rating_score": 100.0,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        },
+        {
+          "name": "天夏退",
+          "code": "000662",
+          "price": 0.25,
+          "change_pct": 8.696,
+          "turnover": 0,
+          "technical": {
+            "ma5": 0.23,
+            "ma20": 0.22,
+            "rsi6": 76.45,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 10.36,
+            "rating_score": 93.0,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        },
+        {
+          "name": "德美化工",
+          "code": "002054",
+          "price": 9.83,
+          "change_pct": 7.549,
+          "turnover": 0,
+          "technical": {
+            "ma5": 9.12,
+            "ma20": 8.79,
+            "rsi6": 75.74,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 11.76,
+            "rating_score": 81.3,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "金牛化工",
+          "code": "600722",
+          "price": 8.4,
+          "change_pct": 7.006,
+          "turnover": 0,
+          "technical": {
+            "ma5": 7.99,
+            "ma20": 7.4,
+            "rsi6": 65.57,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 3.59,
+            "rating_score": 85.7,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐 | 放量"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        }
+      ]
+    },
+    {
+      "name": "家具行业",
+      "change_pct": 1.38,
+      "heat_score": 2.69,
+      "leading_stocks": [
+        {
+          "name": "升达林业",
+          "code": "002259",
+          "price": 6.24,
+          "change_pct": 5.763,
+          "turnover": 0,
+          "technical": {
+            "ma5": 5.77,
+            "ma20": 4.88,
+            "rsi6": 81.32,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 2.12,
+            "rating_score": 91.9,
+            "rating_label": "⭐⭐⭐⭐⭐(妖股)",
+            "rating_comment": "主升浪 | 极强"
+          },
+          "recommendation": "⭐⭐⭐⭐⭐(妖股)"
+        },
+        {
+          "name": "友邦吊顶",
+          "code": "002718",
+          "price": 81.42,
+          "change_pct": 3.194,
+          "turnover": 0,
+          "technical": {
+            "ma5": 78.86,
+            "ma20": 69.72,
+            "rsi6": 73.06,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 2.97,
+            "rating_score": 89.2,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "盛新锂能",
+          "code": "002240",
+          "price": 34.76,
+          "change_pct": 1.906,
+          "turnover": 0,
+          "technical": {
+            "ma5": 35.26,
+            "ma20": 36.61,
+            "rsi6": 38.26,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 1.78,
+            "rating_score": 72.5,
+            "rating_label": "⭐⭐⭐(买入)",
+            "rating_comment": "趋势向上 | 温和"
+          },
+          "recommendation": "⭐⭐⭐(买入)"
+        },
+        {
+          "name": "曲美家居",
+          "code": "603818",
+          "price": 3.94,
+          "change_pct": 1.285,
+          "turnover": 0,
+          "recommendation": "⚪"
+        },
+        {
+          "name": "海鸥住工",
+          "code": "002084",
+          "price": 4.23,
+          "change_pct": 0.714,
+          "turnover": 0,
+          "recommendation": "⚪"
+        }
+      ]
+    },
+    {
+      "name": "石油行业",
+      "change_pct": 1.21,
+      "heat_score": 1.97,
+      "leading_stocks": [
+        {
+          "name": "通源石油",
+          "code": "300164",
+          "price": 11.95,
+          "change_pct": 3.733,
+          "turnover": 0,
+          "technical": {
+            "ma5": 11.72,
+            "ma20": 9.39,
+            "rsi6": 63.63,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 1.83,
+            "rating_score": 85.9,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "潜能恒信",
+          "code": "300191",
+          "price": 32.2,
+          "change_pct": 3.404,
+          "turnover": 0,
+          "technical": {
+            "ma5": 30.43,
+            "ma20": 25.73,
+            "rsi6": 63.7,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 1.85,
+            "rating_score": 85.6,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "新锦动力",
+          "code": "300157",
+          "price": 6.22,
+          "change_pct": 2.98,
+          "turnover": 0,
+          "technical": {
+            "ma5": 5.83,
+            "ma20": 5.36,
+            "rsi6": 67.48,
+            "trend_score": 4,
+            "signals": [
+              "多头",
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 2.2,
+            "rating_score": 88.5,
+            "rating_label": "⭐⭐⭐⭐(强推)",
+            "rating_comment": "多头加速 | 推荐"
+          },
+          "recommendation": "⭐⭐⭐⭐(强推)"
+        },
+        {
+          "name": "准油股份",
+          "code": "002207",
+          "price": 9.57,
+          "change_pct": 2.026,
+          "turnover": 0,
+          "recommendation": "⚪"
+        },
+        {
+          "name": "茂化实华",
+          "code": "000637",
+          "price": 4.74,
+          "change_pct": 1.282,
+          "turnover": 0,
+          "recommendation": "⚪"
+        }
+      ]
+    },
+    {
+      "name": "固态电池",
+      "change_pct": 0.22,
+      "heat_score": 0.51,
+      "leading_stocks": [
+        {
+          "name": "宁德时代",
+          "code": "sz300750",
+          "price": 366.62,
+          "change_pct": 1.01,
+          "volume": 11870280.0,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 358.31,
+            "ma20": 351.34,
+            "rsi6": 76.54,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 1.89,
+            "rating_score": 72.5,
+            "rating_label": "⭐⭐⭐(买入)",
+            "rating_comment": "趋势向上 | 温和"
+          },
+          "recommendation": "⭐⭐⭐(买入)",
+          "comment": "趋势向上 | 温和"
+        },
+        {
+          "name": "赣锋锂业",
+          "code": "sz002460",
+          "price": 63.66,
+          "change_pct": 1.19,
+          "volume": 16065185.0,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 65.51,
+            "ma20": 69.49,
+            "rsi6": 30.5,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 1.86,
+            "rating_score": 72.4,
+            "rating_label": "⭐⭐⭐(买入)",
+            "rating_comment": "趋势向上 | 温和"
+          },
+          "recommendation": "⭐⭐⭐(买入)",
+          "comment": "趋势向上 | 温和"
+        },
+        {
+          "name": "亿纬锂能",
+          "code": "sz300014",
+          "price": 62.61,
+          "change_pct": 1.67,
+          "volume": 12758942.0,
+          "turnover": 0,
+          "volume_ratio": 0,
+          "technical": {
+            "ma5": 62.84,
+            "ma20": 65.1,
+            "rsi6": 43.03,
+            "trend_score": 1,
+            "signals": [
+              "放量"
+            ],
+            "risks": [],
+            "volume_ratio": 1.43,
+            "rating_score": 68.8,
+            "rating_label": "⭐⭐⭐(买入)",
+            "rating_comment": "趋势向上 | 温和"
+          },
+          "recommendation": "⭐⭐⭐(买入)",
+          "comment": "趋势向上 | 温和"
+        }
+      ],
+      "source": "tech_policy"
+    }
+  ],
+  "dragon_tiger": "📅 20260205 龙虎榜数据尚未生成或无数据",
+  "my_portfolio": {
+    "stocks": [
+      {
+        "name": "盘江股份",
+        "code": "600395",
+        "price": 5.6,
+        "change_pct": 1.27,
+        "technical": {
+          "ma5": 5.62,
+          "ma20": 5.05,
+          "rsi6": 62.7,
+          "trend_score": 4,
+          "signals": [
+            "多头",
+            "放量"
+          ],
+          "risks": [],
+          "volume_ratio": 1.58,
+          "rating_score": 79.7,
+          "rating_label": "⭐⭐⭐(买入)",
+          "rating_comment": "趋势向上 | 温和"
+        },
+        "advice": "💪 强势持有"
+      },
+      {
+        "name": "金种子酒",
+        "code": "600199",
+        "price": 9.81,
+        "change_pct": -3.63,
+        "technical": {
+          "ma5": 10.42,
+          "ma20": 9.84,
+          "rsi6": 39.94,
+          "trend_score": 3,
+          "signals": [
+            "多头"
+          ],
+          "risks": [],
+          "volume_ratio": 1.65,
+          "rating_score": 72.9,
+          "rating_label": "⭐⭐⭐(买入)",
+          "rating_comment": "趋势向上 | 温和"
+        },
+        "advice": "🛡️ 防守观察"
+      },
+      {
+        "name": "石化油服",
+        "code": "600871",
+        "price": 2.85,
+        "change_pct": -1.04,
+        "technical": {
+          "ma5": 2.94,
+          "ma20": 2.68,
+          "rsi6": 48.38,
+          "trend_score": 0,
+          "signals": [],
+          "risks": [],
+          "volume_ratio": 1.35,
+          "rating_score": 53.9,
+          "rating_label": "⭐⭐(持有)",
+          "rating_comment": "震荡整理 | 观望"
+        },
+        "advice": "持有"
+      }
+    ],
+    "summary": {
+      "total": 3,
+      "up_count": 1,
+      "down_count": 2,
+      "danger_alerts": [],
+      "has_danger": false,
+      "strategy_suggestion": "⚖️ 多空平衡，观察核心标的"
+    }
+  },
+  "news_brief": {
+    "items": [
+      {
+        "source": "财联社",
+        "time": "09:40:46",
+        "title": "日本央行审议委员增一行：若经济和物价前景如预期实现 日本央行有望继续加息",
+        "relevance": "high"
+      },
+      {
+        "source": "财联社",
+        "time": "09:45:24",
+        "title": "财联社2月6日电，日本央行官员增一行表示，日本央行也必须谨慎行事，以避免过度加息破坏通胀和工资刚刚开",
+        "relevance": "high"
+      },
+      {
+        "source": "财联社",
+        "time": "09:45:33",
+        "title": "商业航天概念局部回暖 巨力索具13天7板",
+        "relevance": "high"
+      },
+      {
+        "source": "财联社",
+        "time": "09:49:24",
+        "title": "零售概念震荡走弱 百大集团、三江购物双双跌停",
+        "relevance": "high"
+      },
+      {
+        "source": "财联社",
+        "time": "09:59:03",
+        "title": "电网设备概念表现活跃 三变科技涨停",
+        "relevance": "high"
+      },
+      {
+        "source": "财联社",
+        "time": "10:01:50",
+        "title": "分散染料概念逆势拉升 闰土股份涨停",
+        "relevance": "high"
+      },
+      {
+        "source": "财联社",
+        "time": "09:41:48",
+        "title": "光通信概念震荡回升 杭电股份6天5板",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "09:44:16",
+        "title": "日本东电称将重启柏崎刈羽核电站6号机组反应堆",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "09:46:00",
+        "title": "台风“西望洋”登陆菲律宾 已造成4死3伤",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "09:49:53",
+        "title": "古巴国家主席：将推进能源转型应对美国石油封锁",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "09:53:06",
+        "title": "财联社2月6日电，截至目前，南向资金净买入额达40亿港元。",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "09:58:13",
+        "title": "爱泼斯坦案牵扯挪威 挪威前首相受调查",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "10:00:33",
+        "title": "部分网友反馈茅台抢购页面再次崩溃",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "10:02:11",
+        "title": "财联社2月6日电，截至目前，南向资金净买入额达50亿港元。",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "10:02:46",
+        "title": "中国银行原党委委员、副行长林景臻严重违纪违法被开除党籍",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "10:04:34",
+        "title": "浙江省人大常委会原党组副书记、副主任高兴夫严重违纪违法被开除党籍和公职",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "10:04:56",
+        "title": "海南省委原常委、秘书长倪强严重违纪违法被开除党籍和公职",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "10:05:22",
+        "title": "陕西省西安市人大常委会原党组书记、主任韩松严重违纪违法被开除党籍和公职",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "10:05:42",
+        "title": "美政府发布安全警告 敦促美国公民尽快离开伊朗",
+        "relevance": "low"
+      },
+      {
+        "source": "财联社",
+        "time": "10:09:45",
+        "title": "创新药概念震荡反弹 广生堂涨超10%",
+        "relevance": "low"
+      }
+    ],
+    "summary": {
+      "total": 20,
+      "high_relevance": 6
+    }
+  },
+  "ai_report_text": "【指令】你是资深A股交易员。请根据以下实时数据，分析市场情绪，点评持仓风险，并给出明确的操作策略。语言风格要犀利、简练，拒绝模棱两可。\n\n# A股实时行情数据报告\n生成时间: 2026-02-06 10:10:05\n\n## 📊 大盘概况\n- 上证指数: 4049.4595\n- 涨跌幅: -0.65%\n- 市场温度: ❄️ 极度恐慌\n- 风险等级: ⚪ 中性\n- 操作建议: 👀 观望/轻仓试错\n- 赚钱效应: 30% (上涨家数占比)\n\n## 👮 持仓监控哨兵\n总体建议: ⚖️ 多空平衡，观察核心标的\n\n| 代码 | 名称 | 现价 | 涨跌幅 | 评级 | 建议 |\n|---|---|---|---|---|---|\n| 600395 | 盘江股份 | 5.6 | 1.27% | ⭐⭐⭐(买入) | 💪 强势持有 (RSI:62.7) |\n| 600199 | 金种子酒 | 9.81 | -3.63% | ⭐⭐⭐(买入) | 🛡️ 防守观察 (RSI:39.94) |\n| 600871 | 石化油服 | 2.85 | -1.04% | ⭐⭐(持有) | 持有 (RSI:48.38) |\n\n## 🔥 热点板块掘金\n### 🚀 [板块1] 固态电池 (涨幅 0.22%, 热度 0.51)\n| 角色 | 代码 | 名称 | 涨幅 | 评级 | 核心点评 |\n|---|---|---|---|---|---|\n| 👑龙一 | sz300750 | 宁德时代 | 1.01% | ⭐⭐⭐(买入) | 放量 |\n| ⚔️龙二 | sz002460 | 赣锋锂业 | 1.19% | ⭐⭐⭐(买入) | 放量 |\n| 🛡️中军 | sz300014 | 亿纬锂能 | 1.67% | ⭐⭐⭐(买入) | 放量 |\n\n### 🔥 [板块2] 生物制药 (涨幅 1.57%, 热度 6.28)\n| 角色 | 代码 | 名称 | 涨幅 | 评级 | 核心点评 |\n|---|---|---|---|---|---|\n| 👑龙一 | 300158 | 振东制药 | 17.247% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 金叉 |\n| ⚔️龙二 | 300436 | 广生堂 | 11.456% | ⭐⭐⭐⭐(强推) | 主升 放量 超买 |\n| 🛡️中军 | 002728 | 特一药业 | 10.042% | ⭐⭐⭐⭐(强推) | 放量 |\n| ⚡跟风 | 002412 | 汉森制药 | 10.0% | ⭐⭐⭐⭐(强推) | 主升 放量 金叉 超买 |\n| ⚡跟风 | 002001 | 新 和 成 | 8.539% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 金叉 |\n\n### 🔥 [板块3] 化纤行业 (涨幅 0.81%, 热度 4.03)\n| 角色 | 代码 | 名称 | 涨幅 | 评级 | 核心点评 |\n|---|---|---|---|---|---|\n| 👑龙一 | 000584 | 工智退 | 11.538% | ⭐⭐⭐⭐(强推) | 放量 |\n| ⚔️龙二 | 600063 | 皖维高新 | 5.873% | ⭐⭐⭐(买入) | 放量 |\n| 🛡️中军 | 000949 | 新乡化纤 | 4.651% | ⭐⭐⭐⭐(强推) | 放量 |\n| ⚡跟风 | 002064 | 华峰化学 | 4.458% | ⭐⭐⭐(买入) | 放量 |\n| ⚡跟风 | 002206 | 海 利 得 | 3.448% | ⭐⭐⭐⭐(强推) | 放量 |\n\n### 🔥 [板块4] 农药化肥 (涨幅 1.88%, 热度 3.82)\n| 角色 | 代码 | 名称 | 涨幅 | 评级 | 核心点评 |\n|---|---|---|---|---|---|\n| 👑龙一 | 002018 | 华信退 | 8.333% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 |\n| ⚔️龙二 | 600230 | 沧州大化 | 7.274% | ⭐⭐⭐⭐(强推) | 放量 |\n| 🛡️中军 | 002539 | 云图控股 | 5.548% | ⭐⭐⭐⭐(强推) | 放量 |\n| ⚡跟风 | 000830 | 鲁西化工 | 4.096% | ⭐⭐⭐⭐(强推) | 放量 |\n| ⚡跟风 | 600691 | 潞化科技 | 3.922% | ⭐⭐⭐(买入) | 放量 |\n\n### 🔥 [板块5] 发电设备 (涨幅 0.58%, 热度 3.42)\n| 角色 | 代码 | 名称 | 涨幅 | 评级 | 核心点评 |\n|---|---|---|---|---|---|\n| 👑龙一 | 603618 | 杭电股份 | 10.032% | ⭐⭐⭐⭐(强推) | 主升 放量 超买 |\n| ⚔️龙二 | 002112 | 三变科技 | 10.0% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 |\n| 🛡️中军 | 300444 | 双杰电气 | 7.157% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 |\n| ⚡跟风 | 600550 | 保变电气 | 5.326% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 |\n| ⚡跟风 | 002498 | 汉缆股份 | 4.762% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 金叉 |\n\n### 🔥 [板块6] 化工行业 (涨幅 0.56%, 热度 3.39)\n| 角色 | 代码 | 名称 | 涨幅 | 评级 | 核心点评 |\n|---|---|---|---|---|---|\n| 👑龙一 | 002440 | 闰土股份 | 9.992% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 |\n| ⚔️龙二 | 002455 | 百川股份 | 9.97% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 |\n| 🛡️中军 | 000662 | 天夏退 | 8.696% | ⭐⭐⭐⭐⭐(妖股) | 主升 放量 |\n| ⚡跟风 | 002054 | 德美化工 | 7.549% | ⭐⭐⭐⭐(强推) | 放量 |\n| ⚡跟风 | 600722 | 金牛化工 | 7.006% | ⭐⭐⭐⭐(强推) | 放量 |\n\n## 🐯 龙虎榜摘要\n📅 20260205 龙虎榜数据尚未生成或无数据\n\n## 📰 重要消息\n🔥 日本央行审议委员增一行：若经济和物价前景如预期实现 日本央行有望继续加息\n🔥 财联社2月6日电，日本央行官员增一行表示，日本央行也必须谨慎行事，以避免过度加息破坏通胀和工资刚刚开\n🔥 商业航天概念局部回暖 巨力索具13天7板\n🔥 零售概念震荡走弱 百大集团、三江购物双双跌停\n🔥 电网设备概念表现活跃 三变科技涨停\n🔥 分散染料概念逆势拉升 闰土股份涨停\n• 光通信概念震荡回升 杭电股份6天5板\n• 日本东电称将重启柏崎刈羽核电站6号机组反应堆\n• 台风“西望洋”登陆菲律宾 已造成4死3伤\n• 古巴国家主席：将推进能源转型应对美国石油封锁"
+}

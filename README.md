@@ -3,11 +3,11 @@
 > 机器人走 **lark-oapi 长连接**，正常收发消息不依赖公网/隧道。只要本机能连外网即可。仅当需要对外暴露 webhook（如 n8n 公网回调）才启动 Cloudflare 隧道。
 
 ## 💻 开机后最小步骤
-1. 终端进入项目目录：`cd /home/kk/n8n`
+1. 终端进入项目目录（当前仓库根目录）
 2. 启动飞书机器人（长连接）
    ```bash
-   nohup python3 bot_start.py > bot.log 2>&1 &
-   tail -f bot.log   # 看到 connected / ping success 表示就绪，可 Ctrl+C 退出 tail
+   nohup python3 bot_start.py > /tmp/bot.log 2>&1 &
+   tail -f /tmp/bot.log   # 看到 connected / ping success 表示就绪，可 Ctrl+C 退出 tail
    ```
 3. 确认 n8n 正常（容器已设置开机自启，如需手动检查）
    ```bash
@@ -15,7 +15,7 @@
    ```
 4. 需要立即出报告：
    ```bash
-   ./trigger_workflow.sh   # 先更新数据，再调用 n8n 工作流推送
+   ./scripts/trigger_workflow.sh   # 先更新数据，再调用 n8n 工作流推送
    ```
 
 ## 🔌 何时需要 Cloudflare 隧道
@@ -24,8 +24,8 @@
 
 ### 启动隧道（可选）
 ```bash
-./start_fixed_tunnel.sh
-cat tunnel_url.txt   # 获取当前隧道 URL
+./scripts/start_fixed_tunnel.sh
+cat data/tunnel_url.txt   # 获取当前隧道 URL
 ```
 把新 URL 填到飞书后台的事件回调或任何公网 webhook 配置中。
 
@@ -45,20 +45,20 @@ cat tunnel_url.txt   # 获取当前隧道 URL
 | 脚本 | 用途 |
 |:---|:---|
 | `bot_start.py` | 飞书长连接机器人（核心） |
-| `trigger_workflow.sh` | 先更新行情数据，再调用 n8n 工作流立即出报告 |
-| `start_fixed_tunnel.sh` | 启动 Cloudflare 隧道（仅需公网回调时用） |
-| `market_scanner.py` | 行情/持仓扫描，生成 `market_data.json` |
+| `scripts/trigger_workflow.sh` | 先更新行情数据，再调用 n8n 工作流立即出报告 |
+| `scripts/start_fixed_tunnel.sh` | 启动 Cloudflare 隧道（仅需公网回调时用） |
+| `market_scanner.py` | 行情/持仓扫描，生成 `data/market_data.json` |
 
 ## 📜 日志与排查
 ```bash
 # 机器人日志（长连接）
-tail -f /home/kk/n8n/bot.log
+tail -f /tmp/bot.log
 
 # n8n 容器日志
 docker logs -f n8n_financial_bot
 
 # 隧道日志（如果启动过）
-tail -f /home/kk/n8n/tunnel.log
+tail -f /tmp/cloudflared.log
 ```
 
 常见问题：
@@ -69,7 +69,7 @@ tail -f /home/kk/n8n/tunnel.log
 
 ## 📌 访问入口
 - n8n 界面（本机）：http://localhost:5678
-- 隧道 URL：`cat /home/kk/n8n/tunnel_url.txt`（仅在启动隧道后才会有）
+- 隧道 URL：`cat data/tunnel_url.txt`（仅在启动隧道后才会有）
 
 ## ⏰ 自动化任务时间表
 系统已配置自动定时任务（crontab）：
@@ -84,11 +84,11 @@ tail -f /home/kk/n8n/tunnel.log
 数据更新提前5分钟，确保n8n工作流读取到最新数据。
 
 ## ✅ 开机速查清单
-- [ ] `nohup python3 bot_start.py > bot.log 2>&1 &`（必做）
-- [ ] `tail -f bot.log` 确认 connected（可选）
+- [ ] `nohup python3 bot_start.py > /tmp/bot.log 2>&1 &`（必做）
+- [ ] `tail -f /tmp/bot.log` 确认 connected（可选）
 - [ ] `docker ps | grep n8n_financial_bot`（检查 n8n，异常时 `docker restart`）
-- [ ] 需要立刻推送：`./trigger_workflow.sh`
-- [ ] 需要公网回调才启动：`./start_fixed_tunnel.sh && cat tunnel_url.txt`
+- [ ] 需要立刻推送：`./scripts/trigger_workflow.sh`
+- [ ] 需要公网回调才启动：`./scripts/start_fixed_tunnel.sh && cat data/tunnel_url.txt`
 
 ## 🔧 定时任务管理
 ```bash
@@ -99,5 +99,5 @@ crontab -l
 crontab -e
 
 # 查看定时任务日志
-tail -f /home/kk/n8n/cron.log
+tail -f /tmp/cron.log
 ```

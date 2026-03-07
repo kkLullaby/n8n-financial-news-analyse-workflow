@@ -13,7 +13,9 @@ import sys
 app = Flask(__name__)
 
 # 配置
-STOCK_FILE = "/home/kk/n8n/my_stocks.txt"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+STOCK_FILE = os.path.join(DATA_DIR, "my_stocks.txt")
 FEISHU_WEBHOOK_URL = "https://open.feishu.cn/open-apis/bot/v2/hook/e7cfa254-769f-4995-bda9-2bae05dc710a"
 
 def log(msg):
@@ -34,6 +36,7 @@ def read_stocks():
 def write_stocks(stocks):
     """写入股票列表"""
     try:
+        os.makedirs(DATA_DIR, exist_ok=True)
         with open(STOCK_FILE, 'w') as f:
             if stocks:
                 f.write('\n'.join(stocks) + '\n')
